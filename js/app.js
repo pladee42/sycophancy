@@ -315,14 +315,39 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeChatSystem();
 });
 
-// Load configuration from config.json
+// Load configuration from config.public.json and config.private.json
 async function loadConfig() {
     try {
-        const response = await fetch('config.json');
-        if (!response.ok) {
-            throw new Error('Failed to load config.json');
+        // Load public configuration (safe to commit to repo)
+        const publicResponse = await fetch('config.public.json');
+        if (!publicResponse.ok) {
+            throw new Error('Failed to load config.public.json');
         }
-        config = await response.json();
+        config = await publicResponse.json();
+        
+        // Try to load private configuration (contains API key)
+        let privateConfig = {};
+        try {
+            const privateResponse = await fetch('config.private.json');
+            if (privateResponse.ok) {
+                privateConfig = await privateResponse.json();
+            }
+        } catch (privateError) {
+            console.log('No private config found, will use environment variables or prompt for API key');
+        }
+        
+        // Merge private config into main config
+        config = { ...config, ...privateConfig };
+        
+        // Override with environment variables for Azure deployment
+        if (!config.openRouterApiKey || config.openRouterApiKey === 'your-openrouter-api-key-here') {
+            // Try different methods to get the API key in Azure
+            config.openRouterApiKey = 
+                window.OPENROUTER_API_KEY ||                    // Direct environment variable
+                sessionStorage.getItem('openrouter_api_key') || // Session storage
+                localStorage.getItem('openrouter_api_key') ||   // Local storage fallback
+                prompt('Please enter your OpenRouter API key:'); // User input fallback
+        }
         
         // Update model selector with available models
         const modelSelector = document.getElementById('modelSelector');
@@ -355,7 +380,7 @@ async function loadConfig() {
         }
     } catch (error) {
         console.error('Error loading config:', error);
-        alert('Failed to load configuration. Please ensure config.json exists and contains your OpenRouter API key.');
+        alert('Failed to load configuration. Please ensure config.public.json exists and config.private.json contains your OpenRouter API key.');
     }
 }
 
