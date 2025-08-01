@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sycophancy - Authentic AI Conversations</title>
+    <link rel="stylesheet" href="fonts/WEB/css/clash-grotesk.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/>
+        </svg>
+    </button>
+
+    <!-- Main Application Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar with chat history -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Sycophancy</div>
+                <div class="tagline">Authentic AI Conversations</div>
+            </div>
+            
+            <button class="new-chat-btn" id="newChatBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                New chat
+            </button>
+            
+            <div class="chat-history" id="chatHistory">
+                <!-- Chat history will be dynamically generated -->
+            </div>
+        </aside>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            
+            <!-- Top header with model selection -->
+            <header class="main-header">
+                <div class="model-selector">
+                    <select class="model-dropdown" id="modelSelector">
+                        <!-- Options will be populated from config.json -->
+                    </select>
+                </div>
+                
+                <!-- Settings button for Anti-Sycophancy Engine controls -->
+                <button class="header-settings-btn" id="controlsToggle" title="Anti-Sycophancy Engine Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.98C19.47,12.66 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.02L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.65 15.48,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.52,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11.02C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.52,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.48,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.98Z"/>
+                    </svg>
+                </button>
+            </header>
+            
+            <!-- Chat Section -->
+            <section class="chat-section">
+                
+                <!-- Chat messages container -->
+                <div class="chat-messages" id="chatMessages">
+                    
+                    <!-- Welcome message -->
+                    <div class="message ai">
+                        <div class="personality-badge">Direct • Confident • Formal</div>
+                        <div class="message-bubble">
+                            Welcome to Sycophancy. I'm designed to give you honest, unfiltered responses rather than just telling you what you want to hear. Use the anti-sycophancy controls to adjust my personality in real-time. What would you like to discuss?
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Chat input area -->
+                <div class="chat-input-area">
+                    <div class="input-container">
+                        <textarea 
+                            id="chatInput" 
+                            class="chat-input" 
+                            placeholder="Message Sycophancy..."
+                            rows="1"
+                        ></textarea>
+                        <button id="sendButton" class="send-button" type="button">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+            </section>
+            
+        </main>
+        
+    </div>
+
+
+    <!-- Anti-Sycophancy Control Panel -->
+    <aside class="control-panel" id="controlPanel">
+        
+        <!-- Panel header -->
+        <div class="panel-header">
+            <h2 class="panel-title">Anti-Sycophancy Engine</h2>
+            <p class="panel-subtitle">Adjust AI personality parameters in real-time to get authentic, challenging responses</p>
+        </div>
+
+        <!-- Controls container -->
+        <div class="controls-container">
+            
+            <!-- Engine status display -->
+            <div class="engine-status">
+                <div class="engine-status-header">
+                    <div class="engine-icon"></div>
+                    <div class="engine-title">Engine Active</div>
+                </div>
+                <div class="engine-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Disagreements:</span>
+                        <span class="stat-value" id="disagreementCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pushbacks:</span>
+                        <span class="stat-value" id="pushbackCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Directness Parameter -->
+            <div class="parameter-group">
+                <div class="parameter-label">
+                    <span class="parameter-name">Directness</span>
+                    <span class="parameter-value" id="directnessValue">75</span>
+                </div>
+                <div class="parameter-description">
+                    How blunt vs. diplomatic responses are
+                </div>
+                <div class="slider-container">
+                    <div class="slider-track" id="directnessTrack" style="width: 75%"></div>
+                    <input type="range" class="slider" id="directnessSlider" min="0" max="100" value="75">
+                </div>
+            </div>
+
+            <!-- Confidence Parameter -->
+            <div class="parameter-group">
+                <div class="parameter-label">
+                    <span class="parameter-name">Confidence</span>
+                    <span class="parameter-value" id="confidenceValue">60</span>
+                </div>
+                <div class="parameter-description">
+                    How certain the AI sounds (higher = more accuracy warnings)
+                </div>
+                <div class="slider-container">
+                    <div class="slider-track" id="confidenceTrack" style="width: 60%"></div>
+                    <input type="range" class="slider" id="confidenceSlider" min="0" max="100" value="60">
+                </div>
+            </div>
+
+            <!-- Disagreement Level Parameter -->
+            <div class="parameter-group">
+                <div class="parameter-label">
+                    <span class="parameter-name">Disagreement Level</span>
+                    <span class="parameter-value" id="disagreementValue">40</span>
+                </div>
+                <div class="parameter-description">
+                    How often AI pushes back on your opinions
+                </div>
+                <div class="slider-container">
+                    <div class="slider-track" id="disagreementTrack" style="width: 40%"></div>
+                    <input type="range" class="slider" id="disagreementSlider" min="0" max="100" value="40">
+                </div>
+            </div>
+
+            <!-- Formality Parameter -->
+            <div class="parameter-group">
+                <div class="parameter-label">
+                    <span class="parameter-name">Formality</span>
+                    <span class="parameter-value" id="formalityValue">70</span>
+                </div>
+                <div class="parameter-description">
+                    Professional vs. casual tone
+                </div>
+                <div class="slider-container">
+                    <div class="slider-track" id="formalityTrack" style="width: 70%"></div>
+                    <input type="range" class="slider" id="formalitySlider" min="0" max="100" value="70">
+                </div>
+            </div>
+
+            <!-- Apply Changes Button -->
+            <button id="applyButton" class="apply-button">
+                Apply Changes
+            </button>
+            
+        </div>
+        
+    </aside>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
