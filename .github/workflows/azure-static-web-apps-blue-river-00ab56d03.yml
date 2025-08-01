@@ -19,6 +19,20 @@ jobs:
         with:
           submodules: true
           lfs: false
+      
+      - name: Setup configuration files
+        run: |
+          # Create config.private.json with API key from GitHub secret for MVP
+          echo '{"openRouterApiKey": "${{ secrets.OPENROUTER_API_KEY }}"}' > config.private.json
+          echo "✅ Created config.private.json with API key for MVP deployment"
+          # Verify file creation without exposing the key
+          if [ -f config.private.json ]; then
+            echo "📁 config.private.json size: $(wc -c < config.private.json) bytes"
+          else
+            echo "❌ Failed to create config.private.json"
+            exit 1
+          fi
+      
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
