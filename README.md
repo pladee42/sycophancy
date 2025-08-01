@@ -21,16 +21,23 @@ No build process required - it's a static web application.
 
 ## ⚙️ Configuration
 
-### Setting up `config.json`
+The application uses a **split configuration** approach to keep your API key secure:
 
-The application requires proper configuration in `config.json`. Here's how to set it up:
+- **`config.public.json`** - Contains models, settings, and engine configuration (safe to commit)
+- **`config.private.json`** - Contains only your OpenRouter API key (excluded from git)
 
-#### 1. **OpenRouter API Key** (Required)
-Replace the placeholder with your actual OpenRouter API key:
+### Setting up Configuration Files
 
+#### 1. **Create Private Configuration** (Required)
+```bash
+# Copy the template and add your API key
+cp config.private.example.json config.private.json
+```
+
+Edit `config.private.json` with your actual OpenRouter API key:
 ```json
 {
-  "openRouterApiKey": "your-openrouter-api-key-here"
+  "openRouterApiKey": "your-actual-openrouter-api-key-here"
 }
 ```
 
@@ -39,55 +46,17 @@ Replace the placeholder with your actual OpenRouter API key:
 2. Sign up for an account
 3. Navigate to API Keys section
 4. Generate a new API key
-5. Copy and paste it into your `config.json`
+5. Copy and paste it into your `config.private.json`
 
-#### 2. **Model Configuration**
-The default configuration includes popular models:
+#### 2. **Public Configuration** (Pre-configured)
+The `config.public.json` file contains all non-sensitive settings and is already configured with:
 
-```json
-{
-  "defaultModel": "openai/gpt-4",
-  "availableModels": [
-    {
-      "id": "openai/gpt-4.1",
-      "name": "GPT-4.1",
-      "provider": "OpenAI"
-    },
-    {
-      "id": "anthropic/claude-sonnet-4",
-      "name": "Claude Sonnet 4", 
-      "provider": "Anthropic"
-    }
-  ]
-}
-```
+- **Available AI Models**: GPT-4.1, Claude Sonnet 4, Llama 4, Gemini 2.5 Pro, Grok 4, etc.
+- **Anti-Sycophancy Engine Settings**: Challenge types, topic modifiers, disagreement rates
+- **UI Theme**: Dark Material Design color palette
+- **API Settings**: Endpoints, token limits, temperature settings
 
-#### 3. **Anti-Sycophancy Engine Settings** (Optional)
-Fine-tune the anti-sycophancy behavior:
-
-```json
-{
-  "antiSycophancyEngine": {
-    "baseDisagreementMin": 15,
-    "baseDisagreementMax": 30,
-    "topicModifiers": {
-      "personal": 0.7,    // Less challenging on personal topics
-      "factual": 1.2,     // More rigorous on factual claims
-      "philosophical": 1.3 // Very challenging on philosophical topics
-    },
-    "challengeTypes": {
-      "devils_advocate": {
-        "enabled": true,
-        "intensity": 0.8
-      },
-      "socratic": {
-        "enabled": true,
-        "intensity": 0.6
-      }
-    }
-  }
-}
-```
+You can customize these settings by editing `config.public.json` directly.
 
 ## 🛠️ Development
 
@@ -95,13 +64,14 @@ Fine-tune the anti-sycophancy behavior:
 Simply open `index.html` in any modern web browser. No build process required.
 
 ### **Key Files to Modify**
-- `config.json`: API keys, models, engine settings
+- `config.public.json`: Models, engine settings, UI theme
+- `config.private.json`: Your OpenRouter API key only
 - `js/antisycophancy-engine.js`: Challenge logic and prompting
 - `js/app.js`: UI logic and chat management
 - `css/styles.css`: Styling and theme
 
 ### **Adding Models**
-Add new models to `config.json`:
+Add new models to `config.public.json`:
 ```json
 {
   "availableModels": [
