@@ -29,9 +29,16 @@ jobs:
 
       - name: Setup configuration files
         run: |
-          # Public config is already in the repo - no need to copy
-          # Private config will be handled via Azure environment variables at runtime
-          echo "Using config.public.json (already in repo) and Azure environment variables for API key"
+          # Create config.private.json with API key from GitHub secret for MVP
+          echo '{"openRouterApiKey": "${{ secrets.OPENROUTER_API_KEY }}"}' > config.private.json
+          echo "✅ Created config.private.json with API key for MVP deployment"
+          # Verify file creation without exposing the key
+          if [ -f config.private.json ]; then
+            echo "📁 config.private.json size: $(wc -c < config.private.json) bytes"
+          else
+            echo "❌ Failed to create config.private.json"
+            exit 1
+          fi
 
       - name: Build And Deploy
         id: builddeploy

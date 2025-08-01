@@ -339,15 +339,12 @@ async function loadConfig() {
         // Merge private config into main config
         config = { ...config, ...privateConfig };
         
-        // Override with environment variables for Azure deployment
+        // Validate API key is available (should be loaded from config.private.json)
         if (!config.openRouterApiKey || config.openRouterApiKey === 'your-openrouter-api-key-here') {
-            // Try different methods to get the API key in Azure
-            config.openRouterApiKey = 
-                window.OPENROUTER_API_KEY ||                    // Direct environment variable
-                sessionStorage.getItem('openrouter_api_key') || // Session storage
-                localStorage.getItem('openrouter_api_key') ||   // Local storage fallback
-                prompt('Please enter your OpenRouter API key:'); // User input fallback
+            throw new Error('OpenRouter API key not found. Please check the deployment configuration.');
         }
+        
+        console.log('✅ OpenRouter API key loaded successfully');
         
         // Update model selector with available models
         const modelSelector = document.getElementById('modelSelector');
