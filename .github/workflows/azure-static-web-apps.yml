@@ -41,7 +41,8 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/" # App source code path
-          output_location: "/" # Built app content directory
+          output_location: "" # No build output for static site
+          skip_app_build: true # Skip build process for static HTML/CSS/JS site
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
