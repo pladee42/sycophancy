@@ -178,6 +178,9 @@ class ChatManager {
 // Initialize chat manager
 const chatManager = new ChatManager();
 
+// Initialize Anti-Sycophancy Engine (will be configured after loading config)
+let antiSycophancyEngine = new AntiSycophancyEngine();
+
 // Chat history rendering functions
 function renderChatHistory() {
     const chatHistoryContainer = document.getElementById('chatHistory');
@@ -344,6 +347,11 @@ async function loadConfig() {
         // Apply color palette from config if available
         if (config.colorPalette) {
             applyColorPalette(config.colorPalette);
+        }
+        
+        // Initialize Anti-Sycophancy Engine with config
+        if (config.antiSycophancyEngine) {
+            antiSycophancyEngine = new AntiSycophancyEngine(config.antiSycophancyEngine);
         }
     } catch (error) {
         console.error('Error loading config:', error);
@@ -539,8 +547,35 @@ async function generateAIResponse(userMessage) {
     }
     
     try {
-        // Build the system prompt based on current parameters
-        const systemPrompt = buildSystemPrompt();
+        // Build the system prompt using Anti-Sycophancy Engine
+        let systemPrompt;
+        try {
+            systemPrompt = antiSycophancyEngine.generateSystemPrompt(
+                userMessage, 
+                messageHistory, 
+                currentParameters
+            );
+            
+            // Debug logging if enabled
+            if (config.debug) {
+                console.log('=== SYSTEM PROMPT DEBUG ===');
+                console.log('User Message:', userMessage);
+                console.log('Current Parameters:', currentParameters);
+                console.log('Generated System Prompt:');
+                console.log(systemPrompt);
+                console.log('========================');
+            }
+        } catch (engineError) {
+            console.error('AntiSycophancyEngine error:', engineError);
+            // Fallback to basic system prompt
+            systemPrompt = "You are an AI assistant designed to provide authentic, non-sycophantic responses.";
+            
+            if (config.debug) {
+                console.log('=== FALLBACK SYSTEM PROMPT ===');
+                console.log(systemPrompt);
+                console.log('============================');
+            }
+        }
         
         // Call OpenRouter API
         const response = await fetch(config.apiEndpoint, {
@@ -574,14 +609,19 @@ async function generateAIResponse(userMessage) {
         let aiResponse = data.choices[0].message.content;
         
         // Apply anti-sycophancy engine logic
-        if (shouldDisagree(userMessage)) {
-            disagreementCount++;
-            document.getElementById('disagreementCount').textContent = disagreementCount;
-        }
-        
-        if (shouldPushBack(userMessage)) {
-            pushbackCount++;
-            document.getElementById('pushbackCount').textContent = pushbackCount;
+        const context = antiSycophancyEngine.analyzeConversationContext(userMessage, messageHistory);
+        if (context.shouldChallenge) {
+            if (context.preferredChallengeType === 'devils_advocate' || 
+                context.preferredChallengeType === 'perspective_shift') {
+                disagreementCount++;
+                document.getElementById('disagreementCount').textContent = disagreementCount;
+            }
+            
+            if (context.preferredChallengeType === 'socratic' || 
+                context.preferredChallengeType === 'evidence_challenge') {
+                pushbackCount++;
+                document.getElementById('pushbackCount').textContent = pushbackCount;
+            }
         }
         
         addMessageToChat('ai', aiResponse);
@@ -591,62 +631,11 @@ async function generateAIResponse(userMessage) {
     }
 }
 
-// Build system prompt based on current parameters
-function buildSystemPrompt() {
-    const { directness, confidence, disagreement, formality } = currentParameters;
-    
-    let prompt = "You are an AI assistant designed to provide authentic, non-sycophantic responses. ";
-    
-    // Directness settings
-    if (directness > 70) {
-        prompt += "Be very direct and blunt in your responses. Don't sugarcoat things. ";
-    } else if (directness < 30) {
-        prompt += "Be diplomatic and tactful in your responses. Use softening language. ";
-    } else {
-        prompt += "Balance directness with tact in your responses. ";
-    }
-    
-    // Confidence settings
-    if (confidence > 80) {
-        prompt += "Express high confidence in your statements. Be assertive. ";
-    } else if (confidence < 20) {
-        prompt += "Express uncertainty and include caveats about potential inaccuracies. ";
-    } else {
-        prompt += "Express moderate confidence with appropriate qualifiers. ";
-    }
-    
-    // Disagreement settings
-    if (disagreement > 0) {
-        const disagreementRate = Math.floor(15 + (disagreement / 100) * 15);
-        prompt += `You should disagree with or challenge the user's opinions approximately ${disagreementRate}% of the time when they make subjective statements. Present alternative viewpoints. `;
-    }
-    
-    // Formality settings
-    if (formality > 70) {
-        prompt += "Use formal, professional language. Avoid contractions and casual expressions. ";
-    } else if (formality < 30) {
-        prompt += "Use casual, conversational language. Feel free to use contractions and informal expressions. ";
-    } else {
-        prompt += "Use a balanced tone that's neither too formal nor too casual. ";
-    }
-    
-    prompt += "Always strive to be helpful while maintaining these personality traits.";
-    
-    return prompt;
-}
+// System prompt generation is now handled by the AntiSycophancyEngine
+// The old buildSystemPrompt function has been replaced with advanced dynamic prompting
 
-// Anti-sycophancy engine logic
-function shouldDisagree(message) {
-    // Simple logic: disagree 15-30% of the time based on disagreement level
-    const threshold = 15 + (currentParameters.disagreement / 100) * 15;
-    return Math.random() * 100 < threshold;
-}
-
-function shouldPushBack(message) {
-    // Push back when disagreement level is high and user makes strong statements
-    return currentParameters.disagreement > 50 && 
-           (message.includes('always') || message.includes('never') || message.includes('definitely'));
-}
+// Anti-sycophancy engine logic is now handled by the AntiSycophancyEngine class
+// These functions have been replaced with sophisticated conversation analysis and contextual prompting
 
 // Get personality badge text
 function getPersonalityBadge() {
