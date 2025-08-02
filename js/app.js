@@ -252,12 +252,21 @@ function renderChatMessages() {
         
         if (msg.sender === 'ai') {
             const personalityBadge = getPersonalityBadgeFromParameters(msg.parameters || currentParameters);
+            const formattedContent = formatMessage(msg.content);
             messageDiv.innerHTML = `
                 <div class="personality-badge">${personalityBadge}</div>
-                <div class="message-bubble">${msg.content}</div>
+                <div class="message-bubble">${formattedContent}</div>
             `;
         } else {
-            messageDiv.innerHTML = `<div class="message-bubble">${msg.content}</div>`;
+            // For user messages, escape HTML but preserve line breaks
+            const escapedContent = msg.content
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;')
+                .replace(/\n/g, '<br>');
+            messageDiv.innerHTML = `<div class="message-bubble">${escapedContent}</div>`;
         }
         
         chatMessages.appendChild(messageDiv);
@@ -524,6 +533,30 @@ function sendMessage() {
     });
 }
 
+// Format message content with markdown support
+function formatMessage(content) {
+    // Configure marked options
+    marked.setOptions({
+        breaks: true, // Preserve line breaks
+        gfm: true, // GitHub Flavored Markdown
+        highlight: function(code, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(code, { language: lang }).value;
+                } catch (e) {}
+            }
+            return hljs.highlightAuto(code).value;
+        },
+        headerIds: false,
+        mangle: false
+    });
+    
+    // Parse markdown to HTML
+    const formattedContent = marked.parse(content);
+    
+    return formattedContent;
+}
+
 // Add message to chat display
 function addMessageToChat(sender, content) {
     const chatMessages = document.getElementById('chatMessages');
@@ -532,12 +565,21 @@ function addMessageToChat(sender, content) {
     
     if (sender === 'ai') {
         const personalityBadge = getPersonalityBadge();
+        const formattedContent = formatMessage(content);
         messageDiv.innerHTML = `
             <div class="personality-badge">${personalityBadge}</div>
-            <div class="message-bubble">${content}</div>
+            <div class="message-bubble">${formattedContent}</div>
         `;
     } else {
-        messageDiv.innerHTML = `<div class="message-bubble">${content}</div>`;
+        // For user messages, escape HTML but preserve line breaks
+        const escapedContent = content
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;')
+            .replace(/\n/g, '<br>');
+        messageDiv.innerHTML = `<div class="message-bubble">${escapedContent}</div>`;
     }
     
     chatMessages.appendChild(messageDiv);
