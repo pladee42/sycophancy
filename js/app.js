@@ -139,7 +139,7 @@ class ChatManager {
                 currentChatId: this.currentChatId,
                 chats: this.chats
             };
-            localStorage.setItem('sycophancy_chats', JSON.stringify(data));
+            localStorage.setItem('zero_chats', JSON.stringify(data));
         } catch (error) {
             console.error('Failed to save chats to storage:', error);
         }
@@ -148,7 +148,7 @@ class ChatManager {
     // Load from localStorage
     loadFromStorage() {
         try {
-            const data = localStorage.getItem('sycophancy_chats');
+            const data = localStorage.getItem('zero_chats');
             if (data) {
                 const parsed = JSON.parse(data);
                 this.currentChatId = parsed.currentChatId;
@@ -239,7 +239,7 @@ function renderChatMessages() {
             <div class="message ai">
                 <div class="personality-badge">Direct • Confident • Formal</div>
                 <div class="message-bubble">
-                    Welcome to Sycophancy. I'm designed to give you honest, unfiltered responses rather than just telling you what you want to hear. Use the anti-sycophancy controls to adjust my personality in real-time. What would you like to discuss?
+                    Welcome to Zero. I'm designed to give you honest, unfiltered responses rather than just telling you what you want to hear. Use the anti-sycophancy controls to adjust my personality in real-time. What would you like to discuss?
                 </div>
             </div>
         `;
@@ -648,7 +648,7 @@ async function generateAIResponse(userMessage) {
                 'Authorization': `Bearer ${config.openRouterApiKey}`,
                 'Content-Type': 'application/json',
                 'HTTP-Referer': window.location.href,
-                'X-Title': 'Sycophancy AI'
+                'X-Title': 'Zero AI'
             },
             body: JSON.stringify({
                 model: selectedModel,

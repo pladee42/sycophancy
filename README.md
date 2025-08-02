@@ -1,8 +1,8 @@
-# Sycophancy - Authentic AI Conversations
+# Zero - Zero Clutter
 
-**Sycophancy** - Because sometimes you need an AI that tells you what you need to hear, not just what you want to hear.
+**Zero** - Because sometimes you need an AI that tells you what you need to hear, not just what you want to hear.
 
-Unlike typical AI chatbots that tend to be overly agreeable, Sycophancy features a sophisticated **Anti-Sycophancy Engine** that challenges users, presents counterarguments, and provides genuinely authentic conversations.
+Unlike typical AI chatbots that tend to be overly agreeable, Zero features a sophisticated **Anti-Sycophancy Engine** that challenges users, presents counterarguments, and provides genuinely authentic conversations.
 
 ## 🚀 Quick Start
 
