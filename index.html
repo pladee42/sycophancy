@@ -25,7 +25,61 @@
         <!-- Sidebar with chat history -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">Zero</div>
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <!-- Outer ring with gradient -->
+                            <circle cx="16" cy="16" r="14" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
+                            
+                            <!-- Inner geometric pattern representing AI/neural networks -->
+                            <g stroke="url(#logoGradient)" stroke-width="1.5" fill="none">
+                                <!-- Central node -->
+                                <circle cx="16" cy="16" r="2" fill="url(#logoGradient)"/>
+                                
+                                <!-- Connection lines to outer nodes -->
+                                <line x1="16" y1="16" x2="16" y2="8"/>
+                                <line x1="16" y1="16" x2="24" y2="16"/>
+                                <line x1="16" y1="16" x2="16" y2="24"/>
+                                <line x1="16" y1="16" x2="8" y2="16"/>
+                                <line x1="16" y1="16" x2="22.6" y2="9.4"/>
+                                <line x1="16" y1="16" x2="22.6" y2="22.6"/>
+                                <line x1="16" y1="16" x2="9.4" y2="22.6"/>
+                                <line x1="16" y1="16" x2="9.4" y2="9.4"/>
+                                
+                                <!-- Outer nodes -->
+                                <circle cx="16" cy="8" r="1.5" fill="url(#logoGradient)"/>
+                                <circle cx="24" cy="16" r="1.5" fill="url(#logoGradient)"/>
+                                <circle cx="16" cy="24" r="1.5" fill="url(#logoGradient)"/>
+                                <circle cx="8" cy="16" r="1.5" fill="url(#logoGradient)"/>
+                                <circle cx="22.6" cy="9.4" r="1" fill="url(#logoGradient)"/>
+                                <circle cx="22.6" cy="22.6" r="1" fill="url(#logoGradient)"/>
+                                <circle cx="9.4" cy="22.6" r="1" fill="url(#logoGradient)"/>
+                                <circle cx="9.4" cy="9.4" r="1" fill="url(#logoGradient)"/>
+                                
+                                <!-- Data flow indicators -->
+                                <circle cx="12" cy="10" r="0.5" fill="#03DAC6" opacity="0.8">
+                                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="20" cy="14" r="0.5" fill="#03DAC6" opacity="0.6">
+                                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="14" cy="22" r="0.5" fill="#03DAC6" opacity="0.4">
+                                    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/>
+                                </circle>
+                            </g>
+                            
+                            <!-- Gradient definitions -->
+                            <defs>
+                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#BB86FC;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#9965F4;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#7C4DFF;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="logo-text">Zero</div>
+                </div>
                 <div class="tagline">Zero Clutter</div>
             </div>
             
@@ -39,6 +93,14 @@
             <div class="chat-history" id="chatHistory">
                 <!-- Chat history will be dynamically generated -->
             </div>
+            
+            <!-- Onboard Button -->
+            <button class="onboard-btn" id="onboardBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z"/>
+                </svg>
+                Onboard
+            </button>
         </aside>
 
         <!-- Main content area -->
@@ -198,6 +260,214 @@
         </div>
         
     </aside>
+
+    <!-- Onboard Modal -->
+    <div class="onboard-modal" id="onboardModal">
+        <div class="onboard-backdrop" id="onboardBackdrop"></div>
+        <div class="onboard-container">
+            <div class="onboard-content">
+                <!-- Close Button -->
+                <button class="onboard-close" id="onboardClose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
+                
+                <!-- Modal Header -->
+                <div class="onboard-header">
+                    <div class="onboard-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z"/>
+                        </svg>
+                    </div>
+                    <h2 class="onboard-title">Welcome to Zero</h2>
+                    <p class="onboard-subtitle">Let's personalize your AI conversation experience</p>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="onboard-body">
+                    <!-- Welcome Screen -->
+                    <div class="onboard-screen" id="welcomeScreen">
+                        <div class="onboard-intro">
+                            <p>We'll ask you a few quick questions to understand your communication preferences and configure your AI personality parameters automatically.</p>
+                            <p>This will only take 2-3 minutes and you can always adjust these settings later.</p>
+                        </div>
+                        
+                        <div class="onboard-features">
+                            <div class="feature-item">
+                                <div class="feature-icon">📊</div>
+                                <div class="feature-text">
+                                    <h4>Personalized Parameters</h4>
+                                    <p>Automatically configure Directness, Confidence, Disagreement Level, and Formality</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🎯</div>
+                                <div class="feature-text">
+                                    <h4>Situational Questions</h4>
+                                    <p>Answer questions based on real-world scenarios to match your style</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">⚡</div>
+                                <div class="feature-text">
+                                    <h4>Instant Results</h4>
+                                    <p>See your AI personality configured immediately after completion</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questionnaire Screen -->
+                    <div class="onboard-screen hidden" id="questionnaireScreen">
+                        <!-- Progress Bar -->
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span id="currentQuestion">1</span> of <span id="totalQuestions">7</span>
+                            </div>
+                        </div>
+
+                        <!-- Question Content -->
+                        <div class="question-container">
+                            <h3 class="question-title" id="questionTitle">Question Title</h3>
+                            <p class="question-scenario" id="questionScenario">Question scenario description</p>
+                            
+                            <div class="answer-options" id="answerOptions">
+                                <!-- Radio options will be dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Screen -->
+                    <div class="onboard-screen hidden" id="resultsScreen">
+                        <div class="results-container">
+                            <!-- Success Icon -->
+                            <div class="results-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                                </svg>
+                            </div>
+                            
+                            <!-- Results Header -->
+                            <h3 class="results-title">Your AI Personality is Configured!</h3>
+                            <p class="results-subtitle">Based on your responses, we've customized your AI conversation parameters</p>
+                            
+                            <!-- Parameter Results -->
+                            <div class="parameter-results">
+                                <div class="parameter-result" id="directnessResult">
+                                    <div class="parameter-info">
+                                        <span class="parameter-name">Directness</span>
+                                        <span class="parameter-value" id="directnessResultValue">75</span>
+                                    </div>
+                                    <div class="parameter-bar">
+                                        <div class="parameter-fill" id="directnessResultFill" style="width: 75%"></div>
+                                    </div>
+                                    <div class="parameter-description" id="directnessResultDesc">Balanced and tactful communication</div>
+                                </div>
+                                
+                                <div class="parameter-result" id="confidenceResult">
+                                    <div class="parameter-info">
+                                        <span class="parameter-name">Confidence</span>
+                                        <span class="parameter-value" id="confidenceResultValue">60</span>
+                                    </div>
+                                    <div class="parameter-bar">
+                                        <div class="parameter-fill" id="confidenceResultFill" style="width: 60%"></div>
+                                    </div>
+                                    <div class="parameter-description" id="confidenceResultDesc">Moderately confident with appropriate caveats</div>
+                                </div>
+                                
+                                <div class="parameter-result" id="disagreementResult">
+                                    <div class="parameter-info">
+                                        <span class="parameter-name">Disagreement Level</span>
+                                        <span class="parameter-value" id="disagreementResultValue">40</span>
+                                    </div>
+                                    <div class="parameter-bar">
+                                        <div class="parameter-fill" id="disagreementResultFill" style="width: 40%"></div>
+                                    </div>
+                                    <div class="parameter-description" id="disagreementResultDesc">Occasional pushback when appropriate</div>
+                                </div>
+                                
+                                <div class="parameter-result" id="formalityResult">
+                                    <div class="parameter-info">
+                                        <span class="parameter-name">Formality</span>
+                                        <span class="parameter-value" id="formalityResultValue">70</span>
+                                    </div>
+                                    <div class="parameter-bar">
+                                        <div class="parameter-fill" id="formalityResultFill" style="width: 70%"></div>
+                                    </div>
+                                    <div class="parameter-description" id="formalityResultDesc">Professional tone with some warmth</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Personality Summary -->
+                            <div class="personality-summary">
+                                <h4>Your AI Personality Profile</h4>
+                                <div class="personality-traits" id="personalityTraits">
+                                    <span class="trait">Professional</span>
+                                    <span class="trait">Balanced</span>
+                                    <span class="trait">Thoughtful</span>
+                                </div>
+                                <p class="personality-description" id="personalityDescription">
+                                    Your AI will communicate in a professional yet approachable manner, providing balanced perspectives while being thoughtful about when to challenge ideas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="onboard-footer">
+                    <!-- Welcome Footer -->
+                    <div class="footer-section" id="welcomeFooter">
+                        <button class="onboard-skip" id="onboardSkip">
+                            Skip for now
+                        </button>
+                        <button class="onboard-start" id="onboardStart">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+                            </svg>
+                            Start Onboarding
+                        </button>
+                    </div>
+
+                    <!-- Questionnaire Footer -->
+                    <div class="footer-section hidden" id="questionnaireFooter">
+                        <button class="nav-button secondary" id="prevButton" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
+                            </svg>
+                            Previous
+                        </button>
+                        <button class="nav-button primary" id="nextButton" disabled>
+                            <span id="nextButtonText">Next</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Results Footer -->
+                    <div class="footer-section hidden" id="resultsFooter">
+                        <button class="nav-button secondary" id="retakeButton">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,4C13.1,4 14,4.9 14,6C14,7.1 13.1,8 12,8C10.9,8 10,7.1 10,6C10,4.9 10.9,4 12,4M21,10.5C21,10.5 20.75,10.75 20.5,10.75C20.25,10.75 20,10.5 20,10.5V9C20,7.89 19.1,7 18,7H13.5C13.08,7 12.69,7.2 12.41,7.5L10.5,9.5L9.91,8.91C9.66,8.66 9.34,8.5 9,8.5C8.66,8.5 8.34,8.66 8.09,8.91L7.5,9.5C7.22,9.78 7.22,10.22 7.5,10.5L9,12L7.5,13.5C7.22,13.78 7.22,14.22 7.5,14.5L8.09,15.09C8.34,15.34 8.66,15.5 9,15.5C9.34,15.5 9.66,15.34 9.91,15.09L10.5,14.5L12.41,16.5C12.69,16.8 13.08,17 13.5,17H18C19.1,17 20,16.11 20,15V13.5C20,13.5 20.25,13.25 20.5,13.25C20.75,13.25 21,13.5 21,13.5V10.5Z"/>
+                            </svg>
+                            Retake Quiz
+                        </button>
+                        <button class="nav-button primary" id="applyResultsButton">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                            </svg>
+                            Apply & Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Markdown and syntax highlighting libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
