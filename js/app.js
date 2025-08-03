@@ -362,33 +362,39 @@ function attachChatItemListeners() {
             
             const chatId = this.getAttribute('data-chat-id');
             if (chatId && confirm('Are you sure you want to delete this chat?')) {
-                const wasCurrentChat = chatManager.currentChatId === chatId;
-                
-                if (chatManager.deleteChat(chatId)) {
-                    // If we deleted the current chat, clear the messages and create a new one
-                    if (wasCurrentChat) {
-                        messageHistory = [];
-                        renderChatMessages();
-                        
-                        // Create a new chat if no other chats exist
-                        const remainingChats = chatManager.getAllChats();
-                        if (remainingChats.length === 0) {
-                            const newChatId = chatManager.createNewChat();
-                        } else {
-                            // Load the most recent remaining chat
-                            const mostRecent = remainingChats[0];
-                            chatManager.loadChat(mostRecent.id);
-                            renderChatMessages();
-                            updateCountersDisplay();
-                        }
-                    }
-                    
-                    // Re-render chat history to reflect the deletion
-                    renderChatHistory();
-                }
+                handleChatDeletion(chatId);
             }
         });
     });
+}
+
+function handleChatDeletion(chatId) {
+    const wasCurrentChat = chatManager.currentChatId === chatId;
+    
+    if (chatManager.deleteChat(chatId)) {
+        // If we deleted the current chat, handle the transition
+        if (wasCurrentChat) {
+            messageHistory = [];
+            
+            // Check if any chats remain
+            const remainingChats = chatManager.getAllChats();
+            if (remainingChats.length === 0) {
+                // No chats left, create a new one
+                const newChatId = chatManager.createNewChat();
+                renderChatMessages();
+            } else {
+                // Load the most recent remaining chat
+                const mostRecent = remainingChats[0];
+                chatManager.loadChat(mostRecent.id);
+                renderChatMessages();
+                updateCountersDisplay();
+            }
+        }
+        
+        // Re-render chat history to reflect the deletion
+        // This will also reattach event listeners
+        renderChatHistory();
+    }
 }
 
 function renderChatMessages() {
