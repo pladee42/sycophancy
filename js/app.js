@@ -1,10 +1,117 @@
-// Application state
+// Application state with context-aware parameters
 let currentParameters = {
+    // Legacy parameters for backward compatibility
     directness: 75,
     confidence: 60,
     disagreement: 40,
-    formality: 70
+    formality: 70,
+    
+    // Context-aware parameter storage
+    _context: 'mixed', // Default to mixed for backward compatibility
+    _contextParameters: {
+        personal: {
+            empathy: 65,
+            supportiveness: 70,
+            creativity: 60,
+            warmth: 75
+        },
+        professional: {
+            authority: 70,
+            efficiency: 75,
+            formality: 80,
+            challenge: 60
+        },
+        mixed: {
+            adaptability: 70,
+            balance: 65,
+            directness: 75,
+            confidence: 60
+        }
+    }
 };
+
+// Context-aware parameter management functions
+function getCurrentContextParameters() {
+    const context = currentParameters._context || 'mixed';
+    return currentParameters._contextParameters[context] || currentParameters._contextParameters.mixed;
+}
+
+function setCurrentContext(context) {
+    if (!currentParameters._contextParameters[context]) {
+        console.warn(`Invalid context: ${context}, defaulting to mixed`);
+        context = 'mixed';
+    }
+    currentParameters._context = context;
+    
+    // Update legacy parameters for backward compatibility
+    updateLegacyParameters();
+}
+
+function updateContextParameters(context, newParams) {
+    if (!currentParameters._contextParameters[context]) {
+        console.warn(`Invalid context: ${context}`);
+        return;
+    }
+    
+    currentParameters._contextParameters[context] = { ...newParams };
+    
+    // If this is the current context, update legacy parameters
+    if (currentParameters._context === context) {
+        updateLegacyParameters();
+    }
+}
+
+function updateLegacyParameters() {
+    const context = currentParameters._context || 'mixed';
+    const contextParams = getCurrentContextParameters();
+    
+    // Map context-specific parameters to legacy parameters for backward compatibility
+    switch (context) {
+        case 'personal':
+            currentParameters.directness = Math.round((contextParams.warmth + contextParams.empathy) / 2);
+            currentParameters.confidence = Math.round((contextParams.supportiveness + contextParams.creativity) / 2);
+            currentParameters.disagreement = Math.round(100 - contextParams.supportiveness);
+            currentParameters.formality = Math.round(100 - contextParams.warmth);
+            break;
+            
+        case 'professional':
+            currentParameters.directness = Math.round((contextParams.authority + contextParams.challenge) / 2);
+            currentParameters.confidence = Math.round((contextParams.authority + contextParams.efficiency) / 2);
+            currentParameters.disagreement = contextParams.challenge;
+            currentParameters.formality = contextParams.formality;
+            break;
+            
+        case 'mixed':
+        default:
+            currentParameters.directness = contextParams.directness;
+            currentParameters.confidence = contextParams.confidence;
+            currentParameters.disagreement = Math.round(100 - contextParams.balance);
+            currentParameters.formality = Math.round(100 - contextParams.adaptability);
+            break;
+    }
+}
+
+function migrateToContextAware(legacyParams) {
+    // Migrate existing parameters to mixed context as default
+    if (!legacyParams._context) {
+        const mixed = {
+            adaptability: Math.round(100 - (legacyParams.formality || 70)),
+            balance: Math.round(100 - (legacyParams.disagreement || 40)),
+            directness: legacyParams.directness || 75,
+            confidence: legacyParams.confidence || 60
+        };
+        
+        return {
+            ...legacyParams,
+            _context: 'mixed',
+            _contextParameters: {
+                ...currentParameters._contextParameters,
+                mixed: mixed
+            }
+        };
+    }
+    return legacyParams;
+}
 
 let messageHistory = [];
 let disagreementCount = 0;
@@ -94,7 +201,15 @@ class ChatManager {
         const chat = this.chats[chatId];
         this.currentChatId = chatId;
         messageHistory = [...chat.messages];
-        currentParameters = {...chat.parameters};
+        
+        // Handle parameter migration for backward compatibility
+        const loadedParameters = migrateToContextAware(chat.parameters || {});
+        currentParameters = { ...currentParameters, ...loadedParameters };
+        
+        // Set context if available
+        if (loadedParameters._context) {
+            setCurrentContext(loadedParameters._context);
+        }
         
         // Update UI sliders
         this.updateParameterSliders();
@@ -110,19 +225,18 @@ class ChatManager {
         return true;
     }
 
-    // Update parameter sliders in UI
+    // Update parameter sliders in UI for context-aware system
     updateParameterSliders() {
-        Object.keys(currentParameters).forEach(param => {
-            const slider = document.getElementById(param + 'Slider');
-            const valueDisplay = document.getElementById(param + 'Value');
-            const track = document.getElementById(param + 'Track');
-            
-            if (slider && valueDisplay && track) {
-                slider.value = currentParameters[param];
-                valueDisplay.textContent = currentParameters[param];
-                track.style.width = currentParameters[param] + '%';
-            }
+        const context = currentParameters._context || 'mixed';
+        const contextParams = getCurrentContextParameters();
+        
+        // Update context selector active state
+        document.querySelectorAll('.context-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-context') === context);
         });
+        
+        // Regenerate dynamic parameters to reflect current values
+        generateDynamicParameters();
     }
 
     // Get all chats sorted by last active (most recent first)
@@ -276,6 +390,12 @@ function renderChatMessages() {
 }
 
 function getPersonalityBadgeFromParameters(params) {
+    // Handle context-aware parameters
+    if (params._context && params._contextParameters) {
+        return getContextAwarePersonalityBadge(params._context, params._contextParameters[params._context]);
+    }
+    
+    // Fallback to legacy parameter handling
     let traits = [];
     
     if (params.directness > 50) traits.push('Direct');
@@ -286,6 +406,55 @@ function getPersonalityBadgeFromParameters(params) {
     
     if (params.formality > 50) traits.push('Formal');
     else traits.push('Casual');
+    
+    return traits.join(' • ');
+}
+
+function getContextAwarePersonalityBadge(context, contextParams) {
+    let traits = [];
+    
+    switch (context) {
+        case 'personal':
+            if (contextParams.empathy > 60) traits.push('Empathetic');
+            else if (contextParams.empathy < 40) traits.push('Analytical');
+            
+            if (contextParams.warmth > 60) traits.push('Warm');
+            else if (contextParams.warmth < 40) traits.push('Professional');
+            
+            if (contextParams.creativity > 60) traits.push('Creative');
+            else if (contextParams.creativity < 40) traits.push('Practical');
+            break;
+            
+        case 'professional':
+            if (contextParams.authority > 60) traits.push('Authoritative');
+            else if (contextParams.authority < 40) traits.push('Collaborative');
+            
+            if (contextParams.efficiency > 60) traits.push('Efficient');
+            else if (contextParams.efficiency < 40) traits.push('Thorough');
+            
+            if (contextParams.challenge > 60) traits.push('Challenging');
+            else if (contextParams.challenge < 40) traits.push('Supportive');
+            break;
+            
+        case 'mixed':
+        default:
+            if (contextParams.adaptability > 60) traits.push('Adaptable');
+            else if (contextParams.adaptability < 40) traits.push('Consistent');
+            
+            if (contextParams.directness > 60) traits.push('Direct');
+            else if (contextParams.directness < 40) traits.push('Diplomatic');
+            
+            if (contextParams.confidence > 60) traits.push('Confident');
+            else if (contextParams.confidence < 40) traits.push('Cautious');
+            break;
+    }
+    
+    // Ensure we have at least 2-3 traits, but not more than 3
+    if (traits.length === 0) {
+        traits.push('Balanced', 'Thoughtful');
+    } else if (traits.length > 3) {
+        traits = traits.slice(0, 3);
+    }
     
     return traits.join(' • ');
 }
@@ -317,20 +486,39 @@ let onboardingManager = null;
 
 // Callback function for OnboardingManager to update parameters
 function onParametersUpdateFromOnboarding(newParameters) {
-    // Update current parameters
-    currentParameters = { ...newParameters };
+    // Handle context-aware parameter updates
+    if (newParameters._context) {
+        // Update context
+        setCurrentContext(newParameters._context);
+        
+        // Update context-specific parameters
+        const contextParams = { ...newParameters };
+        delete contextParams._context; // Remove meta property
+        updateContextParameters(newParameters._context, contextParams);
+    } else {
+        // Fallback for legacy parameter updates
+        currentParameters = { ...currentParameters, ...newParameters };
+        updateLegacyParameters();
+    }
     
     // Save to current chat
     chatManager.saveCurrentChat();
     
     // Update personality display
     updatePersonalityDisplay();
+    
+    // Update UI sliders to reflect new parameters
+    updateParameterSliders();
 }
 
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', async function() {
     await loadConfig();
+    
+    // Perform parameter migration for existing data
+    currentParameters = migrateToContextAware(currentParameters);
+    
     initializeSliders();
     initializeChatInput();
     initializeApplyButton();
@@ -464,22 +652,173 @@ function startNewChat() {
 
 // This function is now handled by ChatManager.loadChat()
 
-// Initialize slider controls
-function initializeSliders() {
-    const sliders = ['directness', 'confidence', 'disagreement', 'formality'];
+// Context-aware parameter definitions
+const parameterDefinitions = {
+    personal: {
+        empathy: {
+            name: 'Empathy',
+            description: 'Emotional understanding and validation',
+            tooltip: 'Controls how much your AI focuses on understanding and validating your emotions. Higher values create more emotionally supportive responses, while lower values provide more analytical, objective feedback.'
+        },
+        supportiveness: {
+            name: 'Supportiveness',
+            description: 'Encouragement vs realistic assessment',
+            tooltip: 'Determines how encouraging vs realistic your AI is. Higher values provide more motivational and uplifting responses, while lower values offer more balanced, honest assessments that include potential challenges.'
+        },
+        creativity: {
+            name: 'Creativity',
+            description: 'Imaginative vs practical approaches',
+            tooltip: 'Adjusts how creative and imaginative your AI\'s suggestions are. Higher values encourage out-of-the-box thinking and innovative solutions, while lower values focus on practical, proven approaches.'
+        },
+        warmth: {
+            name: 'Warmth',
+            description: 'Personal connection vs professional distance',
+            tooltip: 'Controls the personal tone of communication. Higher values create a friendly, approachable personality that feels like talking to a close friend, while lower values maintain professional boundaries.'
+        }
+    },
+    professional: {
+        authority: {
+            name: 'Authority',
+            description: 'Expert confidence vs collaborative approach',
+            tooltip: 'Determines how authoritatively your AI communicates. Higher values provide confident, expert-level guidance with strong recommendations, while lower values take a more collaborative, consultative approach.'
+        },
+        efficiency: {
+            name: 'Efficiency',
+            description: 'Concise actionables vs comprehensive detail',
+            tooltip: 'Controls response length and focus. Higher values provide concise, action-oriented responses that get straight to the point, while lower values offer comprehensive explanations with detailed context.'
+        },
+        formality: {
+            name: 'Formality',
+            description: 'Business communication vs casual conversation',
+            tooltip: 'Adjusts the communication style from casual to formal. Higher values use professional business language and structured communication, while lower values adopt a more conversational, relaxed tone.'
+        },
+        challenge: {
+            name: 'Challenge',
+            description: 'Active questioning vs supportive agreement',
+            tooltip: 'Controls how much your AI challenges your ideas and assumptions. Higher values actively question your thinking and present alternative viewpoints, while lower values are more supportive and agreeable.'
+        }
+    },
+    mixed: {
+        adaptability: {
+            name: 'Adaptability',
+            description: 'Dynamic context-switching vs consistent style',
+            tooltip: 'Determines how much your AI adapts its communication style based on the topic. Higher values dynamically switch between personal and professional tones as appropriate, while lower values maintain a consistent approach.'
+        },
+        balance: {
+            name: 'Balance',
+            description: 'Blended personal/professional vs single approach',
+            tooltip: 'Controls how well your AI blends personal warmth with professional expertise. Higher values seamlessly combine both aspects, while lower values tend to lean more heavily toward one style or the other.'
+        },
+        directness: {
+            name: 'Directness',
+            description: 'Clear straightforward vs diplomatic softening',
+            tooltip: 'Adjusts how directly your AI communicates difficult or sensitive information. Higher values provide clear, straightforward feedback without sugar-coating, while lower values use diplomatic language to soften the message.'
+        },
+        confidence: {
+            name: 'Confidence',
+            description: 'Definitive statements vs uncertain qualifiers',
+            tooltip: 'Controls how confident your AI sounds in its responses. Higher values use definitive language and strong statements, while lower values include more qualifiers like "perhaps," "might," and "possibly" to express uncertainty.'
+        }
+    }
+};
+
+// Dynamic parameter management
+function generateDynamicParameters() {
+    const context = currentParameters._context || 'mixed';
+    const contextParams = getCurrentContextParameters();
+    const parameterDefs = parameterDefinitions[context];
     
-    sliders.forEach(param => {
-        const slider = document.getElementById(param + 'Slider');
-        const valueDisplay = document.getElementById(param + 'Value');
-        const track = document.getElementById(param + 'Track');
+    const container = document.getElementById('dynamicParametersContainer');
+    container.innerHTML = '';
+    
+    Object.keys(parameterDefs).forEach(paramKey => {
+        const paramDef = parameterDefs[paramKey];
+        const value = contextParams[paramKey] || 50;
+        
+        const parameterGroup = document.createElement('div');
+        parameterGroup.className = 'parameter-group';
+        parameterGroup.innerHTML = `
+            <div class="parameter-label-with-tooltip">
+                <div class="parameter-label">
+                    <span class="parameter-name">${paramDef.name}</span>
+                    <span class="parameter-value" id="${paramKey}Value">${value}</span>
+                </div>
+                <div class="tooltip">
+                    <div class="tooltip-icon">?</div>
+                    <div class="tooltip-content">${paramDef.tooltip}</div>
+                </div>
+            </div>
+            <div class="parameter-description">
+                ${paramDef.description}
+            </div>
+            <div class="slider-container">
+                <div class="slider-track" id="${paramKey}Track" style="width: ${value}%"></div>
+                <input type="range" class="slider" id="${paramKey}Slider" min="0" max="100" value="${value}">
+            </div>
+        `;
+        
+        container.appendChild(parameterGroup);
+        
+        // Add event listener to the slider
+        const slider = document.getElementById(paramKey + 'Slider');
+        const valueDisplay = document.getElementById(paramKey + 'Value');
+        const track = document.getElementById(paramKey + 'Track');
         
         slider.addEventListener('input', function() {
-            const value = this.value;
-            valueDisplay.textContent = value;
-            track.style.width = value + '%';
-            currentParameters[param] = parseInt(value);
+            const newValue = parseInt(this.value);
+            valueDisplay.textContent = newValue;
+            track.style.width = newValue + '%';
+            
+            // Update context-specific parameter
+            currentParameters._contextParameters[context][paramKey] = newValue;
+            
+            // Update legacy parameters for backward compatibility
+            updateLegacyParameters();
         });
     });
+}
+
+// Initialize context selector and slider controls
+function initializeSliders() {
+    // Initialize context selector buttons
+    initializeContextSelector();
+    
+    // Generate initial parameters
+    generateDynamicParameters();
+    
+    // Update profile summary with initial state
+    updateProfileSummary();
+}
+
+function initializeContextSelector() {
+    const contextButtons = document.querySelectorAll('.context-btn');
+    
+    contextButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const selectedContext = this.getAttribute('data-context');
+            
+            // Update active state
+            contextButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Switch context
+            setCurrentContext(selectedContext);
+            
+            // Regenerate parameters for new context
+            generateDynamicParameters();
+            
+            // Update personality display
+            updatePersonalityDisplay();
+        });
+    });
+    
+    // Set initial active state based on current context
+    const currentContext = currentParameters._context || 'mixed';
+    const activeButton = document.querySelector(`[data-context="${currentContext}"]`);
+    if (activeButton) {
+        contextButtons.forEach(btn => btn.classList.remove('active'));
+        activeButton.classList.add('active');
+    }
 }
 
 // Initialize chat input functionality
@@ -725,28 +1064,150 @@ async function generateAIResponse(userMessage) {
 // Anti-sycophancy engine logic is now handled by the AntiSycophancyEngine class
 // These functions have been replaced with sophisticated conversation analysis and contextual prompting
 
-// Get personality badge text
+// Get personality badge text using current context-aware parameters
 function getPersonalityBadge() {
-    const { directness, confidence, disagreement, formality } = currentParameters;
-    
-    let traits = [];
-    
-    if (directness > 50) traits.push('Direct');
-    else traits.push('Diplomatic');
-    
-    if (confidence > 50) traits.push('Confident');
-    else traits.push('Cautious');
-    
-    if (formality > 50) traits.push('Formal');
-    else traits.push('Casual');
-    
-    return traits.join(' • ');
+    return getPersonalityBadgeFromParameters(currentParameters);
 }
 
 // Update personality display
 function updatePersonalityDisplay() {
+    // Update the profile summary display
+    updateProfileSummary();
+    
     // This would trigger an update to show the new personality in the next message
     console.log('Personality updated:', currentParameters);
+}
+
+// Update the Active Profile Summary
+function updateProfileSummary() {
+    const context = currentParameters._context || 'mixed';
+    const contextParams = getCurrentContextParameters();
+    
+    // Update context display
+    const contextDisplay = document.getElementById('currentContext');
+    if (contextDisplay) {
+        const contextLabels = {
+            'personal': 'Personal Context',
+            'professional': 'Professional Context', 
+            'mixed': 'Mixed Context'
+        };
+        contextDisplay.textContent = contextLabels[context] || 'Mixed Context';
+    }
+    
+    // Generate personality traits
+    const traits = generateCurrentTraits(context, contextParams);
+    const traitsDisplay = document.getElementById('activeTraits');
+    if (traitsDisplay) {
+        traitsDisplay.innerHTML = traits.map(trait => 
+            `<span class="trait-badge">${trait}</span>`
+        ).join('');
+    }
+    
+    // Generate description
+    const description = generateProfileDescription(context, contextParams);
+    const descriptionDisplay = document.getElementById('profileDescription');
+    if (descriptionDisplay) {
+        descriptionDisplay.textContent = description;
+    }
+}
+
+// Generate current personality traits based on context and parameters
+function generateCurrentTraits(context, contextParams) {
+    let traits = [];
+    
+    switch (context) {
+        case 'personal':
+            if (contextParams.empathy > 70) traits.push('Empathetic');
+            else if (contextParams.empathy < 40) traits.push('Analytical');
+            
+            if (contextParams.warmth > 70) traits.push('Warm');
+            else if (contextParams.warmth < 40) traits.push('Professional');
+            
+            if (contextParams.creativity > 70) traits.push('Creative'); 
+            else if (contextParams.creativity < 40) traits.push('Practical');
+            
+            if (contextParams.supportiveness > 70) traits.push('Encouraging');
+            break;
+            
+        case 'professional':
+            if (contextParams.authority > 70) traits.push('Authoritative');
+            else if (contextParams.authority < 40) traits.push('Collaborative');
+            
+            if (contextParams.efficiency > 70) traits.push('Efficient');
+            else if (contextParams.efficiency < 40) traits.push('Thorough');
+            
+            if (contextParams.formality > 70) traits.push('Formal');
+            else if (contextParams.formality < 40) traits.push('Casual');
+            
+            if (contextParams.challenge > 70) traits.push('Challenging');
+            break;
+            
+        case 'mixed':
+        default:
+            if (contextParams.adaptability > 70) traits.push('Adaptable');
+            else if (contextParams.adaptability < 40) traits.push('Consistent');
+            
+            if (contextParams.directness > 70) traits.push('Direct');
+            else if (contextParams.directness < 40) traits.push('Diplomatic');
+            
+            if (contextParams.confidence > 70) traits.push('Confident');
+            else if (contextParams.confidence < 40) traits.push('Cautious'); 
+            
+            if (contextParams.balance > 70) traits.push('Balanced');
+            break;
+    }
+    
+    // Ensure we have 2-3 traits
+    if (traits.length === 0) {
+        traits = ['Balanced', 'Thoughtful'];
+    } else if (traits.length > 3) {
+        traits = traits.slice(0, 3);
+    } else if (traits.length === 1) {
+        traits.push('Thoughtful');
+    }
+    
+    return traits;
+}
+
+// Generate profile description based on context and parameters
+function generateProfileDescription(context, contextParams) {
+    const descriptions = {
+        'personal': "Your AI provides personalized support with emotional understanding and creative insight.",
+        'professional': "Your AI offers expert guidance with structured, business-focused communication.",
+        'mixed': "Your AI adapts its communication style based on context while maintaining consistency."
+    };
+    
+    // Basic description based on context
+    let description = descriptions[context] || descriptions['mixed'];
+    
+    // Add context-specific nuances based on parameter levels
+    switch (context) {
+        case 'personal':
+            if (contextParams.empathy > 70 && contextParams.warmth > 70) {
+                description = "Your AI provides deeply empathetic support with genuine warmth and personal connection.";
+            } else if (contextParams.creativity > 70 && contextParams.supportiveness > 70) {
+                description = "Your AI combines creative thinking with strong encouragement to help you explore possibilities.";
+            }
+            break;
+            
+        case 'professional':
+            if (contextParams.authority > 70 && contextParams.efficiency > 70) {
+                description = "Your AI delivers expert recommendations with focused, actionable insights.";
+            } else if (contextParams.challenge > 70 && contextParams.formality > 70) {
+                description = "Your AI provides structured analysis while actively questioning assumptions.";
+            }
+            break;
+            
+        case 'mixed':
+            if (contextParams.adaptability > 70 && contextParams.balance > 70) {
+                description = "Your AI seamlessly transitions between personal warmth and professional expertise as needed.";
+            } else if (contextParams.directness > 70 && contextParams.confidence > 70) {
+                description = "Your AI communicates with clear confidence and straightforward honesty across all contexts.";
+            }
+            break;
+    }
+    
+    return description;
 }
 
 // Typing indicator functions

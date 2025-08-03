@@ -162,94 +162,73 @@
     </div>
 
 
-    <!-- Anti-Sycophancy Control Panel -->
+    <!-- AI Personality Settings Panel -->
     <aside class="control-panel" id="controlPanel">
         
         <!-- Panel header -->
         <div class="panel-header">
-            <h2 class="panel-title">Anti-Sycophancy Engine</h2>
-            <p class="panel-subtitle">Adjust AI personality parameters in real-time to get authentic, challenging responses</p>
+            <h2 class="panel-title">AI Personality Settings</h2>
+            <p class="panel-subtitle">Customize how your AI communicates and responds to create the perfect conversation experience</p>
         </div>
 
         <!-- Controls container -->
         <div class="controls-container">
             
-            <!-- Engine status display -->
-            <div class="engine-status">
-                <div class="engine-status-header">
-                    <div class="engine-icon"></div>
-                    <div class="engine-title">Engine Active</div>
-                </div>
-                <div class="engine-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Disagreements:</span>
-                        <span class="stat-value" id="disagreementCount">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Pushbacks:</span>
-                        <span class="stat-value" id="pushbackCount">0</span>
+            <!-- Active Profile Summary -->
+            <div class="profile-summary">
+                <div class="profile-summary-header">
+                    <div class="profile-icon">🤖</div>
+                    <div class="profile-info">
+                        <div class="profile-title">Current Profile</div>
+                        <div class="profile-context" id="currentContext">Mixed Context</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Directness Parameter -->
-            <div class="parameter-group">
-                <div class="parameter-label">
-                    <span class="parameter-name">Directness</span>
-                    <span class="parameter-value" id="directnessValue">75</span>
-                </div>
-                <div class="parameter-description">
-                    How blunt vs. diplomatic responses are
-                </div>
-                <div class="slider-container">
-                    <div class="slider-track" id="directnessTrack" style="width: 75%"></div>
-                    <input type="range" class="slider" id="directnessSlider" min="0" max="100" value="75">
+                <div class="profile-traits">
+                    <div class="trait-display" id="activeTraits">
+                        <span class="trait-badge">Balanced</span>
+                        <span class="trait-badge">Thoughtful</span>
+                        <span class="trait-badge">Adaptable</span>
+                    </div>
+                    <div class="trait-description" id="profileDescription">
+                        Your AI adapts its communication style based on context while maintaining consistency.
+                    </div>
                 </div>
             </div>
 
-            <!-- Confidence Parameter -->
-            <div class="parameter-group">
-                <div class="parameter-label">
-                    <span class="parameter-name">Confidence</span>
-                    <span class="parameter-value" id="confidenceValue">60</span>
+            <!-- Context Selection -->
+            <div class="context-selector-group">
+                <div class="context-selector-label">
+                    <span class="context-selector-title">AI Context</span>
+                    <div class="context-selector-description">Choose how you plan to use Zero</div>
                 </div>
-                <div class="parameter-description">
-                    How certain the AI sounds (higher = more accuracy warnings)
-                </div>
-                <div class="slider-container">
-                    <div class="slider-track" id="confidenceTrack" style="width: 60%"></div>
-                    <input type="range" class="slider" id="confidenceSlider" min="0" max="100" value="60">
+                <div class="context-selector-buttons">
+                    <div class="tooltip">
+                        <button class="context-btn active" data-context="mixed" id="mixedContextBtn">
+                            <span class="context-btn-icon">🔄</span>
+                            <span class="context-btn-text">Mixed</span>
+                        </button>
+                        <div class="tooltip-content">Balances personal warmth with professional expertise. Great for everyday conversations that may switch between casual and work topics.</div>
+                    </div>
+                    <div class="tooltip">
+                        <button class="context-btn" data-context="personal" id="personalContextBtn">
+                            <span class="context-btn-icon">💬</span>
+                            <span class="context-btn-text">Personal</span>
+                        </button>
+                        <div class="tooltip-content">Optimized for personal conversations, creative projects, emotional support, and casual discussions with friends and family.</div>
+                    </div>
+                    <div class="tooltip">
+                        <button class="context-btn" data-context="professional" id="professionalContextBtn">
+                            <span class="context-btn-icon">💼</span>
+                            <span class="context-btn-text">Professional</span>
+                        </button>
+                        <div class="tooltip-content">Designed for business communications, expert consultations, project management, and formal professional interactions.</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Disagreement Level Parameter -->
-            <div class="parameter-group">
-                <div class="parameter-label">
-                    <span class="parameter-name">Disagreement Level</span>
-                    <span class="parameter-value" id="disagreementValue">40</span>
-                </div>
-                <div class="parameter-description">
-                    How often AI pushes back on your opinions
-                </div>
-                <div class="slider-container">
-                    <div class="slider-track" id="disagreementTrack" style="width: 40%"></div>
-                    <input type="range" class="slider" id="disagreementSlider" min="0" max="100" value="40">
-                </div>
-            </div>
-
-            <!-- Formality Parameter -->
-            <div class="parameter-group">
-                <div class="parameter-label">
-                    <span class="parameter-name">Formality</span>
-                    <span class="parameter-value" id="formalityValue">70</span>
-                </div>
-                <div class="parameter-description">
-                    Professional vs. casual tone
-                </div>
-                <div class="slider-container">
-                    <div class="slider-track" id="formalityTrack" style="width: 70%"></div>
-                    <input type="range" class="slider" id="formalitySlider" min="0" max="100" value="70">
-                </div>
+            <!-- Dynamic Parameter Groups Container -->
+            <div id="dynamicParametersContainer">
+                <!-- Parameters will be dynamically generated based on context -->
             </div>
 
             <!-- Apply Changes Button -->
