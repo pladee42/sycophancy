@@ -460,8 +460,15 @@ function getContextAwarePersonalityBadge(context, contextParams) {
 }
 
 function updateCountersDisplay() {
-    document.getElementById('disagreementCount').textContent = disagreementCount;
-    document.getElementById('pushbackCount').textContent = pushbackCount;
+    const disagreementElement = document.getElementById('disagreementCount');
+    if (disagreementElement) {
+        disagreementElement.textContent = disagreementCount;
+    }
+    
+    const pushbackElement = document.getElementById('pushbackCount');
+    if (pushbackElement) {
+        pushbackElement.textContent = pushbackCount;
+    }
 }
 
 // Initialize chat system
@@ -1004,6 +1011,32 @@ async function generateAIResponse(userMessage) {
             }
         }
         
+        // Prepare request payload
+        const requestPayload = {
+            model: selectedModel,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                ...messageHistory.map(msg => ({
+                    role: msg.sender === 'user' ? 'user' : 'assistant',
+                    content: msg.content
+                })),
+                { role: 'user', content: userMessage }
+            ],
+            temperature: config.temperature || 0.7,
+            max_tokens: config.maxTokens || 4096
+        };
+
+        // Log request details if debug is enabled
+        if (config.debug) {
+            console.log('=== OPENROUTER API REQUEST ===');
+            console.log('Endpoint:', config.apiEndpoint);
+            console.log('Model:', selectedModel);
+            console.log('Messages count:', requestPayload.messages.length);
+            console.log('Temperature:', requestPayload.temperature);
+            console.log('Max tokens:', requestPayload.max_tokens);
+            console.log('=============================');
+        }
+
         // Call OpenRouter API
         const response = await fetch(config.apiEndpoint, {
             method: 'POST',
@@ -1013,26 +1046,29 @@ async function generateAIResponse(userMessage) {
                 'HTTP-Referer': window.location.href,
                 'X-Title': 'Zero AI'
             },
-            body: JSON.stringify({
-                model: selectedModel,
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    ...messageHistory.map(msg => ({
-                        role: msg.sender === 'user' ? 'user' : 'assistant',
-                        content: msg.content
-                    })),
-                    { role: 'user', content: userMessage }
-                ],
-                temperature: config.temperature || 0.7,
-                max_tokens: config.maxTokens || 4096
-            })
+            body: JSON.stringify(requestPayload)
         });
         
         if (!response.ok) {
-            throw new Error(`API request failed: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            console.error('OpenRouter API Error Details:', {
+                status: response.status,
+                statusText: response.statusText,
+                url: config.apiEndpoint,
+                model: selectedModel,
+                error: errorData
+            });
+            throw new Error(`API Error ${response.status}: ${errorData.error?.message || response.statusText}`);
         }
         
         const data = await response.json();
+        
+        // Check if response has expected structure
+        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+            console.error('Unexpected API response structure:', data);
+            throw new Error('Invalid response structure from API');
+        }
+        
         let aiResponse = data.choices[0].message.content;
         
         // Apply anti-sycophancy engine logic
@@ -1041,13 +1077,19 @@ async function generateAIResponse(userMessage) {
             if (context.preferredChallengeType === 'devils_advocate' || 
                 context.preferredChallengeType === 'perspective_shift') {
                 disagreementCount++;
-                document.getElementById('disagreementCount').textContent = disagreementCount;
+                const disagreementElement = document.getElementById('disagreementCount');
+                if (disagreementElement) {
+                    disagreementElement.textContent = disagreementCount;
+                }
             }
             
             if (context.preferredChallengeType === 'socratic' || 
                 context.preferredChallengeType === 'evidence_challenge') {
                 pushbackCount++;
-                document.getElementById('pushbackCount').textContent = pushbackCount;
+                const pushbackElement = document.getElementById('pushbackCount');
+                if (pushbackElement) {
+                    pushbackElement.textContent = pushbackCount;
+                }
             }
         }
         

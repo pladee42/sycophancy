@@ -1017,7 +1017,7 @@ class AntiSycophancyEngine {
 
     shouldTriggerChallenge(context) {
         // Base probability from disagreement calculation
-        const targetRate = this.calculateTargetDisagreementRate({disagreement: 50}, context);
+        const targetRate = this.calculateContextualDisagreementRate({disagreement: 50}, context, 'mixed');
         const randomChance = Math.random() * 100;
         
         // Increase chance based on context
