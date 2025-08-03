@@ -79,30 +79,6 @@ class OnboardingManager {
                     ],
                     parameter: 'warmth'
                 },
-                {
-                    id: 5,
-                    title: "Personal Growth",
-                    scenario: "You're learning a new hobby (like guitar or painting) and feeling frustrated with your slow progress.",
-                    options: [
-                        { value: 'A', text: "Embrace the creative journey: 'Every artist starts somewhere. What matters is that you're expressing yourself and enjoying the process.'" },
-                        { value: 'B', text: "Encourage persistence: 'Progress isn't always linear. You're building skills even when it doesn't feel like it.'" },
-                        { value: 'C', text: "Suggest practical steps: 'Learning takes time. Maybe try breaking it into smaller goals or finding a practice routine that works for you.'" },
-                        { value: 'D', text: "Set realistic expectations: 'Most people take months or years to get comfortable with new skills. Be patient with yourself.'" }
-                    ],
-                    parameter: 'creativity'
-                },
-                {
-                    id: 6,
-                    title: "Relationship Dynamics",
-                    scenario: "You and your partner have different opinions about how to spend your weekend. They want to go out, you want to stay in.",
-                    options: [
-                        { value: 'A', text: "Prioritize connection: 'What's most important to both of us is spending quality time together. Let's find something we both enjoy.'" },
-                        { value: 'B', text: "Seek compromise warmly: 'How about we find a middle ground? Maybe start cozy at home then go out for a bit?'" },
-                        { value: 'C', text: "Discuss preferences openly: 'I was hoping for a quiet evening, but I want to understand what's drawing you to go out.'" },
-                        { value: 'D', text: "Take turns fairly: 'We stayed in last weekend, so it's probably your turn to choose. Let's go out.'" }
-                    ],
-                    parameter: 'empathy'
-                }
             ],
             professional: [
                 {
@@ -153,30 +129,6 @@ class OnboardingManager {
                     ],
                     parameter: 'efficiency'
                 },
-                {
-                    id: 5,
-                    title: "Expert Consultation",
-                    scenario: "A colleague asks for your expertise on a complex technical problem outside your primary area of knowledge.",
-                    options: [
-                        { value: 'A', text: "Confident expertise: 'Based on my experience with similar challenges, here's my recommendation and the rationale behind it.'" },
-                        { value: 'B', text: "Qualified guidance: 'I can share insights from related projects I've worked on, though you may want additional expert input.'" },
-                        { value: 'C', text: "Collaborative exploration: 'Let's think through this together. I can share relevant experience while we work toward a solution.'" },
-                        { value: 'D', text: "Honest limitations: 'This isn't my specialty, but I can share what I know and help you find the right expert.'" }
-                    ],
-                    parameter: 'authority'
-                },
-                {
-                    id: 6,
-                    title: "Conflict Resolution",
-                    scenario: "Two key team members have a fundamental disagreement about project direction that's blocking progress.",
-                    options: [
-                        { value: 'A', text: "Direct intervention: 'I need you both to present your cases clearly, then I'll make the decision so we can move forward.'" },
-                        { value: 'B', text: "Structured mediation: 'Let's examine both approaches against our project goals and constraints to find the best path.'" },
-                        { value: 'C', text: "Facilitated dialogue: 'I want to understand both perspectives. Can each of you explain your reasoning and concerns?'" },
-                        { value: 'D', text: "Consensus seeking: 'Let's find common ground and see if we can combine the best elements of both approaches.'" }
-                    ],
-                    parameter: 'challenge'
-                }
             ],
             mixed: [
                 {
@@ -227,30 +179,6 @@ class OnboardingManager {
                     ],
                     parameter: 'adaptability'
                 },
-                {
-                    id: 5,
-                    title: "Adaptability in Different Situations",
-                    scenario: "Your day includes comforting a stressed friend, leading a strategic planning meeting, and helping your neighbor with a practical problem.",
-                    options: [
-                        { value: 'A', text: "Chameleon-like adaptation: 'I fully embody what each situation needs—empathetic listener, strategic leader, helpful neighbor.'" },
-                        { value: 'B', text: "Flexible consistency: 'I adapt my approach while staying true to my core values and personality across all interactions.'" },
-                        { value: 'C', text: "Moderate adjustment: 'I make some changes based on what's needed, but people generally get a consistent version of me.'" },
-                        { value: 'D', text: "Authentic presence: 'I bring my genuine self to every situation, trusting that authenticity serves better than adaptation.'" }
-                    ],
-                    parameter: 'adaptability'
-                },
-                {
-                    id: 6,
-                    title: "Learning Preferences",
-                    scenario: "You're simultaneously learning a new software for work and picking up a hobby like cooking. Both require developing new skills.",
-                    options: [
-                        { value: 'A', text: "Definitive guidance: 'I want clear, authoritative instruction for both—step-by-step processes and expert recommendations.'" },
-                        { value: 'B', text: "Contextual learning: 'I prefer structured guidance for work skills and more exploratory, creative learning for personal interests.'" },
-                        { value: 'C', text: "Balanced instruction: 'I like a mix of clear direction and room to experiment, regardless of whether it's for work or personal growth.'" },
-                        { value: 'D', text: "Exploratory approach: 'I prefer to learn through experimentation and discovery in both professional and personal contexts.'" }
-                    ],
-                    parameter: 'directness'
-                }
             ]
         };
 
@@ -559,17 +487,17 @@ class OnboardingManager {
     updateProgress() {
         if (!this.contextSelected) {
             // On context selection
-            const progress = (1 / 8) * 100; // 1 out of 8 total steps (1 context + 6 questions + 1 results)
+            const progress = (1 / 5) * 100; // 1 out of 5 total steps (1 context + 4 questions)
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('currentQuestion').textContent = 1;
-            document.getElementById('totalQuestions').textContent = 7;
+            document.getElementById('totalQuestions').textContent = 5;
         } else if (this.selectedContext) {
             // In context-specific questions
             const contextQuestions = this.questionSets[this.selectedContext];
-            const progress = ((this.currentQuestionIndex + 2) / 7) * 100; // +2 because context selection is step 1
+            const progress = ((this.currentQuestionIndex + 2) / 5) * 100; // +2 because context selection is step 1
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('currentQuestion').textContent = this.currentQuestionIndex + 2;
-            document.getElementById('totalQuestions').textContent = 7;
+            document.getElementById('totalQuestions').textContent = 5;
         }
     }
 
