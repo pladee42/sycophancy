@@ -474,9 +474,15 @@ body {
 .context-selector-group {
     margin-bottom: 24px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
+    background: transparent;
     border: 1px solid #333;
     border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.context-selector-group:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #555;
 }
 
 .context-selector-label {
@@ -718,11 +724,17 @@ body {
 
 /* Active Profile Summary */
 .profile-summary {
-    background: linear-gradient(135deg, rgba(187, 134, 252, 0.08), rgba(187, 134, 252, 0.04));
-    border: 1px solid rgba(187, 134, 252, 0.2);
+    background: transparent;
+    border: 1px solid #333;
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 20px;
+    transition: all 0.2s;
+}
+
+.profile-summary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #555;
 }
 
 .profile-summary-header {
