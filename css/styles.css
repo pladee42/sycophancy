@@ -106,10 +106,10 @@ body {
 .new-chat-btn {
     width: calc(100% - 32px);
     padding: 12px 16px;
-    background: #284B63;
-    border: none;
+    background: #121212;
+    border: 1px solid #FFFFFF;
     border-radius: 8px;
-    color: #000000;
+    color: #FFFFFF;
     font-family: 'ClashGrotesk-Medium';
     font-size: 14px;
     font-weight: 500;
@@ -125,9 +125,9 @@ body {
 }
 
 .new-chat-btn:hover {
-    background: #284B63;
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .chat-history {
@@ -167,8 +167,9 @@ body {
 }
 
 .chat-item.active {
-    background: #284B63;
-    color: #000000;
+    background: #121212;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
 }
 
 .no-chats {
@@ -296,8 +297,9 @@ body {
 }
 
 .message.user .message-bubble {
-    background: #284B63;
-    color: #000000;
+    background: #121212;
+    border: 1px solid #D9D9D9;
+    color: #FFFFFF;
     border-bottom-right-radius: 6px;
     font-family: 'ClashGrotesk-Regular';
 }
