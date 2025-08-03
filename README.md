@@ -84,4 +84,10 @@ Add new models to `config.public.json`:
 }
 ```
 
+## 📚 References
+
+This project is inspired by research on AI sycophancy and the importance of authentic AI interactions:
+
+- Cheng, M., Yu, S., Lee, C., Khadpe, P., Ibrahim, L., & Jurafsky, D. (2024). Social Sycophancy: A Broader Understanding of LLM Sycophancy. *arXiv preprint arXiv:2505.13995*. https://arxiv.org/html/2505.13995v1
+
 ---
