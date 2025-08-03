@@ -11,22 +11,19 @@ class OnboardingManager {
                     value: 'personal', 
                     title: 'Personal',
                     text: "Personal conversations, creative projects, and daily life assistance",
-                    description: "Focus on empathy, creativity, and supportive interactions",
-                    icon: "💬"
+                    description: "Focus on empathy, creativity, and supportive interactions"
                 },
                 { 
                     value: 'professional', 
                     title: 'Professional',
                     text: "Work tasks, business decisions, and professional development",
-                    description: "Focus on efficiency, expertise, and structured communication",
-                    icon: "💼"
+                    description: "Focus on efficiency, expertise, and structured communication"
                 },
                 { 
                     value: 'mixed', 
                     title: 'Mixed',
                     text: "Both personal and professional contexts",
-                    description: "Adaptive communication style that adjusts to context",
-                    icon: "🔄"
+                    description: "Adaptive communication style that adjusts to context"
                 }
             ]
         };
@@ -387,7 +384,6 @@ class OnboardingManager {
             
             optionElement.innerHTML = `
                 <div class="context-card" data-value="${option.value}">
-                    <div class="context-icon">${option.icon}</div>
                     <div class="context-content">
                         <h3 class="context-title">${option.title}</h3>
                         <p class="context-text">${option.text}</p>
@@ -459,7 +455,6 @@ class OnboardingManager {
         const contextInfo = this.getContextInfo(this.selectedContext);
         const contextIndicator = `
             <div class="context-indicator ${this.selectedContext}-context">
-                <span class="context-indicator-icon">${contextInfo.icon}</span>
                 <span>${contextInfo.label} Context</span>
             </div>
         `;
@@ -1400,11 +1395,11 @@ class OnboardingManager {
     // Helper function to get context information
     getContextInfo(context) {
         const contextMap = {
-            'personal': { icon: '💬', label: 'Personal' },
-            'professional': { icon: '💼', label: 'Professional' },
-            'mixed': { icon: '🔄', label: 'Mixed' }
+            'personal': { label: 'Personal' },
+            'professional': { label: 'Professional' },
+            'mixed': { label: 'Mixed' }
         };
-        return contextMap[context] || { icon: '🔄', label: 'Mixed' };
+        return contextMap[context] || { label: 'Mixed' };
     }
 
     // Add context indicator to results screen

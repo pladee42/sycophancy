@@ -1332,7 +1332,6 @@ body {
 .feature-item {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
     padding: 20px;
     background: transparent;
     border: 1px solid #333;
@@ -1345,17 +1344,6 @@ body {
     border-color: #555;
 }
 
-.feature-icon {
-    font-size: 24px;
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(187, 134, 252, 0.1);
-    border-radius: 8px;
-}
 
 .feature-text h4 {
     font-family: 'ClashGrotesk-Medium';
@@ -1590,7 +1578,6 @@ body {
     border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    gap: 20px;
     min-height: 120px;
 }
 
@@ -1608,28 +1595,7 @@ body {
     box-shadow: 0 8px 24px rgba(187, 134, 252, 0.25);
 }
 
-.context-icon {
-    flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(187, 134, 252, 0.1);
-    border-radius: 16px;
-    font-size: 28px;
-    transition: all 0.3s ease;
-}
 
-.context-card:hover .context-icon {
-    background: rgba(187, 134, 252, 0.2);
-    transform: scale(1.05);
-}
-
-.context-card.selected .context-icon {
-    background: rgba(187, 134, 252, 0.25);
-    transform: scale(1.05);
-}
 
 .context-content {
     flex: 1;
@@ -2239,11 +2205,6 @@ body {
         padding: 16px;
     }
     
-    .feature-icon {
-        font-size: 20px;
-        width: 36px;
-        height: 36px;
-    }
     
     /* Mobile questionnaire adjustments */
     .question-title {
@@ -2331,15 +2292,8 @@ body {
         text-align: center;
         min-height: auto;
         padding: 20px;
-        gap: 16px;
     }
 
-    .context-icon {
-        width: 56px;
-        height: 56px;
-        font-size: 24px;
-        margin: 0 auto;
-    }
 
     .context-content {
         gap: 6px;
@@ -2435,14 +2389,8 @@ body {
 
     .context-card {
         padding: 16px;
-        gap: 12px;
     }
 
-    .context-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 20px;
-    }
 
     .context-title {
         font-size: 16px;
@@ -2524,9 +2472,6 @@ body {
     animation: contextCardPulse 0.6s ease-out;
 }
 
-.context-card:hover .context-icon {
-    animation: contextIconBounce 0.8s ease-in-out;
-}
 
 .context-preview {
     animation: parameterPreviewSlide 0.4s ease-out 0.2s both;
