@@ -419,7 +419,6 @@ class OnboardingManager {
     selectContext(contextValue) {
         // Store selected context
         this.selectedContext = contextValue;
-        this.contextSelected = true;
         
         // Update UI - remove previous selections and add selected state
         const cards = document.querySelectorAll('.context-card');
