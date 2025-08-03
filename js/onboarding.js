@@ -804,18 +804,67 @@ class OnboardingManager {
     displayParameterResults(parameters) {
         const context = parameters._context || this.selectedContext;
         const parameterNames = this.parameterDefinitions[context];
+        const resultsContainer = document.getElementById('dynamicParameterResults');
         
+        // Clear existing results
+        resultsContainer.innerHTML = '';
+        
+        // Generate dynamic parameter results
         parameterNames.forEach((param, index) => {
             const value = parameters[param];
             const description = this.getParameterDescription(param, value, context);
+            const displayName = this.getParameterDisplayName(param, context);
             
-            // Update display with animation delay
+            // Create parameter result element
+            const parameterResult = document.createElement('div');
+            parameterResult.className = 'parameter-result';
+            parameterResult.id = `${param}Result`;
+            
+            parameterResult.innerHTML = `
+                <div class="parameter-info">
+                    <span class="parameter-name">${displayName}</span>
+                    <span class="parameter-value" id="${param}ResultValue">${value}</span>
+                </div>
+                <div class="parameter-bar">
+                    <div class="parameter-fill" id="${param}ResultFill" style="width: 0%"></div>
+                </div>
+                <div class="parameter-description" id="${param}ResultDesc">${description}</div>
+            `;
+            
+            resultsContainer.appendChild(parameterResult);
+            
+            // Animate parameter display with delay
             setTimeout(() => {
-                document.getElementById(`${param}ResultValue`).textContent = value;
-                document.getElementById(`${param}ResultFill`).style.width = `${value}%`;
-                document.getElementById(`${param}ResultDesc`).textContent = description;
+                const fillElement = document.getElementById(`${param}ResultFill`);
+                if (fillElement) {
+                    fillElement.style.width = `${value}%`;
+                }
             }, index * 200);
         });
+    }
+    
+    getParameterDisplayName(param, context) {
+        const displayNames = {
+            // Personal context
+            empathy: 'Empathy',
+            supportiveness: 'Supportiveness', 
+            creativity: 'Creativity',
+            warmth: 'Warmth',
+            
+            // Professional context
+            authority: 'Authority',
+            efficiency: 'Efficiency',
+            formality: 'Formality',
+            challenge: 'Challenge',
+            
+            // Mixed context
+            adaptability: 'Adaptability',
+            balance: 'Balance',
+            directness: 'Directness',
+            confidence: 'Confidence'
+        };
+        
+        return displayNames[param] || this.capitalizeParameter(param);
     }
 
     getParameterDescription(parameter, value, context = 'mixed') {
@@ -1079,30 +1128,38 @@ class OnboardingManager {
     }
 
     animateParameterChanges(newParameters) {
-        const parameterNames = ['directness', 'confidence', 'disagreement', 'formality'];
+        // Get the context from parameters
+        const context = newParameters._context || 'mixed';
         
+        // Get the correct parameter names for this context
+        const parameterNames = this.parameterDefinitions[context] || [];
+        
+        // Animate only the parameters that exist for this context
         parameterNames.forEach((param, index) => {
-            setTimeout(() => {
-                const slider = document.getElementById(`${param}Slider`);
-                const valueDisplay = document.getElementById(`${param}Value`);
-                const track = document.getElementById(`${param}Track`);
-                
-                if (slider && valueDisplay && track) {
-                    // Animate the slider change
-                    const newValue = newParameters[param];
-                    slider.value = newValue;
-                    valueDisplay.textContent = newValue;
-                    track.style.width = newValue + '%';
+            // Only animate if the parameter exists in newParameters
+            if (newParameters[param] !== undefined) {
+                setTimeout(() => {
+                    const slider = document.getElementById(`${param}Slider`);
+                    const valueDisplay = document.getElementById(`${param}Value`);
+                    const track = document.getElementById(`${param}Track`);
                     
-                    // Add a brief highlight animation
-                    track.style.transition = 'width 0.8s ease, background 0.3s ease';
-                    track.style.background = 'linear-gradient(90deg, #03DAC6, #00BFA5)';
-                    
-                    setTimeout(() => {
-                        track.style.background = 'linear-gradient(90deg, #BB86FC, #9965F4)';
-                    }, 500);
-                }
-            }, index * 150);
+                    if (slider && valueDisplay && track) {
+                        // Animate the slider change
+                        const newValue = newParameters[param];
+                        slider.value = newValue;
+                        valueDisplay.textContent = newValue;
+                        track.style.width = newValue + '%';
+                        
+                        // Add a brief highlight animation
+                        track.style.transition = 'width 0.8s ease, background 0.3s ease';
+                        track.style.background = 'linear-gradient(90deg, #03DAC6, #00BFA5)';
+                        
+                        setTimeout(() => {
+                            track.style.background = 'linear-gradient(90deg, #BB86FC, #9965F4)';
+                        }, 500);
+                    }
+                }, index * 150);
+            }
         });
         
         // Apply the changes to the current parameters after animation

@@ -508,7 +508,7 @@ function onParametersUpdateFromOnboarding(newParameters) {
     updatePersonalityDisplay();
     
     // Update UI sliders to reflect new parameters
-    updateParameterSliders();
+    chatManager.updateParameterSliders();
 }
 
 
