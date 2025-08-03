@@ -572,18 +572,18 @@ body {
 }
 
 .parameter-name {
-    font-family: 'ClashGrotesk-Semibold';
-    font-weight: 600;
+    font-family: 'ClashGrotesk-Regular';
+    font-weight: 400;
     color: #FFFFFF;
     font-size: 14px;
 }
 
 .parameter-value {
-    font-family: 'ClashGrotesk-Semibold';
-    font-size: 12px;
-    color: #284B63;
-    font-weight: 600;
-    background: rgba(187, 134, 252, 0.15);
+    font-family: 'ClashGrotesk-Regular';
+    font-size: 13px;
+    color: #D9D9D9;
+    font-weight: 400;
+    background: transparent;
     padding: 2px 6px;
     border-radius: 4px;
     margin-left: auto;
@@ -631,16 +631,16 @@ body {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #284B63;
+    background: #000000;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(187, 134, 252, 0.4);
+    box-shadow: none;
     transition: all 0.2s;
-    border: 2px solid #1E1E1E;
+    border: 2px solid #FFFFFF;
 }
 
 .slider::-webkit-slider-thumb:hover {
     transform: scale(1.15);
-    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.6);
+    box-shadow: none;
 }
 
 .slider::-webkit-slider-thumb:active {
@@ -658,15 +658,15 @@ body {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #284B63;
+    background: #000000;
     cursor: pointer;
-    border: 2px solid #1E1E1E;
-    box-shadow: 0 2px 8px rgba(187, 134, 252, 0.4);
+    border: 2px solid #FFFFFF;
+    box-shadow: none;
 }
 
 .slider::-moz-range-thumb:hover {
     transform: scale(1.15);
-    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.6);
+    box-shadow: none;
 }
 
 /* Slider track progress */
@@ -675,7 +675,7 @@ body {
     top: 50%;
     left: 0;
     height: 6px;
-    background: linear-gradient(90deg, #284B63, #284B63);
+    background: linear-gradient(90deg, #D9D9D9, #D9D9D9);
     border-radius: 3px;
     pointer-events: none;
     transition: width 0.3s ease;
@@ -688,8 +688,8 @@ body {
     width: 100%;
     padding: 14px;
     background: #284B63;
-    color: #000000;
-    border: none;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     border-radius: 8px;
     font-family: 'ClashGrotesk-Semibold';
     font-size: 14px;
@@ -701,9 +701,7 @@ body {
 }
 
 .apply-button:hover {
-    background: #284B63;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+    background: transparent;
 }
 
 .apply-button:active {
