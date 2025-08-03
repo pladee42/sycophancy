@@ -1155,7 +1155,7 @@ class OnboardingManager {
                         track.style.background = 'linear-gradient(90deg, #03DAC6, #00BFA5)';
                         
                         setTimeout(() => {
-                            track.style.background = 'linear-gradient(90deg, #BB86FC, #9965F4)';
+                            track.style.background = 'linear-gradient(90deg, #284B63, #284B63)';
                         }, 500);
                     }
                 }, index * 150);

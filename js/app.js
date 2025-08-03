@@ -1284,7 +1284,7 @@ function applyColorPalette(colorPalette) {
     const root = document.documentElement;
     
     // Set CSS custom properties for dynamic color theming
-    root.style.setProperty('--primary-color', colorPalette.primary || '#BB86FC');
+    root.style.setProperty('--primary-color', colorPalette.primary || '#284B63');
     root.style.setProperty('--primary-variant-color', colorPalette.primaryVariant || '#3700B3');
     root.style.setProperty('--secondary-color', colorPalette.secondary || '#03DAC6');
     root.style.setProperty('--background-color', colorPalette.background || '#121212');
