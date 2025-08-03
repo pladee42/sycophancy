@@ -311,7 +311,12 @@ function renderChatHistory() {
         const isActive = chat.id === chatManager.currentChatId ? 'active' : '';
         html += `
             <div class="chat-item ${isActive}" data-chat-id="${chat.id}">
-                ${chat.title}
+                <span class="chat-title">${chat.title}</span>
+                <button class="chat-close-btn" data-chat-id="${chat.id}" title="Delete chat">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
             </div>
         `;
     });
@@ -326,7 +331,13 @@ function renderChatHistory() {
 function attachChatItemListeners() {
     const chatItems = document.querySelectorAll('.chat-item');
     chatItems.forEach(item => {
-        item.addEventListener('click', function() {
+        // Add click listener for chat selection (excluding close button clicks)
+        item.addEventListener('click', function(e) {
+            // Don't trigger chat selection if close button was clicked
+            if (e.target.closest('.chat-close-btn')) {
+                return;
+            }
+            
             const chatId = this.getAttribute('data-chat-id');
             if (chatId && chatManager.loadChat(chatId)) {
                 // Update UI
@@ -338,6 +349,43 @@ function attachChatItemListeners() {
                 
                 // Update counters display
                 updateCountersDisplay();
+            }
+        });
+    });
+    
+    // Add click listeners for close buttons
+    const closeButtons = document.querySelectorAll('.chat-close-btn');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const chatId = this.getAttribute('data-chat-id');
+            if (chatId && confirm('Are you sure you want to delete this chat?')) {
+                const wasCurrentChat = chatManager.currentChatId === chatId;
+                
+                if (chatManager.deleteChat(chatId)) {
+                    // If we deleted the current chat, clear the messages and create a new one
+                    if (wasCurrentChat) {
+                        messageHistory = [];
+                        renderChatMessages();
+                        
+                        // Create a new chat if no other chats exist
+                        const remainingChats = chatManager.getAllChats();
+                        if (remainingChats.length === 0) {
+                            const newChatId = chatManager.createNewChat();
+                        } else {
+                            // Load the most recent remaining chat
+                            const mostRecent = remainingChats[0];
+                            chatManager.loadChat(mostRecent.id);
+                            renderChatMessages();
+                            updateCountersDisplay();
+                        }
+                    }
+                    
+                    // Re-render chat history to reflect the deletion
+                    renderChatHistory();
+                }
             }
         });
     });
