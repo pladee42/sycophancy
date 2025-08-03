@@ -1176,34 +1176,19 @@ function updatePersonalityDisplay() {
 
 // Update the Active Profile Summary
 function updateProfileSummary() {
-    const context = currentParameters._context || 'mixed';
-    const contextParams = getCurrentContextParameters();
+    // Check if onboarding was completed and get the selected context
+    const onboardStatus = onboardingManager ? onboardingManager.getOnboardCompletionStatus() : null;
+    const context = onboardStatus && onboardStatus.selectedContext ? onboardStatus.selectedContext : (currentParameters._context || 'mixed');
     
     // Update context display
     const contextDisplay = document.getElementById('currentContext');
     if (contextDisplay) {
         const contextLabels = {
-            'personal': 'Personal Context',
-            'professional': 'Professional Context', 
-            'mixed': 'Mixed Context'
+            'personal': 'Personal Use',
+            'professional': 'Professional Use', 
+            'mixed': 'Mixed Use'
         };
-        contextDisplay.textContent = contextLabels[context] || 'Mixed Context';
-    }
-    
-    // Generate personality traits
-    const traits = generateCurrentTraits(context, contextParams);
-    const traitsDisplay = document.getElementById('activeTraits');
-    if (traitsDisplay) {
-        traitsDisplay.innerHTML = traits.map(trait => 
-            `<span class="trait-badge">${trait}</span>`
-        ).join('');
-    }
-    
-    // Generate description
-    const description = generateProfileDescription(context, contextParams);
-    const descriptionDisplay = document.getElementById('profileDescription');
-    if (descriptionDisplay) {
-        descriptionDisplay.textContent = description;
+        contextDisplay.textContent = contextLabels[context] || 'Mixed Use';
     }
 }
 

@@ -743,11 +743,6 @@ body {
     margin-bottom: 12px;
 }
 
-.profile-icon {
-    font-size: 18px;
-    margin-right: 12px;
-    filter: drop-shadow(0 2px 4px rgba(187, 134, 252, 0.3));
-}
 
 .profile-info {
     flex: 1;
@@ -765,44 +760,13 @@ body {
     font-family: 'ClashGrotesk-Medium';
     font-size: 11px;
     font-weight: 500;
-    color: #284B63;
+    color: #D9D9D9;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.profile-traits {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 12px;
-}
 
-.trait-display {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 8px;
-}
 
-.trait-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    background: rgba(187, 134, 252, 0.15);
-    color: #284B63;
-    font-family: 'ClashGrotesk-Medium';
-    font-size: 10px;
-    font-weight: 500;
-    border-radius: 12px;
-    border: 1px solid rgba(187, 134, 252, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.trait-description {
-    font-family: 'ClashGrotesk-Regular';
-    font-size: 12px;
-    color: #ccc;
-    line-height: 1.4;
-    font-style: italic;
-}
 
 /* Responsive design */
 @media (max-width: 768px) {

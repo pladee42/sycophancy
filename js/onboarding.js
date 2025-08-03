@@ -1106,6 +1106,9 @@ class OnboardingManager {
             this.onParametersUpdate(calculatedParameters);
         }
         
+        // Update the context display in the control panel
+        this.updateControlPanelContext();
+        
         // Animate the parameter changes
         this.animateParameterChanges(calculatedParameters);
         
@@ -1177,7 +1180,8 @@ class OnboardingManager {
                 completed: true,
                 completedAt: Date.now(),
                 parameters: parameters,
-                questionnaireAnswers: this.questionnaireAnswers
+                questionnaireAnswers: this.questionnaireAnswers,
+                selectedContext: this.selectedContext
             };
             
             localStorage.setItem('zero_onboard_status', JSON.stringify(onboardData));
@@ -1400,6 +1404,21 @@ class OnboardingManager {
             'mixed': { label: 'Mixed' }
         };
         return contextMap[context] || { label: 'Mixed' };
+    }
+
+    // Update control panel context display
+    updateControlPanelContext() {
+        if (this.selectedContext) {
+            const contextDisplay = document.getElementById('currentContext');
+            if (contextDisplay) {
+                const contextLabels = {
+                    'personal': 'Personal Use',
+                    'professional': 'Professional Use', 
+                    'mixed': 'Mixed Use'
+                };
+                contextDisplay.textContent = contextLabels[this.selectedContext] || 'Mixed Use';
+            }
+        }
     }
 
     // Add context indicator to results screen
