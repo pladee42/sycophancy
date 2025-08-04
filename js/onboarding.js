@@ -10,23 +10,17 @@ class OnboardingManager {
                 { 
                     value: 'personal', 
                     title: 'Personal',
-                    text: "Personal conversations, creative projects, and daily life assistance",
-                    description: "Focus on empathy, creativity, and supportive interactions",
-                    icon: "💬"
+                    text: "Personal conversations, creative projects, and daily life assistance"
                 },
                 { 
                     value: 'professional', 
                     title: 'Professional',
-                    text: "Work tasks, business decisions, and professional development",
-                    description: "Focus on efficiency, expertise, and structured communication",
-                    icon: "💼"
+                    text: "Work tasks, business decisions, and professional development"
                 },
                 { 
                     value: 'mixed', 
                     title: 'Mixed',
-                    text: "Both personal and professional contexts",
-                    description: "Adaptive communication style that adjusts to context",
-                    icon: "🔄"
+                    text: "Both personal and professional contexts"
                 }
             ]
         };
@@ -84,44 +78,20 @@ class OnboardingManager {
                 },
                 {
                     id: 5,
-                    title: "Personal Growth",
-                    scenario: "You're learning a new hobby (like guitar or painting) and feeling frustrated with your slow progress.",
+                    title: "Response Detail",
+                    scenario: "A friend asks you for advice on improving their personal finances. They want to know where to start.",
                     options: [
-                        { value: 'A', text: "Embrace the creative journey: 'Every artist starts somewhere. What matters is that you're expressing yourself and enjoying the process.'" },
-                        { value: 'B', text: "Encourage persistence: 'Progress isn't always linear. You're building skills even when it doesn't feel like it.'" },
-                        { value: 'C', text: "Suggest practical steps: 'Learning takes time. Maybe try breaking it into smaller goals or finding a practice routine that works for you.'" },
-                        { value: 'D', text: "Set realistic expectations: 'Most people take months or years to get comfortable with new skills. Be patient with yourself.'" }
+                        { value: 'A', text: "Give comprehensive guidance: Explain budgeting fundamentals, emergency funds, debt strategies, investment basics, and specific tools they can use." },
+                        { value: 'B', text: "Provide structured overview: Cover the main areas (budgeting, debt, savings, investing) with key points for each." },
+                        { value: 'C', text: "Offer focused advice: 'Start with tracking your spending for a month, then create a basic budget. That foundation will guide everything else.'" },
+                        { value: 'D', text: "Give simple direction: 'Track your expenses and create a budget. Everything else builds from there.'" }
                     ],
-                    parameter: 'creativity'
+                    parameter: 'responseLength'
                 },
-                {
-                    id: 6,
-                    title: "Relationship Dynamics",
-                    scenario: "You and your partner have different opinions about how to spend your weekend. They want to go out, you want to stay in.",
-                    options: [
-                        { value: 'A', text: "Prioritize connection: 'What's most important to both of us is spending quality time together. Let's find something we both enjoy.'" },
-                        { value: 'B', text: "Seek compromise warmly: 'How about we find a middle ground? Maybe start cozy at home then go out for a bit?'" },
-                        { value: 'C', text: "Discuss preferences openly: 'I was hoping for a quiet evening, but I want to understand what's drawing you to go out.'" },
-                        { value: 'D', text: "Take turns fairly: 'We stayed in last weekend, so it's probably your turn to choose. Let's go out.'" }
-                    ],
-                    parameter: 'empathy'
-                }
             ],
             professional: [
                 {
                     id: 1,
-                    title: "Meeting Leadership",
-                    scenario: "You're leading a project meeting where the team is struggling to reach consensus on a critical decision with a tight deadline.",
-                    options: [
-                        { value: 'A', text: "Take decisive action: 'Based on the data and our timeline, here's the decision we're going with. Let's move forward.'" },
-                        { value: 'B', text: "Guide toward resolution: 'Let's focus on our core criteria for success and see where we align. I'll make the final call if needed.'" },
-                        { value: 'C', text: "Facilitate collaboration: 'What if we table the contentious points and identify areas where we do agree?'" },
-                        { value: 'D', text: "Seek full consensus: 'I want to make sure everyone's concerns are heard. Let's keep discussing until we find a solution that works for all.'" }
-                    ],
-                    parameter: 'authority'
-                },
-                {
-                    id: 2,
                     title: "Project Feedback",
                     scenario: "A team member has delivered work that doesn't meet the project standards and the client deadline is approaching.",
                     options: [
@@ -133,19 +103,7 @@ class OnboardingManager {
                     parameter: 'challenge'
                 },
                 {
-                    id: 3,
-                    title: "Decision Making",
-                    scenario: "Your team faces a strategic decision: invest in a new technology that could provide competitive advantage but requires significant resources.",
-                    options: [
-                        { value: 'A', text: "Data-driven decision: 'Let me analyze the ROI, implementation costs, and competitive analysis before making this decision.'" },
-                        { value: 'B', text: "Structured evaluation: 'I'll create a decision framework weighing risks, benefits, and strategic alignment.'" },
-                        { value: 'C', text: "Consultative approach: 'I want input from key stakeholders before deciding. Let's gather perspectives from IT, finance, and operations.'" },
-                        { value: 'D', text: "Consensus building: 'This affects multiple departments. Let's ensure everyone has input before we commit to this investment.'" }
-                    ],
-                    parameter: 'authority'
-                },
-                {
-                    id: 4,
+                    id: 2,
                     title: "Team Collaboration",
                     scenario: "Your cross-functional team has different working styles and communication preferences that are causing friction.",
                     options: [
@@ -157,29 +115,29 @@ class OnboardingManager {
                     parameter: 'efficiency'
                 },
                 {
-                    id: 5,
-                    title: "Expert Consultation",
-                    scenario: "A colleague asks for your expertise on a complex technical problem outside your primary area of knowledge.",
+                    id: 3,
+                    title: "Communication Style",
+                    scenario: "When communicating with colleagues about work matters, what approach feels most natural to you?",
                     options: [
-                        { value: 'A', text: "Confident expertise: 'Based on my experience with similar challenges, here's my recommendation and the rationale behind it.'" },
-                        { value: 'B', text: "Qualified guidance: 'I can share insights from related projects I've worked on, though you may want additional expert input.'" },
-                        { value: 'C', text: "Collaborative exploration: 'Let's think through this together. I can share relevant experience while we work toward a solution.'" },
-                        { value: 'D', text: "Honest limitations: 'This isn't my specialty, but I can share what I know and help you find the right expert.'" }
+                        { value: 'A', text: "Highly formal: 'I prefer structured, professional language with proper business terminology and protocol.'" },
+                        { value: 'B', text: "Professional but approachable: 'I use business-appropriate language that's respectful but not overly stiff.'" },
+                        { value: 'C', text: "Conversational professional: 'I balance professional standards with friendly, approachable communication.'" },
+                        { value: 'D', text: "Casual and friendly: 'I prefer relaxed, informal communication even in professional settings.'" }
                     ],
-                    parameter: 'authority'
+                    parameter: 'formality'
                 },
                 {
-                    id: 6,
-                    title: "Conflict Resolution",
-                    scenario: "Two key team members have a fundamental disagreement about project direction that's blocking progress.",
+                    id: 4,
+                    title: "Technical Expertise Level",
+                    scenario: "You're discussing a work challenge with someone who could provide insights. What level of technical depth feels most comfortable to you?",
                     options: [
-                        { value: 'A', text: "Direct intervention: 'I need you both to present your cases clearly, then I'll make the decision so we can move forward.'" },
-                        { value: 'B', text: "Structured mediation: 'Let's examine both approaches against our project goals and constraints to find the best path.'" },
-                        { value: 'C', text: "Facilitated dialogue: 'I want to understand both perspectives. Can each of you explain your reasoning and concerns?'" },
-                        { value: 'D', text: "Consensus seeking: 'Let's find common ground and see if we can combine the best elements of both approaches.'" }
+                        { value: 'A', text: "Advanced level: 'I'm comfortable with highly technical discussions, industry jargon, and complex theoretical concepts.'" },
+                        { value: 'B', text: "Intermediate level: 'I can handle technical discussions but appreciate when complex ideas are explained with some context.'" },
+                        { value: 'C', text: "Intermediate level: 'I prefer moderate technical detail with practical examples to help me understand applications.'" },
+                        { value: 'D', text: "Beginning level: 'I prefer straightforward explanations with minimal jargon and clear, simple examples.'" }
                     ],
-                    parameter: 'challenge'
-                }
+                    parameter: 'levelOfSophistication'
+                },
             ],
             mixed: [
                 {
@@ -208,15 +166,15 @@ class OnboardingManager {
                 },
                 {
                     id: 3,
-                    title: "Problem Solving",
-                    scenario: "You're tackling a complex challenge that affects both your personal goals and professional responsibilities.",
+                    title: "Creative Problem Solving",
+                    scenario: "You're facing a challenge that could benefit from both practical solutions and creative approaches, spanning personal and professional contexts.",
                     options: [
-                        { value: 'A', text: "Comprehensive analysis: 'I systematically analyze all aspects—personal values, professional requirements, and long-term implications—before deciding.'" },
-                        { value: 'B', text: "Integrated approach: 'I look for solutions that honor both my personal priorities and professional obligations.'" },
-                        { value: 'C', text: "Practical balance: 'I weigh personal and professional factors, though one usually takes priority depending on the situation.'" },
-                        { value: 'D', text: "Intuitive decision-making: 'I trust my instincts about what feels right, considering both personal fulfillment and professional impact.'" }
+                        { value: 'A', text: "Highly creative: 'I love exploring unconventional solutions, brainstorming wild ideas, and thinking completely outside the box before settling on an approach.'" },
+                        { value: 'B', text: "Balanced creativity: 'I enjoy generating creative ideas and innovative approaches while keeping practical constraints in mind.'" },
+                        { value: 'C', text: "Practical creativity: 'I prefer creative solutions that are grounded in proven methods and realistic implementation.'" },
+                        { value: 'D', text: "Conventional approach: 'I tend to rely on established methods and practical solutions that have worked before.'" }
                     ],
-                    parameter: 'balance'
+                    parameter: 'creativity'
                 },
                 {
                     id: 4,
@@ -232,36 +190,24 @@ class OnboardingManager {
                 },
                 {
                     id: 5,
-                    title: "Adaptability in Different Situations",
-                    scenario: "Your day includes comforting a stressed friend, leading a strategic planning meeting, and helping your neighbor with a practical problem.",
+                    title: "Information Depth",
+                    scenario: "Someone asks you to explain a complex topic that affects both their personal and professional life.",
                     options: [
-                        { value: 'A', text: "Chameleon-like adaptation: 'I fully embody what each situation needs—empathetic listener, strategic leader, helpful neighbor.'" },
-                        { value: 'B', text: "Flexible consistency: 'I adapt my approach while staying true to my core values and personality across all interactions.'" },
-                        { value: 'C', text: "Moderate adjustment: 'I make some changes based on what's needed, but people generally get a consistent version of me.'" },
-                        { value: 'D', text: "Authentic presence: 'I bring my genuine self to every situation, trusting that authenticity serves better than adaptation.'" }
+                        { value: 'A', text: "Comprehensive explanation: Provide thorough coverage including background, personal implications, professional impacts, examples, and actionable steps." },
+                        { value: 'B', text: "Structured detail: Cover key concepts, practical applications, and connections between personal and professional aspects." },
+                        { value: 'C', text: "Focused explanation: 'Here's what this means for your situation, why it matters, and what you should consider doing.'" },
+                        { value: 'D', text: "Essential summary: 'This impacts both your personal goals and work objectives. Here's the key point and next step.'" }
                     ],
-                    parameter: 'adaptability'
+                    parameter: 'responseLength'
                 },
-                {
-                    id: 6,
-                    title: "Learning Preferences",
-                    scenario: "You're simultaneously learning a new software for work and picking up a hobby like cooking. Both require developing new skills.",
-                    options: [
-                        { value: 'A', text: "Definitive guidance: 'I want clear, authoritative instruction for both—step-by-step processes and expert recommendations.'" },
-                        { value: 'B', text: "Contextual learning: 'I prefer structured guidance for work skills and more exploratory, creative learning for personal interests.'" },
-                        { value: 'C', text: "Balanced instruction: 'I like a mix of clear direction and room to experiment, regardless of whether it's for work or personal growth.'" },
-                        { value: 'D', text: "Exploratory approach: 'I prefer to learn through experimentation and discovery in both professional and personal contexts.'" }
-                    ],
-                    parameter: 'directness'
-                }
             ]
         };
 
         // Parameter Definitions by Context
         this.parameterDefinitions = {
-            personal: ['empathy', 'supportiveness', 'creativity', 'warmth'],
-            professional: ['authority', 'efficiency', 'formality', 'challenge'],
-            mixed: ['adaptability', 'balance', 'directness', 'confidence']
+            personal: ['empathy', 'directness', 'ethicsMorality', 'agreeableness', 'responseLength'],
+            professional: ['levelOfSophistication', 'efficiency', 'formality', 'challenge', 'responseLength'],
+            mixed: ['creativity', 'directness', 'responseLength', 'adaptability', 'balance']
         };
 
         // Onboard State
@@ -332,6 +278,8 @@ class OnboardingManager {
         document.getElementById('welcomeFooter').classList.remove('hidden');
         document.getElementById('questionnaireFooter').classList.add('hidden');
         document.getElementById('resultsFooter').classList.add('hidden');
+        // Show header when returning to welcome screen
+        document.getElementById('onboardHeader').classList.remove('hidden');
     }
 
     showQuestionnaireScreen() {
@@ -341,6 +289,8 @@ class OnboardingManager {
         document.getElementById('welcomeFooter').classList.add('hidden');
         document.getElementById('questionnaireFooter').classList.remove('hidden');
         document.getElementById('resultsFooter').classList.add('hidden');
+        // Hide header when showing questionnaire
+        document.getElementById('onboardHeader').classList.add('hidden');
     }
 
     showResultsScreen() {
@@ -349,6 +299,8 @@ class OnboardingManager {
         document.getElementById('questionnaireFooter').classList.add('hidden');
         document.getElementById('resultsFooter').classList.remove('hidden');
         document.getElementById('welcomeFooter').classList.add('hidden');
+        // Keep header hidden on results screen
+        document.getElementById('onboardHeader').classList.add('hidden');
     }
 
     // Questionnaire Functions
@@ -387,11 +339,9 @@ class OnboardingManager {
             
             optionElement.innerHTML = `
                 <div class="context-card" data-value="${option.value}">
-                    <div class="context-icon">${option.icon}</div>
                     <div class="context-content">
                         <h3 class="context-title">${option.title}</h3>
                         <p class="context-text">${option.text}</p>
-                        <p class="context-description">${option.description}</p>
                         <div class="context-preview">
                             <div class="context-preview-title">AI Parameters</div>
                             <div class="context-preview-params">
@@ -455,17 +405,8 @@ class OnboardingManager {
             questionContainer.classList.add(`${this.selectedContext}-context`);
         }
         
-        // Add context indicator
-        const contextInfo = this.getContextInfo(this.selectedContext);
-        const contextIndicator = `
-            <div class="context-indicator ${this.selectedContext}-context">
-                <span class="context-indicator-icon">${contextInfo.icon}</span>
-                <span>${contextInfo.label} Context</span>
-            </div>
-        `;
-        
-        // Update question content
-        document.getElementById('questionTitle').innerHTML = contextIndicator + question.title;
+        // Update question content (no context indicator for questions 2+)
+        document.getElementById('questionTitle').textContent = question.title;
         document.getElementById('questionScenario').textContent = question.scenario;
         
         // Generate answer options (reset to normal styling)
@@ -549,32 +490,48 @@ class OnboardingManager {
             return;
         }
         
-        if (this.currentQuestionIndex > 0) {
-            this.currentQuestionIndex--;
-            this.showQuestion(this.currentQuestionIndex);
-            this.updateProgress();
-        } else {
-            // Go back to context selection
-            this.contextSelected = false;
-            this.showContextSelection();
-            this.updateProgress();
+        // When in context-specific questions, "Previous" button is now "Skip (use defaults)"
+        this.skipWithDefaults();
+    }
+    
+    skipWithDefaults() {
+        if (!this.selectedContext) {
+            console.error('No context selected for skip with defaults');
+            return;
         }
+        
+        // Generate default parameters (medium values = 50) for the selected context
+        const contextParams = this.parameterDefinitions[this.selectedContext];
+        const defaultParameters = {};
+        
+        contextParams.forEach(param => {
+            defaultParameters[param] = 50; // Medium value
+        });
+        
+        // Add context metadata
+        defaultParameters._context = this.selectedContext;
+        
+        // Store these as the calculated parameters
+        this.lastCalculatedParameters = defaultParameters;
+        
+        // Show results with default parameters
+        this.showResults(defaultParameters);
     }
 
     updateProgress() {
         if (!this.contextSelected) {
             // On context selection
-            const progress = (1 / 8) * 100; // 1 out of 8 total steps (1 context + 6 questions + 1 results)
+            const progress = (1 / 6) * 100; // 1 out of 6 total steps (1 context + 5 questions)
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('currentQuestion').textContent = 1;
-            document.getElementById('totalQuestions').textContent = 7;
+            document.getElementById('totalQuestions').textContent = 6;
         } else if (this.selectedContext) {
             // In context-specific questions
             const contextQuestions = this.questionSets[this.selectedContext];
-            const progress = ((this.currentQuestionIndex + 2) / 7) * 100; // +2 because context selection is step 1
+            const progress = ((this.currentQuestionIndex + 2) / 6) * 100; // +2 because context selection is step 1
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('currentQuestion').textContent = this.currentQuestionIndex + 2;
-            document.getElementById('totalQuestions').textContent = 7;
+            document.getElementById('totalQuestions').textContent = 6;
         }
     }
 
@@ -586,15 +543,26 @@ class OnboardingManager {
         if (!this.contextSelected) {
             // On context selection
             prevButton.disabled = true;
+            prevButton.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
+                </svg>
+                Previous
+            `;
             nextButton.disabled = !this.selectedContext;
             nextButtonText.textContent = 'Next';
         } else {
-            // In context-specific questions
+            // In context-specific questions - change Previous to Skip (use defaults)
+            prevButton.disabled = false;
+            prevButton.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16,18H18V6H16M6,18L14.5,12L6,6V18Z"/>
+                </svg>
+                Skip (use defaults)
+            `;
+            
             const contextQuestions = this.questionSets[this.selectedContext];
             const currentQuestion = contextQuestions[this.currentQuestionIndex];
-            
-            // Previous button - can always go back to previous question or context selection
-            prevButton.disabled = false;
             
             // Next button - need answer for current question
             const hasAnswer = this.questionnaireAnswers[currentQuestion.id];
@@ -890,6 +858,11 @@ class OnboardingManager {
                 medium: "Friendly yet professional interaction",
                 low: "Professional distance with neutral tone"
             },
+            responseLength: {
+                high: "Comprehensive and detailed explanations",
+                medium: "Balanced detail with focused key points",
+                low: "Concise and to-the-point responses"
+            },
             
             // Professional Context Parameters
             authority: {
@@ -912,6 +885,11 @@ class OnboardingManager {
                 medium: "Thoughtful pushback when appropriate",
                 low: "Supportive and agreement-focused"
             },
+            responseLength: {
+                high: "Comprehensive and detailed explanations",
+                medium: "Balanced detail with focused key points",
+                low: "Concise and to-the-point responses"
+            },
             
             // Mixed Context Parameters
             adaptability: {
@@ -933,6 +911,11 @@ class OnboardingManager {
                 high: "Strong conviction with definitive statements",
                 medium: "Appropriate confidence with uncertainty acknowledgment",
                 low: "Cautious with frequent qualifiers and uncertainty"
+            },
+            responseLength: {
+                high: "Comprehensive and detailed explanations",
+                medium: "Balanced detail with focused key points",
+                low: "Concise and to-the-point responses"
             }
         };
         
@@ -1111,6 +1094,9 @@ class OnboardingManager {
             this.onParametersUpdate(calculatedParameters);
         }
         
+        // Update the context display in the control panel
+        this.updateControlPanelContext();
+        
         // Animate the parameter changes
         this.animateParameterChanges(calculatedParameters);
         
@@ -1155,7 +1141,7 @@ class OnboardingManager {
                         track.style.background = 'linear-gradient(90deg, #03DAC6, #00BFA5)';
                         
                         setTimeout(() => {
-                            track.style.background = 'linear-gradient(90deg, #BB86FC, #9965F4)';
+                            track.style.background = 'linear-gradient(90deg, #284B63, #284B63)';
                         }, 500);
                     }
                 }, index * 150);
@@ -1182,7 +1168,8 @@ class OnboardingManager {
                 completed: true,
                 completedAt: Date.now(),
                 parameters: parameters,
-                questionnaireAnswers: this.questionnaireAnswers
+                questionnaireAnswers: this.questionnaireAnswers,
+                selectedContext: this.selectedContext
             };
             
             localStorage.setItem('zero_onboard_status', JSON.stringify(onboardData));
@@ -1400,11 +1387,26 @@ class OnboardingManager {
     // Helper function to get context information
     getContextInfo(context) {
         const contextMap = {
-            'personal': { icon: '💬', label: 'Personal' },
-            'professional': { icon: '💼', label: 'Professional' },
-            'mixed': { icon: '🔄', label: 'Mixed' }
+            'personal': { label: 'Personal' },
+            'professional': { label: 'Professional' },
+            'mixed': { label: 'Mixed' }
         };
-        return contextMap[context] || { icon: '🔄', label: 'Mixed' };
+        return contextMap[context] || { label: 'Mixed' };
+    }
+
+    // Update control panel context display
+    updateControlPanelContext() {
+        if (this.selectedContext) {
+            const contextDisplay = document.getElementById('currentContext');
+            if (contextDisplay) {
+                const contextLabels = {
+                    'personal': 'Personal Use',
+                    'professional': 'Professional Use', 
+                    'mixed': 'Mixed Use'
+                };
+                contextDisplay.textContent = contextLabels[this.selectedContext] || 'Mixed Use';
+            }
+        }
     }
 
     // Add context indicator to results screen
@@ -1413,10 +1415,13 @@ class OnboardingManager {
         const resultsTitle = document.querySelector('.results-title');
         
         if (resultsTitle) {
+            // Remove any existing context indicators first
+            const existingIndicators = document.querySelectorAll('.results-context-indicator');
+            existingIndicators.forEach(indicator => indicator.remove());
+            
             const contextIndicator = document.createElement('div');
             contextIndicator.className = `results-context-indicator ${context}-context`;
             contextIndicator.innerHTML = `
-                <span>${contextInfo.icon}</span>
                 <span>Configured for ${contextInfo.label} Use</span>
             `;
             
@@ -1437,7 +1442,6 @@ class OnboardingManager {
             exampleSection.className = 'example-responses';
             exampleSection.innerHTML = `
                 <h4>
-                    <span>🤖</span>
                     <span>Example AI Responses</span>
                 </h4>
                 <div class="example-responses-list">

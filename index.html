@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zero - Assistants that align with you</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logos/zero_logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logos/zero_logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logos/zero_logo.png">
+    <link rel="apple-touch-icon" href="logos/zero_logo.png">
+    
     <link rel="stylesheet" href="fonts/WEB/css/clash-grotesk.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -26,68 +33,16 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <div class="logo-icon">
-                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-                            <!-- Outer ring with gradient -->
-                            <circle cx="16" cy="16" r="14" stroke="url(#logoGradient)" stroke-width="2" fill="none"/>
-                            
-                            <!-- Inner geometric pattern representing AI/neural networks -->
-                            <g stroke="url(#logoGradient)" stroke-width="1.5" fill="none">
-                                <!-- Central node -->
-                                <circle cx="16" cy="16" r="2" fill="url(#logoGradient)"/>
-                                
-                                <!-- Connection lines to outer nodes -->
-                                <line x1="16" y1="16" x2="16" y2="8"/>
-                                <line x1="16" y1="16" x2="24" y2="16"/>
-                                <line x1="16" y1="16" x2="16" y2="24"/>
-                                <line x1="16" y1="16" x2="8" y2="16"/>
-                                <line x1="16" y1="16" x2="22.6" y2="9.4"/>
-                                <line x1="16" y1="16" x2="22.6" y2="22.6"/>
-                                <line x1="16" y1="16" x2="9.4" y2="22.6"/>
-                                <line x1="16" y1="16" x2="9.4" y2="9.4"/>
-                                
-                                <!-- Outer nodes -->
-                                <circle cx="16" cy="8" r="1.5" fill="url(#logoGradient)"/>
-                                <circle cx="24" cy="16" r="1.5" fill="url(#logoGradient)"/>
-                                <circle cx="16" cy="24" r="1.5" fill="url(#logoGradient)"/>
-                                <circle cx="8" cy="16" r="1.5" fill="url(#logoGradient)"/>
-                                <circle cx="22.6" cy="9.4" r="1" fill="url(#logoGradient)"/>
-                                <circle cx="22.6" cy="22.6" r="1" fill="url(#logoGradient)"/>
-                                <circle cx="9.4" cy="22.6" r="1" fill="url(#logoGradient)"/>
-                                <circle cx="9.4" cy="9.4" r="1" fill="url(#logoGradient)"/>
-                                
-                                <!-- Data flow indicators -->
-                                <circle cx="12" cy="10" r="0.5" fill="#03DAC6" opacity="0.8">
-                                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
-                                </circle>
-                                <circle cx="20" cy="14" r="0.5" fill="#03DAC6" opacity="0.6">
-                                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/>
-                                </circle>
-                                <circle cx="14" cy="22" r="0.5" fill="#03DAC6" opacity="0.4">
-                                    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/>
-                                </circle>
-                            </g>
-                            
-                            <!-- Gradient definitions -->
-                            <defs>
-                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#BB86FC;stop-opacity:1" />
-                                    <stop offset="50%" style="stop-color:#9965F4;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#7C4DFF;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div class="logo-text">Zero</div>
+                    <img src="logos/zero_logo2.png" alt="Zero" height="32">
                 </div>
-                <div class="tagline">Assistants that align with you</div>
+                <div class="tagline">Assistants that align with <em>you</em>.</div>
             </div>
             
             <button class="new-chat-btn" id="newChatBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                 </svg>
-                New chat
+                New Chat
             </button>
             
             <div class="chat-history" id="chatHistory">
@@ -96,9 +51,6 @@
             
             <!-- Onboard Button -->
             <button class="onboard-btn" id="onboardBtn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z"/>
-                </svg>
                 Onboard
             </button>
         </aside>
@@ -108,10 +60,27 @@
             
             <!-- Top header with model selection -->
             <header class="main-header">
-                <div class="model-selector">
-                    <select class="model-dropdown" id="modelSelector">
-                        <!-- Options will be populated from config.json -->
-                    </select>
+                <div class="model-selector-modern" id="modelSelectorContainer">
+                    <div class="model-selector-trigger" id="modelSelectorTrigger">
+                        <div class="model-info">
+                            <span class="model-provider" id="currentModelProvider">OpenAI</span>
+                            <span class="model-name" id="currentModelName">GPT-4.1</span>
+                        </div>
+                        <svg class="dropdown-arrow" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 10l5 5 5-5H7z"/>
+                        </svg>
+                    </div>
+                    <div class="model-dropdown-panel" id="modelDropdownPanel">
+                        <div class="model-search">
+                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                            </svg>
+                            <input type="text" class="model-search-input" id="modelSearchInput" placeholder="Search models...">
+                        </div>
+                        <div class="model-list" id="modelList">
+                            <!-- Model options will be populated dynamically -->
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Settings button for Anti-Sycophancy Engine controls -->
@@ -132,7 +101,7 @@
                     <div class="message ai">
                         <div class="personality-badge">Direct • Confident • Formal</div>
                         <div class="message-bubble">
-                            Welcome to Zero. I'm designed to give you honest, unfiltered responses rather than just telling you what you want to hear. Use the anti-sycophancy controls to adjust my personality in real-time. What would you like to discuss?
+                            Welcome to Zero. Ready when you are.
                         </div>
                     </div>
                     
@@ -177,54 +146,13 @@
             <!-- Active Profile Summary -->
             <div class="profile-summary">
                 <div class="profile-summary-header">
-                    <div class="profile-icon">🤖</div>
                     <div class="profile-info">
-                        <div class="profile-title">Current Profile</div>
-                        <div class="profile-context" id="currentContext">Mixed Context</div>
-                    </div>
-                </div>
-                <div class="profile-traits">
-                    <div class="trait-display" id="activeTraits">
-                        <span class="trait-badge">Balanced</span>
-                        <span class="trait-badge">Thoughtful</span>
-                        <span class="trait-badge">Adaptable</span>
-                    </div>
-                    <div class="trait-description" id="profileDescription">
-                        Your AI adapts its communication style based on context while maintaining consistency.
+                        <div class="profile-title">Predominantly customized for :</div>
+                        <div class="profile-context" id="currentContext">Mixed Use</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Context Selection -->
-            <div class="context-selector-group">
-                <div class="context-selector-label">
-                    <span class="context-selector-title">AI Context</span>
-                    <div class="context-selector-description">Choose how you plan to use Zero</div>
-                </div>
-                <div class="context-selector-buttons">
-                    <div class="tooltip">
-                        <button class="context-btn active" data-context="mixed" id="mixedContextBtn">
-                            <span class="context-btn-icon">🔄</span>
-                            <span class="context-btn-text">Mixed</span>
-                        </button>
-                        <div class="tooltip-content">Balances personal warmth with professional expertise. Great for everyday conversations that may switch between casual and work topics.</div>
-                    </div>
-                    <div class="tooltip">
-                        <button class="context-btn" data-context="personal" id="personalContextBtn">
-                            <span class="context-btn-icon">💬</span>
-                            <span class="context-btn-text">Personal</span>
-                        </button>
-                        <div class="tooltip-content">Optimized for personal conversations, creative projects, emotional support, and casual discussions with friends and family.</div>
-                    </div>
-                    <div class="tooltip">
-                        <button class="context-btn" data-context="professional" id="professionalContextBtn">
-                            <span class="context-btn-icon">💼</span>
-                            <span class="context-btn-text">Professional</span>
-                        </button>
-                        <div class="tooltip-content">Designed for business communications, expert consultations, project management, and formal professional interactions.</div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Dynamic Parameter Groups Container -->
             <div id="dynamicParametersContainer">
@@ -253,14 +181,12 @@
                 </button>
                 
                 <!-- Modal Header -->
-                <div class="onboard-header">
+                <div class="onboard-header" id="onboardHeader">
                     <div class="onboard-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z"/>
-                        </svg>
+                        <img src="logos/zero_logo.png" alt="Zero" width="48" height="48">
                     </div>
                     <h2 class="onboard-title">Welcome to Zero</h2>
-                    <p class="onboard-subtitle">Let's personalize your AI conversation experience</p>
+                    <p class="onboard-subtitle">Let’s set up your AI assistant to match how you work and live.</p>
                 </div>
                 
                 <!-- Modal Body -->
@@ -268,30 +194,26 @@
                     <!-- Welcome Screen -->
                     <div class="onboard-screen" id="welcomeScreen">
                         <div class="onboard-intro">
-                            <p>We'll ask you a few quick questions to understand your communication preferences and configure your AI personality parameters automatically.</p>
-                            <p>This will only take 2-3 minutes and you can always adjust these settings later.</p>
+                            <p><strong>This will only take a minute.</strong> You can always adjust your settings later.</p>
                         </div>
                         
                         <div class="onboard-features">
                             <div class="feature-item">
-                                <div class="feature-icon">📊</div>
                                 <div class="feature-text">
-                                    <h4>Personalized Parameters</h4>
-                                    <p>Automatically configure Directness, Confidence, Disagreement Level, and Formality</p>
+                                    <h4>How do you use AI?</h4>
+                                    <p> Let us know if you want help with work, personal life, or both.</p>
                                 </div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">🎯</div>
                                 <div class="feature-text">
-                                    <h4>Situational Questions</h4>
-                                    <p>Answer questions based on real-world scenarios to match your style</p>
+                                    <h4>A bit about you</h4>
+                                    <p>Share your role or life situation so Zero can better support you..</p>
                                 </div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">⚡</div>
                                 <div class="feature-text">
-                                    <h4>Instant Results</h4>
-                                    <p>See your AI personality configured immediately after completion</p>
+                                    <h4>Finish setup</h4>
+                                    <p> You’ll see your custom settings panel and defaults right after.</p>
                                 </div>
                             </div>
                         </div>
@@ -305,7 +227,7 @@
                                 <div class="progress-fill" id="progressFill"></div>
                             </div>
                             <div class="progress-text">
-                                <span id="currentQuestion">1</span> of <span id="totalQuestions">7</span>
+                                <span id="currentQuestion">1</span> of <span id="totalQuestions">6</span>
                             </div>
                         </div>
 
@@ -331,7 +253,7 @@
                             </div>
                             
                             <!-- Results Header -->
-                            <h3 class="results-title">Your AI Personality is Configured!</h3>
+                            <h3 class="results-title">Your assistant controls are configured.</h3>
                             <p class="results-subtitle">Based on your responses, we've customized your AI conversation parameters</p>
                             
                             <!-- Dynamic Parameter Results Container -->
@@ -366,7 +288,7 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
                             </svg>
-                            Start Onboarding
+                            Begin
                         </button>
                     </div>
 

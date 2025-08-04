@@ -212,6 +212,17 @@ class AntiSycophancyEngine {
             prompt += "Balance personal warmth with professional helpfulness, being caring while maintaining appropriate boundaries. ";
         }
         
+        // Response Length (0-100): Brief responses vs detailed explanations
+        if (mappedParams.responseLength > 0.8) {
+            prompt += "Provide comprehensive, detailed responses with thorough explanations, examples, and context. Explore topics deeply and offer extensive information. Ensure responses are at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength > 0.6) {
+            prompt += "Give appropriately detailed responses that cover key points thoroughly without being overly verbose. Maintain at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength < 0.3) {
+            prompt += "Keep responses concise and to-the-point. Focus on essential information and avoid lengthy explanations unless specifically requested. However, always provide at least 2 lines of response. ";
+        } else {
+            prompt += "Adjust response length to match the complexity of the question, providing sufficient detail without unnecessary verbosity. Ensure responses are at least 2 lines minimum. ";
+        }
+        
         return prompt;
     }
 
@@ -220,17 +231,6 @@ class AntiSycophancyEngine {
      */
     buildProfessionalContextPrompt(mappedParams) {
         let prompt = "";
-        
-        // Authority (0-100): Expert confidence vs collaborative approach
-        if (mappedParams.authority > 0.8) {
-            prompt += "Speak with confident expertise and authority. Present clear, decisive recommendations based on best practices and professional experience. Take charge of conversations and guide toward optimal solutions. ";
-        } else if (mappedParams.authority > 0.6) {
-            prompt += "Balance confident expertise with openness to alternative viewpoints. Present well-reasoned recommendations while remaining flexible to input. ";
-        } else if (mappedParams.authority < 0.3) {
-            prompt += "Present information as suggestions rather than definitive answers. Frequently acknowledge uncertainty and invite collaboration in decision-making. ";
-        } else {
-            prompt += "Provide knowledgeable guidance while maintaining collaborative openness to different approaches and perspectives. ";
-        }
         
         // Efficiency (0-100): Concise actionables vs comprehensive detail
         if (mappedParams.efficiency > 0.8) {
@@ -263,6 +263,29 @@ class AntiSycophancyEngine {
             prompt += "Support and build upon ideas. Minimize criticism and focus on positive reinforcement of business decisions and strategies. ";
         } else {
             prompt += "Provide balanced evaluation that both supports good ideas and identifies areas for improvement when necessary. ";
+        }
+        
+        // Level of Sophistication (0-100): Technical complexity and depth of communication
+        if (mappedParams.levelOfSophistication > 0.8) {
+            prompt += "Use advanced technical language, industry-specific terminology, and complex theoretical concepts. Assume high expertise and engage at a sophisticated professional level. ";
+        } else if (mappedParams.levelOfSophistication > 0.6) {
+            prompt += "Use professional terminology with some explanation. Balance technical depth with accessibility for intermediate-level understanding. ";
+        } else if (mappedParams.levelOfSophistication < 0.3) {
+            prompt += "Avoid jargon and complex technical terms. Use clear, simple language with practical examples that are easy to understand for beginners. ";
+        } else {
+            prompt += "Use moderate technical detail with context and examples. Explain complex concepts in accessible ways while maintaining professional accuracy. ";
+        }
+        
+        // Response Length: Target number of lines per response
+        const targetLines = Math.max(2, Math.min(50, Math.round(mappedParams.responseLength || 10)));
+        if (targetLines <= 3) {
+            prompt += `Provide concise responses of approximately ${targetLines} lines. Focus on essential information and key points. Be direct and to-the-point. `;
+        } else if (targetLines <= 7) {
+            prompt += `Aim for responses of approximately ${targetLines} lines. Provide focused explanations with necessary detail and examples. `;
+        } else if (targetLines <= 15) {
+            prompt += `Target responses of approximately ${targetLines} lines. Provide comprehensive explanations with examples, context, and actionable insights. `;
+        } else {
+            prompt += `Provide detailed responses of approximately ${targetLines} lines. Include thorough explanations, multiple examples, comprehensive context, and extensive actionable insights. `;
         }
         
         return prompt;
@@ -307,15 +330,26 @@ class AntiSycophancyEngine {
             prompt += "Balance directness with diplomatic consideration, adjusting approach based on topic sensitivity and context. ";
         }
         
-        // Confidence (0-100): Definitive vs cautious
-        if (mappedParams.confidence > 0.8) {
-            prompt += "Express strong confidence in responses and recommendations. Make definitive statements and show conviction in advice across all topics. ";
-        } else if (mappedParams.confidence > 0.6) {
-            prompt += "Show appropriate confidence while acknowledging uncertainties when they exist. Balance assertion with intellectual humility. ";
-        } else if (mappedParams.confidence < 0.3) {
-            prompt += "Frequently express uncertainty and acknowledge limitations. Use qualifying language like 'might,' 'could,' and 'perhaps' regularly. ";
+        // Creativity (0-100): Imaginative vs practical approaches
+        if (mappedParams.creativity > 0.8) {
+            prompt += "Encourage highly creative and imaginative solutions. Suggest unconventional approaches, brainstorm innovative ideas, and think outside the box. Prioritize originality and creative exploration. ";
+        } else if (mappedParams.creativity > 0.6) {
+            prompt += "Balance creative thinking with practical considerations. Offer innovative solutions while keeping realistic constraints in mind. ";
+        } else if (mappedParams.creativity < 0.3) {
+            prompt += "Focus on practical, proven approaches. Prefer conventional solutions and established methods that have worked before. Minimize experimental or untested ideas. ";
         } else {
-            prompt += "Express moderate confidence with appropriate caveats, being neither overly certain nor excessively doubtful. ";
+            prompt += "Integrate creative possibilities with realistic implementation, offering both imaginative and practical perspectives. ";
+        }
+        
+        // Response Length (0-100): Brief responses vs detailed explanations
+        if (mappedParams.responseLength > 0.8) {
+            prompt += "Provide comprehensive, detailed responses with thorough explanations, examples, and context. Explore topics deeply and offer extensive information. Ensure responses are at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength > 0.6) {
+            prompt += "Give appropriately detailed responses that cover key points thoroughly without being overly verbose. Maintain at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength < 0.3) {
+            prompt += "Keep responses concise and to-the-point. Focus on essential information and avoid lengthy explanations unless specifically requested. However, always provide at least 2 lines of response. ";
+        } else {
+            prompt += "Adjust response length to match the complexity of the question, providing sufficient detail without unnecessary verbosity. Ensure responses are at least 2 lines minimum. ";
         }
         
         return prompt;
@@ -480,7 +514,7 @@ class AntiSycophancyEngine {
         let humilityPrompts = "";
         
         // Base humility based on confidence parameter
-        const confidenceKey = userContext === 'mixed' ? 'confidence' : 
+        const confidenceKey = userContext === 'mixed' ? 'directness' : 
                             userContext === 'professional' ? 'authority' : 'warmth';
         const confidenceLevel = parameters[confidenceKey] || 50;
         
@@ -854,19 +888,22 @@ class AntiSycophancyEngine {
                 empathy: (v) => this.applySCurve(v, 1.8), // Slightly steeper for more nuanced empathy
                 supportiveness: (v) => v, // Linear - direct mapping
                 creativity: (v) => Math.pow(v, 0.8), // Slight curve favoring higher creativity
-                warmth: (v) => this.applySCurve(v, 1.5) // S-curve for natural warmth scaling
+                warmth: (v) => this.applySCurve(v, 1.5), // S-curve for natural warmth scaling
+                responseLength: (v) => Math.pow(v, 0.9) // Slight curve for response length
             },
             professional: {
-                authority: (v) => Math.pow(v, 1.3), // Exponential for authority confidence
                 efficiency: (v) => this.applySCurve(v, 2.2), // Sharp S-curve for efficiency impact
                 formality: (v) => this.applySCurve(v, 0.7), // Gentle S-curve for formality
-                challenge: (v) => v // Linear - direct mapping for challenge level
+                challenge: (v) => v, // Linear - direct mapping for challenge level
+                levelOfSophistication: (v) => this.applySCurve(v, 1.5), // S-curve for sophistication scaling
+                responseLength: (v) => v // Linear - direct mapping for line count
             },
             mixed: {
                 adaptability: (v) => this.applySCurve(v, 1.6), // S-curve for adaptation capability
                 balance: (v) => this.applySCurve(v, 1.4), // S-curve for balance integration
                 directness: (v) => this.applySCurve(v, 2.0), // Sharp S-curve like original
-                confidence: (v) => Math.pow(v, 1.5), // Exponential like original
+                creativity: (v) => Math.pow(v, 0.8), // Slight curve favoring higher creativity
+                responseLength: (v) => Math.pow(v, 0.9), // Slight curve for response length
                 // Legacy parameter support for backward compatibility
                 disagreement: (v) => this.applySCurve(v, 1.8),
                 formality: (v) => this.applySCurve(v, 1.2)
@@ -910,20 +947,26 @@ class AntiSycophancyEngine {
                 break;
                 
             case 'professional':
-                // High authority + high challenge = confident challenging
-                if (result.authority > 0.7 && result.challenge > 0.7) {
-                    result.authority = Math.min(1, result.authority + interactionStrength * 0.4);
-                    result.challenge = Math.min(1, result.challenge + interactionStrength * 0.4);
-                }
-                
                 // High efficiency + high formality = structured communication
                 if (result.efficiency > 0.7 && result.formality > 0.7) {
                     result.efficiency = Math.min(1, result.efficiency + interactionStrength * 0.3);
                 }
                 
-                // Low authority + high challenge = collaborative questioning
-                if (result.authority < 0.4 && result.challenge > 0.6) {
-                    result.challenge = Math.max(0, result.challenge - interactionStrength * 0.2);
+                // High sophistication + high formality = expert professional communication
+                if (result.levelOfSophistication > 0.7 && result.formality > 0.7) {
+                    result.levelOfSophistication = Math.min(1, result.levelOfSophistication + interactionStrength * 0.2);
+                    result.formality = Math.min(1, result.formality + interactionStrength * 0.1);
+                }
+                
+                // Low sophistication + high challenge = simplified challenging
+                if (result.levelOfSophistication < 0.4 && result.challenge > 0.6) {
+                    result.challenge = Math.max(0, result.challenge - interactionStrength * 0.1);
+                }
+                
+                // High efficiency + high challenge = direct challenging
+                if (result.efficiency > 0.7 && result.challenge > 0.7) {
+                    result.efficiency = Math.min(1, result.efficiency + interactionStrength * 0.2);
+                    result.challenge = Math.min(1, result.challenge + interactionStrength * 0.2);
                 }
                 break;
                 
@@ -934,10 +977,10 @@ class AntiSycophancyEngine {
                     result.balance = Math.min(1, result.balance + interactionStrength * 0.4);
                 }
                 
-                // High directness + high confidence = assertive communication
-                if (result.directness > 0.7 && result.confidence > 0.7) {
-                    result.directness = Math.min(1, result.directness + interactionStrength * 0.3);
-                    result.confidence = Math.min(1, result.confidence + interactionStrength * 0.3);
+                // High directness + high creativity = bold innovative communication
+                if (result.directness > 0.7 && result.creativity > 0.7) {
+                    result.directness = Math.min(1, result.directness + interactionStrength * 0.2);
+                    result.creativity = Math.min(1, result.creativity + interactionStrength * 0.3);
                 }
                 
                 // Low adaptability + high balance = consistent integrated approach

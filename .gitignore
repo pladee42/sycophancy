@@ -5,3 +5,4 @@ backup.md
 config.private.json
 claude_*
 .DS_*
+.history

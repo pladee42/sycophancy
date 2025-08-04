@@ -13,19 +13,22 @@ let currentParameters = {
             empathy: 65,
             supportiveness: 70,
             creativity: 60,
-            warmth: 75
+            warmth: 75,
+            responseLength: 60
         },
         professional: {
-            authority: 70,
             efficiency: 75,
             formality: 80,
-            challenge: 60
+            challenge: 60,
+            levelOfSophistication: 60,
+            responseLength: 10
         },
         mixed: {
             adaptability: 70,
             balance: 65,
             directness: 75,
-            confidence: 60
+            creativity: 60,
+            responseLength: 60
         }
     }
 };
@@ -311,7 +314,12 @@ function renderChatHistory() {
         const isActive = chat.id === chatManager.currentChatId ? 'active' : '';
         html += `
             <div class="chat-item ${isActive}" data-chat-id="${chat.id}">
-                ${chat.title}
+                <span class="chat-title">${chat.title}</span>
+                <button class="chat-close-btn" data-chat-id="${chat.id}" title="Delete chat">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
             </div>
         `;
     });
@@ -326,7 +334,13 @@ function renderChatHistory() {
 function attachChatItemListeners() {
     const chatItems = document.querySelectorAll('.chat-item');
     chatItems.forEach(item => {
-        item.addEventListener('click', function() {
+        // Add click listener for chat selection (excluding close button clicks)
+        item.addEventListener('click', function(e) {
+            // Don't trigger chat selection if close button was clicked
+            if (e.target.closest('.chat-close-btn')) {
+                return;
+            }
+            
             const chatId = this.getAttribute('data-chat-id');
             if (chatId && chatManager.loadChat(chatId)) {
                 // Update UI
@@ -341,6 +355,49 @@ function attachChatItemListeners() {
             }
         });
     });
+    
+    // Add click listeners for close buttons
+    const closeButtons = document.querySelectorAll('.chat-close-btn');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const chatId = this.getAttribute('data-chat-id');
+            if (chatId && confirm('Are you sure you want to delete this chat?')) {
+                handleChatDeletion(chatId);
+            }
+        });
+    });
+}
+
+function handleChatDeletion(chatId) {
+    const wasCurrentChat = chatManager.currentChatId === chatId;
+    
+    if (chatManager.deleteChat(chatId)) {
+        // If we deleted the current chat, handle the transition
+        if (wasCurrentChat) {
+            messageHistory = [];
+            
+            // Check if any chats remain
+            const remainingChats = chatManager.getAllChats();
+            if (remainingChats.length === 0) {
+                // No chats left, create a new one
+                const newChatId = chatManager.createNewChat();
+                renderChatMessages();
+            } else {
+                // Load the most recent remaining chat
+                const mostRecent = remainingChats[0];
+                chatManager.loadChat(mostRecent.id);
+                renderChatMessages();
+                updateCountersDisplay();
+            }
+        }
+        
+        // Re-render chat history to reflect the deletion
+        // This will also reattach event listeners
+        renderChatHistory();
+    }
 }
 
 function renderChatMessages() {
@@ -353,7 +410,7 @@ function renderChatMessages() {
             <div class="message ai">
                 <div class="personality-badge">Direct • Confident • Formal</div>
                 <div class="message-bubble">
-                    Welcome to Zero. I'm designed to give you honest, unfiltered responses rather than just telling you what you want to hear. Use the anti-sycophancy controls to adjust my personality in real-time. What would you like to discuss?
+                    Welcome to Zero. Ready when you are.
                 </div>
             </div>
         `;
@@ -543,6 +600,172 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeChatSystem();
 });
 
+// Initialize modern model selector
+function initializeModelSelector() {
+    const trigger = document.getElementById('modelSelectorTrigger');
+    const panel = document.getElementById('modelDropdownPanel');
+    const modelList = document.getElementById('modelList');
+    const searchInput = document.getElementById('modelSearchInput');
+    const currentProvider = document.getElementById('currentModelProvider');
+    const currentName = document.getElementById('currentModelName');
+    
+    // Group models by provider
+    const modelsByProvider = {};
+    config.availableModels.forEach(model => {
+        if (!modelsByProvider[model.provider]) {
+            modelsByProvider[model.provider] = [];
+        }
+        modelsByProvider[model.provider].push(model);
+    });
+    
+    // Render model list
+    function renderModels(searchTerm = '') {
+        modelList.innerHTML = '';
+        
+        Object.entries(modelsByProvider).forEach(([provider, models]) => {
+            // Filter models based on search
+            const filteredModels = models.filter(model => 
+                model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                provider.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (filteredModels.length === 0) return;
+            
+            // Create provider group
+            const group = document.createElement('div');
+            group.className = 'model-group';
+            
+            const header = document.createElement('div');
+            header.className = 'model-group-header';
+            header.textContent = provider;
+            group.appendChild(header);
+            
+            // Add model options
+            filteredModels.forEach(model => {
+                const option = document.createElement('div');
+                option.className = 'model-option';
+                option.dataset.modelId = model.id;
+                option.dataset.provider = provider;
+                
+                if (model.id === selectedModel) {
+                    option.classList.add('selected');
+                }
+                
+                option.innerHTML = `
+                    <div class="model-option-info">
+                        <div class="model-option-name">${model.name}</div>
+                        <div class="model-option-provider">${provider}</div>
+                    </div>
+                `;
+                
+                option.addEventListener('click', () => selectModel(model, provider));
+                group.appendChild(option);
+            });
+            
+            modelList.appendChild(group);
+        });
+    }
+    
+    // Select a model
+    function selectModel(model, provider) {
+        selectedModel = model.id;
+        currentProvider.textContent = provider;
+        currentProvider.dataset.provider = provider;
+        currentName.textContent = model.name;
+        closeDropdown();
+        
+        // Update selected state
+        document.querySelectorAll('.model-option').forEach(opt => {
+            opt.classList.toggle('selected', opt.dataset.modelId === model.id);
+        });
+    }
+    
+    // Toggle dropdown
+    function toggleDropdown() {
+        const isOpen = panel.classList.contains('active');
+        if (isOpen) {
+            closeDropdown();
+        } else {
+            openDropdown();
+        }
+    }
+    
+    // Open dropdown
+    function openDropdown() {
+        trigger.classList.add('active');
+        panel.classList.add('active');
+        searchInput.value = '';
+        renderModels();
+        searchInput.focus();
+    }
+    
+    // Close dropdown
+    function closeDropdown() {
+        trigger.classList.remove('active');
+        panel.classList.remove('active');
+    }
+    
+    // Event listeners
+    trigger.addEventListener('click', toggleDropdown);
+    
+    // Search functionality
+    searchInput.addEventListener('input', (e) => {
+        renderModels(e.target.value);
+    });
+    
+    // Prevent panel clicks from closing dropdown
+    panel.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!trigger.contains(e.target) && !panel.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (panel.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        }
+    });
+    
+    // Apply provider colors from config
+    function applyProviderColors() {
+        if (config.providerColors) {
+            const style = document.createElement('style');
+            let css = '';
+            
+            Object.entries(config.providerColors).forEach(([provider, color]) => {
+                css += `.model-option[data-provider="${provider}"] .model-option-provider { color: ${color}; }\n`;
+                css += `.model-provider[data-provider="${provider}"] { color: ${color}; }\n`;
+            });
+            
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+    }
+    
+    // Set initial model
+    const defaultModel = config.availableModels.find(m => m.id === config.defaultModel);
+    if (defaultModel) {
+        currentProvider.textContent = defaultModel.provider;
+        currentProvider.dataset.provider = defaultModel.provider;
+        currentName.textContent = defaultModel.name;
+        selectedModel = defaultModel.id;
+    }
+    
+    // Apply provider colors
+    applyProviderColors();
+    
+    // Initial render
+    renderModels();
+}
+
 // Load configuration from config.public.json and config.private.json
 async function loadConfig() {
     try {
@@ -574,25 +797,8 @@ async function loadConfig() {
         
         console.log('✅ OpenRouter API key loaded successfully');
         
-        // Update model selector with available models
-        const modelSelector = document.getElementById('modelSelector');
-        modelSelector.innerHTML = '';
-        
-        config.availableModels.forEach(model => {
-            const option = document.createElement('option');
-            option.value = model.id;
-            option.textContent = model.name;
-            modelSelector.appendChild(option);
-        });
-        
-        // Set default model
-        modelSelector.value = config.defaultModel;
-        selectedModel = config.defaultModel;
-        
-        // Add change listener
-        modelSelector.addEventListener('change', function(e) {
-            selectedModel = e.target.value;
-        });
+        // Initialize modern model selector
+        initializeModelSelector();
         
         // Apply color palette from config if available
         if (config.colorPalette) {
@@ -681,14 +887,14 @@ const parameterDefinitions = {
             name: 'Warmth',
             description: 'Personal connection vs professional distance',
             tooltip: 'Controls the personal tone of communication. Higher values create a friendly, approachable personality that feels like talking to a close friend, while lower values maintain professional boundaries.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Brief responses vs detailed explanations',
+            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
         }
     },
     professional: {
-        authority: {
-            name: 'Authority',
-            description: 'Expert confidence vs collaborative approach',
-            tooltip: 'Determines how authoritatively your AI communicates. Higher values provide confident, expert-level guidance with strong recommendations, while lower values take a more collaborative, consultative approach.'
-        },
         efficiency: {
             name: 'Efficiency',
             description: 'Concise actionables vs comprehensive detail',
@@ -703,9 +909,34 @@ const parameterDefinitions = {
             name: 'Challenge',
             description: 'Active questioning vs supportive agreement',
             tooltip: 'Controls how much your AI challenges your ideas and assumptions. Higher values actively question your thinking and present alternative viewpoints, while lower values are more supportive and agreeable.'
+        },
+        levelOfSophistication: {
+            name: 'Level of Sophistication',
+            description: 'Technical complexity and depth of communication',
+            tooltip: 'Adjusts the complexity and technical depth of responses based on your expertise level. Higher values provide advanced, detailed technical discussions, while lower values offer simplified explanations suitable for beginners.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Target number of lines per response',
+            tooltip: 'Sets the target number of lines for responses. Value represents approximate lines (e.g., 5 = ~5 lines, 15 = ~15 lines). Minimum is 2 lines, maximum is 50 lines.'
         }
     },
     mixed: {
+        creativity: {
+            name: 'Creativity',
+            description: 'Imaginative vs practical approaches',
+            tooltip: 'Adjusts how creative and imaginative your AI\'s suggestions are. Higher values encourage out-of-the-box thinking and innovative solutions, while lower values focus on practical, proven approaches.'
+        },
+        directness: {
+            name: 'Directness',
+            description: 'Clear straightforward vs diplomatic softening',
+            tooltip: 'Adjusts how directly your AI communicates difficult or sensitive information. Higher values provide clear, straightforward feedback without sugar-coating, while lower values use diplomatic language to soften the message.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Brief responses vs detailed explanations',
+            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
+        },
         adaptability: {
             name: 'Adaptability',
             description: 'Dynamic context-switching vs consistent style',
@@ -715,16 +946,6 @@ const parameterDefinitions = {
             name: 'Balance',
             description: 'Blended personal/professional vs single approach',
             tooltip: 'Controls how well your AI blends personal warmth with professional expertise. Higher values seamlessly combine both aspects, while lower values tend to lean more heavily toward one style or the other.'
-        },
-        directness: {
-            name: 'Directness',
-            description: 'Clear straightforward vs diplomatic softening',
-            tooltip: 'Adjusts how directly your AI communicates difficult or sensitive information. Higher values provide clear, straightforward feedback without sugar-coating, while lower values use diplomatic language to soften the message.'
-        },
-        confidence: {
-            name: 'Confidence',
-            description: 'Definitive statements vs uncertain qualifiers',
-            tooltip: 'Controls how confident your AI sounds in its responses. Higher values use definitive language and strong statements, while lower values include more qualifiers like "perhaps," "might," and "possibly" to express uncertainty.'
         }
     }
 };
@@ -1122,34 +1343,19 @@ function updatePersonalityDisplay() {
 
 // Update the Active Profile Summary
 function updateProfileSummary() {
-    const context = currentParameters._context || 'mixed';
-    const contextParams = getCurrentContextParameters();
+    // Check if onboarding was completed and get the selected context
+    const onboardStatus = onboardingManager ? onboardingManager.getOnboardCompletionStatus() : null;
+    const context = onboardStatus && onboardStatus.selectedContext ? onboardStatus.selectedContext : (currentParameters._context || 'mixed');
     
     // Update context display
     const contextDisplay = document.getElementById('currentContext');
     if (contextDisplay) {
         const contextLabels = {
-            'personal': 'Personal Context',
-            'professional': 'Professional Context', 
-            'mixed': 'Mixed Context'
+            'personal': 'Personal Use',
+            'professional': 'Professional Use', 
+            'mixed': 'Mixed Use'
         };
-        contextDisplay.textContent = contextLabels[context] || 'Mixed Context';
-    }
-    
-    // Generate personality traits
-    const traits = generateCurrentTraits(context, contextParams);
-    const traitsDisplay = document.getElementById('activeTraits');
-    if (traitsDisplay) {
-        traitsDisplay.innerHTML = traits.map(trait => 
-            `<span class="trait-badge">${trait}</span>`
-        ).join('');
-    }
-    
-    // Generate description
-    const description = generateProfileDescription(context, contextParams);
-    const descriptionDisplay = document.getElementById('profileDescription');
-    if (descriptionDisplay) {
-        descriptionDisplay.textContent = description;
+        contextDisplay.textContent = contextLabels[context] || 'Mixed Use';
     }
 }
 
@@ -1284,7 +1490,7 @@ function applyColorPalette(colorPalette) {
     const root = document.documentElement;
     
     // Set CSS custom properties for dynamic color theming
-    root.style.setProperty('--primary-color', colorPalette.primary || '#BB86FC');
+    root.style.setProperty('--primary-color', colorPalette.primary || '#284B63');
     root.style.setProperty('--primary-variant-color', colorPalette.primaryVariant || '#3700B3');
     root.style.setProperty('--secondary-color', colorPalette.secondary || '#03DAC6');
     root.style.setProperty('--background-color', colorPalette.background || '#121212');
