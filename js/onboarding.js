@@ -10,20 +10,17 @@ class OnboardingManager {
                 { 
                     value: 'personal', 
                     title: 'Personal',
-                    text: "Personal conversations, creative projects, and daily life assistance",
-                    description: "Focus on empathy, creativity, and supportive interactions"
+                    text: "Personal conversations, creative projects, and daily life assistance"
                 },
                 { 
                     value: 'professional', 
                     title: 'Professional',
-                    text: "Work tasks, business decisions, and professional development",
-                    description: "Focus on efficiency, expertise, and structured communication"
+                    text: "Work tasks, business decisions, and professional development"
                 },
                 { 
                     value: 'mixed', 
                     title: 'Mixed',
-                    text: "Both personal and professional contexts",
-                    description: "Adaptive communication style that adjusts to context"
+                    text: "Both personal and professional contexts"
                 }
             ]
         };
@@ -321,7 +318,6 @@ class OnboardingManager {
                     <div class="context-content">
                         <h3 class="context-title">${option.title}</h3>
                         <p class="context-text">${option.text}</p>
-                        <p class="context-description">${option.description}</p>
                         <div class="context-preview">
                             <div class="context-preview-title">AI Parameters</div>
                             <div class="context-preview-params">
@@ -385,16 +381,8 @@ class OnboardingManager {
             questionContainer.classList.add(`${this.selectedContext}-context`);
         }
         
-        // Add context indicator
-        const contextInfo = this.getContextInfo(this.selectedContext);
-        const contextIndicator = `
-            <div class="context-indicator ${this.selectedContext}-context">
-                <span>${contextInfo.label} Context</span>
-            </div>
-        `;
-        
-        // Update question content
-        document.getElementById('questionTitle').innerHTML = contextIndicator + question.title;
+        // Update question content (no context indicator for questions 2+)
+        document.getElementById('questionTitle').textContent = question.title;
         document.getElementById('questionScenario').textContent = question.scenario;
         
         // Generate answer options (reset to normal styling)
@@ -1361,10 +1349,13 @@ class OnboardingManager {
         const resultsTitle = document.querySelector('.results-title');
         
         if (resultsTitle) {
+            // Remove any existing context indicators first
+            const existingIndicators = document.querySelectorAll('.results-context-indicator');
+            existingIndicators.forEach(indicator => indicator.remove());
+            
             const contextIndicator = document.createElement('div');
             contextIndicator.className = `results-context-indicator ${context}-context`;
             contextIndicator.innerHTML = `
-                <span>${contextInfo.icon}</span>
                 <span>Configured for ${contextInfo.label} Use</span>
             `;
             

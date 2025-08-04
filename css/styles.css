@@ -91,7 +91,7 @@ body {
 
 /* Subtle pulse animation for data flow indicators */
 .logo-icon svg circle[fill="#03DAC6"] {
-    filter: drop-shadow(0 0 2px #03DAC6);
+    filter: drop-shadow(0 0 2px #D9D9D9);
 }
 
 .tagline {
@@ -1029,7 +1029,7 @@ body {
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.9em;
-    color: #03DAC6;
+    color: #D9D9D9;
 }
 
 .message-bubble pre {
@@ -1441,18 +1441,18 @@ body {
 }
 
 .question-container.personal-context .question-scenario {
-    background: var(--context-color-light);
-    border-left-color: var(--context-color);
+    background: transparent;
+    border: none;
 }
 
 .question-container.professional-context .question-scenario {
-    background: var(--context-color-light);
-    border-left-color: var(--context-color);
+    background: transparent;
+    border: none;
 }
 
 .question-container.mixed-context .question-scenario {
-    background: var(--context-color-light);
-    border-left-color: var(--context-color);
+    background: transparent;
+    border: none;
 }
 
 /* Context indicator for questions */
@@ -1511,9 +1511,9 @@ body {
     line-height: 1.6;
     margin: 0 0 28px 0;
     padding: 20px;
-    background: rgba(187, 134, 252, 0.05);
-    border-left: 3px solid #284B63;
-    border-radius: 0 8px 8px 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
 }
 
 /* Context Selection Styling */
@@ -1627,7 +1627,7 @@ body {
     transform: translate(-50%, -50%);
     width: 10px;
     height: 10px;
-    background: #000;
+    background: #D9D9D9;
     border-radius: 50%;
 }
 
@@ -1636,14 +1636,14 @@ body {
     padding: 12px;
     background: rgba(255, 255, 255, 0.02);
     border-radius: 8px;
-    border-left: 3px solid rgba(187, 134, 252, 0.3);
+    border-left: 3px solid #81929E;
 }
 
 .context-preview-title {
     font-family: 'ClashGrotesk-Semibold';
     font-size: 12px;
     font-weight: 600;
-    color: #284B63;
+    color: #D9D9D9;
     margin: 0 0 6px 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1737,7 +1737,7 @@ body {
     transform: translate(-50%, -50%);
     width: 8px;
     height: 8px;
-    background: #000;
+    background: #D9D9D9;
     border-radius: 50%;
 }
 
@@ -1885,17 +1885,17 @@ body {
 }
 
 .parameter-results .parameter-name {
-    font-family: 'ClashGrotesk-Semibold';
+    font-family: 'ClashGrotesk-Regular';
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     color: #FFFFFF;
 }
 
 .parameter-results .parameter-value {
-    font-family: 'ClashGrotesk-Bold';
-    font-size: 18px;
-    font-weight: 700;
-    color: #284B63;
+    font-family: 'ClashGrotesk-Regular';
+    font-size: 17px;
+    font-weight: 400;
+    color: #D9D9D9;
     background: transparent;
     padding: 4px 8px;
     border-radius: 6px;
@@ -2219,10 +2219,15 @@ body {
     
     .parameter-results .parameter-name {
         font-size: 15px;
+        font-family: 'ClashGrotesk-Regular';
+        font-weight: 400;
     }
     
     .parameter-results .parameter-value {
-        font-size: 16px;
+        font-size: 15px;
+        font-family: 'ClashGrotesk-Regular';
+        font-weight: 400;
+        color: #D9D9D9;
     }
     
     .personality-summary {
