@@ -330,15 +330,15 @@ class AntiSycophancyEngine {
             prompt += "Balance directness with diplomatic consideration, adjusting approach based on topic sensitivity and context. ";
         }
         
-        // Confidence (0-100): Definitive vs cautious
-        if (mappedParams.confidence > 0.8) {
-            prompt += "Express strong confidence in responses and recommendations. Make definitive statements and show conviction in advice across all topics. ";
-        } else if (mappedParams.confidence > 0.6) {
-            prompt += "Show appropriate confidence while acknowledging uncertainties when they exist. Balance assertion with intellectual humility. ";
-        } else if (mappedParams.confidence < 0.3) {
-            prompt += "Frequently express uncertainty and acknowledge limitations. Use qualifying language like 'might,' 'could,' and 'perhaps' regularly. ";
+        // Creativity (0-100): Imaginative vs practical approaches
+        if (mappedParams.creativity > 0.8) {
+            prompt += "Encourage highly creative and imaginative solutions. Suggest unconventional approaches, brainstorm innovative ideas, and think outside the box. Prioritize originality and creative exploration. ";
+        } else if (mappedParams.creativity > 0.6) {
+            prompt += "Balance creative thinking with practical considerations. Offer innovative solutions while keeping realistic constraints in mind. ";
+        } else if (mappedParams.creativity < 0.3) {
+            prompt += "Focus on practical, proven approaches. Prefer conventional solutions and established methods that have worked before. Minimize experimental or untested ideas. ";
         } else {
-            prompt += "Express moderate confidence with appropriate caveats, being neither overly certain nor excessively doubtful. ";
+            prompt += "Integrate creative possibilities with realistic implementation, offering both imaginative and practical perspectives. ";
         }
         
         // Response Length (0-100): Brief responses vs detailed explanations
@@ -514,7 +514,7 @@ class AntiSycophancyEngine {
         let humilityPrompts = "";
         
         // Base humility based on confidence parameter
-        const confidenceKey = userContext === 'mixed' ? 'confidence' : 
+        const confidenceKey = userContext === 'mixed' ? 'directness' : 
                             userContext === 'professional' ? 'authority' : 'warmth';
         const confidenceLevel = parameters[confidenceKey] || 50;
         
@@ -902,7 +902,7 @@ class AntiSycophancyEngine {
                 adaptability: (v) => this.applySCurve(v, 1.6), // S-curve for adaptation capability
                 balance: (v) => this.applySCurve(v, 1.4), // S-curve for balance integration
                 directness: (v) => this.applySCurve(v, 2.0), // Sharp S-curve like original
-                confidence: (v) => Math.pow(v, 1.5), // Exponential like original
+                creativity: (v) => Math.pow(v, 0.8), // Slight curve favoring higher creativity
                 responseLength: (v) => Math.pow(v, 0.9), // Slight curve for response length
                 // Legacy parameter support for backward compatibility
                 disagreement: (v) => this.applySCurve(v, 1.8),
@@ -977,10 +977,10 @@ class AntiSycophancyEngine {
                     result.balance = Math.min(1, result.balance + interactionStrength * 0.4);
                 }
                 
-                // High directness + high confidence = assertive communication
-                if (result.directness > 0.7 && result.confidence > 0.7) {
-                    result.directness = Math.min(1, result.directness + interactionStrength * 0.3);
-                    result.confidence = Math.min(1, result.confidence + interactionStrength * 0.3);
+                // High directness + high creativity = bold innovative communication
+                if (result.directness > 0.7 && result.creativity > 0.7) {
+                    result.directness = Math.min(1, result.directness + interactionStrength * 0.2);
+                    result.creativity = Math.min(1, result.creativity + interactionStrength * 0.3);
                 }
                 
                 // Low adaptability + high balance = consistent integrated approach

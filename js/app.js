@@ -27,7 +27,7 @@ let currentParameters = {
             adaptability: 70,
             balance: 65,
             directness: 75,
-            confidence: 60,
+            creativity: 60,
             responseLength: 60
         }
     }
@@ -773,6 +773,21 @@ const parameterDefinitions = {
         }
     },
     mixed: {
+        creativity: {
+            name: 'Creativity',
+            description: 'Imaginative vs practical approaches',
+            tooltip: 'Adjusts how creative and imaginative your AI\'s suggestions are. Higher values encourage out-of-the-box thinking and innovative solutions, while lower values focus on practical, proven approaches.'
+        },
+        directness: {
+            name: 'Directness',
+            description: 'Clear straightforward vs diplomatic softening',
+            tooltip: 'Adjusts how directly your AI communicates difficult or sensitive information. Higher values provide clear, straightforward feedback without sugar-coating, while lower values use diplomatic language to soften the message.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Brief responses vs detailed explanations',
+            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
+        },
         adaptability: {
             name: 'Adaptability',
             description: 'Dynamic context-switching vs consistent style',
@@ -782,21 +797,6 @@ const parameterDefinitions = {
             name: 'Balance',
             description: 'Blended personal/professional vs single approach',
             tooltip: 'Controls how well your AI blends personal warmth with professional expertise. Higher values seamlessly combine both aspects, while lower values tend to lean more heavily toward one style or the other.'
-        },
-        directness: {
-            name: 'Directness',
-            description: 'Clear straightforward vs diplomatic softening',
-            tooltip: 'Adjusts how directly your AI communicates difficult or sensitive information. Higher values provide clear, straightforward feedback without sugar-coating, while lower values use diplomatic language to soften the message.'
-        },
-        confidence: {
-            name: 'Confidence',
-            description: 'Definitive statements vs uncertain qualifiers',
-            tooltip: 'Controls how confident your AI sounds in its responses. Higher values use definitive language and strong statements, while lower values include more qualifiers like "perhaps," "might," and "possibly" to express uncertainty.'
-        },
-        responseLength: {
-            name: 'Length of Response',
-            description: 'Brief responses vs detailed explanations',
-            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
         }
     }
 };

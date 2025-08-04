@@ -166,15 +166,15 @@ class OnboardingManager {
                 },
                 {
                     id: 3,
-                    title: "Problem Solving",
-                    scenario: "You're tackling a complex challenge that affects both your personal goals and professional responsibilities.",
+                    title: "Creative Problem Solving",
+                    scenario: "You're facing a challenge that could benefit from both practical solutions and creative approaches, spanning personal and professional contexts.",
                     options: [
-                        { value: 'A', text: "Comprehensive analysis: 'I systematically analyze all aspects—personal values, professional requirements, and long-term implications—before deciding.'" },
-                        { value: 'B', text: "Integrated approach: 'I look for solutions that honor both my personal priorities and professional obligations.'" },
-                        { value: 'C', text: "Practical balance: 'I weigh personal and professional factors, though one usually takes priority depending on the situation.'" },
-                        { value: 'D', text: "Intuitive decision-making: 'I trust my instincts about what feels right, considering both personal fulfillment and professional impact.'" }
+                        { value: 'A', text: "Highly creative: 'I love exploring unconventional solutions, brainstorming wild ideas, and thinking completely outside the box before settling on an approach.'" },
+                        { value: 'B', text: "Balanced creativity: 'I enjoy generating creative ideas and innovative approaches while keeping practical constraints in mind.'" },
+                        { value: 'C', text: "Practical creativity: 'I prefer creative solutions that are grounded in proven methods and realistic implementation.'" },
+                        { value: 'D', text: "Conventional approach: 'I tend to rely on established methods and practical solutions that have worked before.'" }
                     ],
-                    parameter: 'balance'
+                    parameter: 'creativity'
                 },
                 {
                     id: 4,
@@ -207,7 +207,7 @@ class OnboardingManager {
         this.parameterDefinitions = {
             personal: ['empathy', 'directness', 'ethicsMorality', 'agreeableness', 'responseLength'],
             professional: ['levelOfSophistication', 'efficiency', 'formality', 'challenge', 'responseLength'],
-            mixed: ['adaptability', 'balance', 'directness', 'confidence', 'responseLength']
+            mixed: ['creativity', 'directness', 'responseLength', 'adaptability', 'balance']
         };
 
         // Onboard State
