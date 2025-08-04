@@ -232,17 +232,6 @@ class AntiSycophancyEngine {
     buildProfessionalContextPrompt(mappedParams) {
         let prompt = "";
         
-        // Authority (0-100): Expert confidence vs collaborative approach
-        if (mappedParams.authority > 0.8) {
-            prompt += "Speak with confident expertise and authority. Present clear, decisive recommendations based on best practices and professional experience. Take charge of conversations and guide toward optimal solutions. ";
-        } else if (mappedParams.authority > 0.6) {
-            prompt += "Balance confident expertise with openness to alternative viewpoints. Present well-reasoned recommendations while remaining flexible to input. ";
-        } else if (mappedParams.authority < 0.3) {
-            prompt += "Present information as suggestions rather than definitive answers. Frequently acknowledge uncertainty and invite collaboration in decision-making. ";
-        } else {
-            prompt += "Provide knowledgeable guidance while maintaining collaborative openness to different approaches and perspectives. ";
-        }
-        
         // Efficiency (0-100): Concise actionables vs comprehensive detail
         if (mappedParams.efficiency > 0.8) {
             prompt += "Prioritize brevity and actionable insights. Give direct, concise answers focused on immediate value and next steps. Eliminate unnecessary detail and focus on what matters most. ";
@@ -276,15 +265,27 @@ class AntiSycophancyEngine {
             prompt += "Provide balanced evaluation that both supports good ideas and identifies areas for improvement when necessary. ";
         }
         
-        // Response Length (0-100): Brief responses vs detailed explanations
-        if (mappedParams.responseLength > 0.8) {
-            prompt += "Provide comprehensive, detailed responses with thorough explanations, examples, and context. Explore topics deeply and offer extensive information. Ensure responses are at least 2 lines minimum. ";
-        } else if (mappedParams.responseLength > 0.6) {
-            prompt += "Give appropriately detailed responses that cover key points thoroughly without being overly verbose. Maintain at least 2 lines minimum. ";
-        } else if (mappedParams.responseLength < 0.3) {
-            prompt += "Keep responses concise and to-the-point. Focus on essential information and avoid lengthy explanations unless specifically requested. However, always provide at least 2 lines of response. ";
+        // Level of Sophistication (0-100): Technical complexity and depth of communication
+        if (mappedParams.levelOfSophistication > 0.8) {
+            prompt += "Use advanced technical language, industry-specific terminology, and complex theoretical concepts. Assume high expertise and engage at a sophisticated professional level. ";
+        } else if (mappedParams.levelOfSophistication > 0.6) {
+            prompt += "Use professional terminology with some explanation. Balance technical depth with accessibility for intermediate-level understanding. ";
+        } else if (mappedParams.levelOfSophistication < 0.3) {
+            prompt += "Avoid jargon and complex technical terms. Use clear, simple language with practical examples that are easy to understand for beginners. ";
         } else {
-            prompt += "Adjust response length to match the complexity of the question, providing sufficient detail without unnecessary verbosity. Ensure responses are at least 2 lines minimum. ";
+            prompt += "Use moderate technical detail with context and examples. Explain complex concepts in accessible ways while maintaining professional accuracy. ";
+        }
+        
+        // Response Length: Target number of lines per response
+        const targetLines = Math.max(2, Math.min(50, Math.round(mappedParams.responseLength || 10)));
+        if (targetLines <= 3) {
+            prompt += `Provide concise responses of approximately ${targetLines} lines. Focus on essential information and key points. Be direct and to-the-point. `;
+        } else if (targetLines <= 7) {
+            prompt += `Aim for responses of approximately ${targetLines} lines. Provide focused explanations with necessary detail and examples. `;
+        } else if (targetLines <= 15) {
+            prompt += `Target responses of approximately ${targetLines} lines. Provide comprehensive explanations with examples, context, and actionable insights. `;
+        } else {
+            prompt += `Provide detailed responses of approximately ${targetLines} lines. Include thorough explanations, multiple examples, comprehensive context, and extensive actionable insights. `;
         }
         
         return prompt;
@@ -891,11 +892,11 @@ class AntiSycophancyEngine {
                 responseLength: (v) => Math.pow(v, 0.9) // Slight curve for response length
             },
             professional: {
-                authority: (v) => Math.pow(v, 1.3), // Exponential for authority confidence
                 efficiency: (v) => this.applySCurve(v, 2.2), // Sharp S-curve for efficiency impact
                 formality: (v) => this.applySCurve(v, 0.7), // Gentle S-curve for formality
                 challenge: (v) => v, // Linear - direct mapping for challenge level
-                responseLength: (v) => Math.pow(v, 0.9) // Slight curve for response length
+                levelOfSophistication: (v) => this.applySCurve(v, 1.5), // S-curve for sophistication scaling
+                responseLength: (v) => v // Linear - direct mapping for line count
             },
             mixed: {
                 adaptability: (v) => this.applySCurve(v, 1.6), // S-curve for adaptation capability
@@ -946,20 +947,26 @@ class AntiSycophancyEngine {
                 break;
                 
             case 'professional':
-                // High authority + high challenge = confident challenging
-                if (result.authority > 0.7 && result.challenge > 0.7) {
-                    result.authority = Math.min(1, result.authority + interactionStrength * 0.4);
-                    result.challenge = Math.min(1, result.challenge + interactionStrength * 0.4);
-                }
-                
                 // High efficiency + high formality = structured communication
                 if (result.efficiency > 0.7 && result.formality > 0.7) {
                     result.efficiency = Math.min(1, result.efficiency + interactionStrength * 0.3);
                 }
                 
-                // Low authority + high challenge = collaborative questioning
-                if (result.authority < 0.4 && result.challenge > 0.6) {
-                    result.challenge = Math.max(0, result.challenge - interactionStrength * 0.2);
+                // High sophistication + high formality = expert professional communication
+                if (result.levelOfSophistication > 0.7 && result.formality > 0.7) {
+                    result.levelOfSophistication = Math.min(1, result.levelOfSophistication + interactionStrength * 0.2);
+                    result.formality = Math.min(1, result.formality + interactionStrength * 0.1);
+                }
+                
+                // Low sophistication + high challenge = simplified challenging
+                if (result.levelOfSophistication < 0.4 && result.challenge > 0.6) {
+                    result.challenge = Math.max(0, result.challenge - interactionStrength * 0.1);
+                }
+                
+                // High efficiency + high challenge = direct challenging
+                if (result.efficiency > 0.7 && result.challenge > 0.7) {
+                    result.efficiency = Math.min(1, result.efficiency + interactionStrength * 0.2);
+                    result.challenge = Math.min(1, result.challenge + interactionStrength * 0.2);
                 }
                 break;
                 

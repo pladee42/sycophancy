@@ -17,11 +17,11 @@ let currentParameters = {
             responseLength: 60
         },
         professional: {
-            authority: 70,
             efficiency: 75,
             formality: 80,
             challenge: 60,
-            responseLength: 60
+            levelOfSophistication: 60,
+            responseLength: 10
         },
         mixed: {
             adaptability: 70,
@@ -746,11 +746,6 @@ const parameterDefinitions = {
         }
     },
     professional: {
-        authority: {
-            name: 'Authority',
-            description: 'Expert confidence vs collaborative approach',
-            tooltip: 'Determines how authoritatively your AI communicates. Higher values provide confident, expert-level guidance with strong recommendations, while lower values take a more collaborative, consultative approach.'
-        },
         efficiency: {
             name: 'Efficiency',
             description: 'Concise actionables vs comprehensive detail',
@@ -766,10 +761,15 @@ const parameterDefinitions = {
             description: 'Active questioning vs supportive agreement',
             tooltip: 'Controls how much your AI challenges your ideas and assumptions. Higher values actively question your thinking and present alternative viewpoints, while lower values are more supportive and agreeable.'
         },
+        levelOfSophistication: {
+            name: 'Level of Sophistication',
+            description: 'Technical complexity and depth of communication',
+            tooltip: 'Adjusts the complexity and technical depth of responses based on your expertise level. Higher values provide advanced, detailed technical discussions, while lower values offer simplified explanations suitable for beginners.'
+        },
         responseLength: {
             name: 'Length of Response',
-            description: 'Brief responses vs detailed explanations',
-            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
+            description: 'Target number of lines per response',
+            tooltip: 'Sets the target number of lines for responses. Value represents approximate lines (e.g., 5 = ~5 lines, 15 = ~15 lines). Minimum is 2 lines, maximum is 50 lines.'
         }
     },
     mixed: {

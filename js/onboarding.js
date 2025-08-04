@@ -92,18 +92,6 @@ class OnboardingManager {
             professional: [
                 {
                     id: 1,
-                    title: "Meeting Leadership",
-                    scenario: "You're leading a project meeting where the team is struggling to reach consensus on a critical decision with a tight deadline.",
-                    options: [
-                        { value: 'A', text: "Take decisive action: 'Based on the data and our timeline, here's the decision we're going with. Let's move forward.'" },
-                        { value: 'B', text: "Guide toward resolution: 'Let's focus on our core criteria for success and see where we align. I'll make the final call if needed.'" },
-                        { value: 'C', text: "Facilitate collaboration: 'What if we table the contentious points and identify areas where we do agree?'" },
-                        { value: 'D', text: "Seek full consensus: 'I want to make sure everyone's concerns are heard. Let's keep discussing until we find a solution that works for all.'" }
-                    ],
-                    parameter: 'authority'
-                },
-                {
-                    id: 2,
                     title: "Project Feedback",
                     scenario: "A team member has delivered work that doesn't meet the project standards and the client deadline is approaching.",
                     options: [
@@ -115,19 +103,7 @@ class OnboardingManager {
                     parameter: 'challenge'
                 },
                 {
-                    id: 3,
-                    title: "Decision Making",
-                    scenario: "Your team faces a strategic decision: invest in a new technology that could provide competitive advantage but requires significant resources.",
-                    options: [
-                        { value: 'A', text: "Data-driven decision: 'Let me analyze the ROI, implementation costs, and competitive analysis before making this decision.'" },
-                        { value: 'B', text: "Structured evaluation: 'I'll create a decision framework weighing risks, benefits, and strategic alignment.'" },
-                        { value: 'C', text: "Consultative approach: 'I want input from key stakeholders before deciding. Let's gather perspectives from IT, finance, and operations.'" },
-                        { value: 'D', text: "Consensus building: 'This affects multiple departments. Let's ensure everyone has input before we commit to this investment.'" }
-                    ],
-                    parameter: 'authority'
-                },
-                {
-                    id: 4,
+                    id: 2,
                     title: "Team Collaboration",
                     scenario: "Your cross-functional team has different working styles and communication preferences that are causing friction.",
                     options: [
@@ -139,16 +115,28 @@ class OnboardingManager {
                     parameter: 'efficiency'
                 },
                 {
-                    id: 5,
-                    title: "Communication Detail",
-                    scenario: "Your team needs a briefing on the new company strategy. How do you prefer to present complex information?",
+                    id: 3,
+                    title: "Communication Style",
+                    scenario: "When communicating with colleagues about work matters, what approach feels most natural to you?",
                     options: [
-                        { value: 'A', text: "Comprehensive briefing: Provide detailed analysis, background context, implementation steps, potential risks, and expected outcomes with supporting data." },
-                        { value: 'B', text: "Structured overview: Cover key strategic pillars, major changes, timeline, and impact areas with clear action items." },
-                        { value: 'C', text: "Focused summary: 'Here are the three main strategic shifts, what they mean for our team, and our next steps.'" },
-                        { value: 'D', text: "Essential points: 'New strategy focuses on digital transformation. We'll be restructuring Q2. Details to follow.'" }
+                        { value: 'A', text: "Highly formal: 'I prefer structured, professional language with proper business terminology and protocol.'" },
+                        { value: 'B', text: "Professional but approachable: 'I use business-appropriate language that's respectful but not overly stiff.'" },
+                        { value: 'C', text: "Conversational professional: 'I balance professional standards with friendly, approachable communication.'" },
+                        { value: 'D', text: "Casual and friendly: 'I prefer relaxed, informal communication even in professional settings.'" }
                     ],
-                    parameter: 'responseLength'
+                    parameter: 'formality'
+                },
+                {
+                    id: 4,
+                    title: "Technical Expertise Level",
+                    scenario: "You're discussing a work challenge with someone who could provide insights. What level of technical depth feels most comfortable to you?",
+                    options: [
+                        { value: 'A', text: "Advanced level: 'I'm comfortable with highly technical discussions, industry jargon, and complex theoretical concepts.'" },
+                        { value: 'B', text: "Intermediate level: 'I can handle technical discussions but appreciate when complex ideas are explained with some context.'" },
+                        { value: 'C', text: "Intermediate level: 'I prefer moderate technical detail with practical examples to help me understand applications.'" },
+                        { value: 'D', text: "Beginning level: 'I prefer straightforward explanations with minimal jargon and clear, simple examples.'" }
+                    ],
+                    parameter: 'levelOfSophistication'
                 },
             ],
             mixed: [
@@ -217,8 +205,8 @@ class OnboardingManager {
 
         // Parameter Definitions by Context
         this.parameterDefinitions = {
-            personal: ['empathy', 'supportiveness', 'creativity', 'warmth', 'responseLength'],
-            professional: ['authority', 'efficiency', 'formality', 'challenge', 'responseLength'],
+            personal: ['empathy', 'directness', 'ethicsMorality', 'agreeableness', 'responseLength'],
+            professional: ['efficiency', 'formality', 'challenge', 'levelOfSophistication'],
             mixed: ['adaptability', 'balance', 'directness', 'confidence', 'responseLength']
         };
 
