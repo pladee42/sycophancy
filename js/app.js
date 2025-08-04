@@ -407,7 +407,7 @@ function renderChatMessages() {
             <div class="message ai">
                 <div class="personality-badge">Direct • Confident • Formal</div>
                 <div class="message-bubble">
-                    Welcome to Zero. I'm designed to give you honest, unfiltered responses rather than just telling you what you want to hear. Use the anti-sycophancy controls to adjust my personality in real-time. What would you like to discuss?
+                    Welcome to Zero. Ready when you are.
                 </div>
             </div>
         `;
