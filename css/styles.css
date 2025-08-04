@@ -1593,6 +1593,7 @@ body {
 .progress-container {
     margin-bottom: 32px;
     padding: 0 8px;
+    margin-top: 60px; /* Increased margin to prevent overlap with close button (40px + 16px + 4px buffer) */
 }
 
 .progress-bar {

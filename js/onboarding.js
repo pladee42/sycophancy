@@ -521,17 +521,17 @@ class OnboardingManager {
     updateProgress() {
         if (!this.contextSelected) {
             // On context selection
-            const progress = (1 / 5) * 100; // 1 out of 5 total steps (1 context + 4 questions)
+            const progress = (1 / 6) * 100; // 1 out of 6 total steps (1 context + 5 questions)
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('currentQuestion').textContent = 1;
-            document.getElementById('totalQuestions').textContent = 5;
+            document.getElementById('totalQuestions').textContent = 6;
         } else if (this.selectedContext) {
             // In context-specific questions
             const contextQuestions = this.questionSets[this.selectedContext];
-            const progress = ((this.currentQuestionIndex + 2) / 5) * 100; // +2 because context selection is step 1
+            const progress = ((this.currentQuestionIndex + 2) / 6) * 100; // +2 because context selection is step 1
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('currentQuestion').textContent = this.currentQuestionIndex + 2;
-            document.getElementById('totalQuestions').textContent = 5;
+            document.getElementById('totalQuestions').textContent = 6;
         }
     }
 
