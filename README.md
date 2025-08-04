@@ -4,7 +4,7 @@
 
 Unlike typical AI chatbots that tend to be overly agreeable, Zero features a sophisticated **Anti-Sycophancy Engine** that challenges users, presents counterarguments, and provides genuinely authentic conversations.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Modern web browser
@@ -19,7 +19,7 @@ Unlike typical AI chatbots that tend to be overly agreeable, Zero features a sop
 
 No build process required - it's a static web application.
 
-## ⚙️ Configuration
+## Configuration
 
 The application uses a **split configuration** approach to keep your API key secure:
 
@@ -58,7 +58,7 @@ The `config.public.json` file contains all non-sensitive settings and is already
 
 You can customize these settings by editing `config.public.json` directly.
 
-## 🛠️ Development
+## Development
 
 ### **Running Locally**
 Simply open `index.html` in any modern web browser. No build process required.
@@ -84,7 +84,7 @@ Add new models to `config.public.json`:
 }
 ```
 
-## 📚 References
+## References
 
 This project is inspired by research on AI sycophancy and the importance of authentic AI interactions:
 
