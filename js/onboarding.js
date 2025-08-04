@@ -206,7 +206,7 @@ class OnboardingManager {
         // Parameter Definitions by Context
         this.parameterDefinitions = {
             personal: ['empathy', 'directness', 'ethicsMorality', 'agreeableness', 'responseLength'],
-            professional: ['efficiency', 'formality', 'challenge', 'levelOfSophistication'],
+            professional: ['levelOfSophistication', 'efficiency', 'formality', 'challenge', 'responseLength'],
             mixed: ['adaptability', 'balance', 'directness', 'confidence', 'responseLength']
         };
 
