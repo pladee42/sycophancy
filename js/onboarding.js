@@ -257,6 +257,8 @@ class OnboardingManager {
         document.getElementById('welcomeFooter').classList.remove('hidden');
         document.getElementById('questionnaireFooter').classList.add('hidden');
         document.getElementById('resultsFooter').classList.add('hidden');
+        // Show header when returning to welcome screen
+        document.getElementById('onboardHeader').classList.remove('hidden');
     }
 
     showQuestionnaireScreen() {
@@ -266,6 +268,8 @@ class OnboardingManager {
         document.getElementById('welcomeFooter').classList.add('hidden');
         document.getElementById('questionnaireFooter').classList.remove('hidden');
         document.getElementById('resultsFooter').classList.add('hidden');
+        // Hide header when showing questionnaire
+        document.getElementById('onboardHeader').classList.add('hidden');
     }
 
     showResultsScreen() {
@@ -274,6 +278,8 @@ class OnboardingManager {
         document.getElementById('questionnaireFooter').classList.add('hidden');
         document.getElementById('resultsFooter').classList.remove('hidden');
         document.getElementById('welcomeFooter').classList.add('hidden');
+        // Keep header hidden on results screen
+        document.getElementById('onboardHeader').classList.add('hidden');
     }
 
     // Questionnaire Functions
@@ -1379,7 +1385,6 @@ class OnboardingManager {
             exampleSection.className = 'example-responses';
             exampleSection.innerHTML = `
                 <h4>
-                    <span>🤖</span>
                     <span>Example AI Responses</span>
                 </h4>
                 <div class="example-responses-list">

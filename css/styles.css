@@ -531,7 +531,7 @@ body {
 }
 
 .context-btn:hover {
-    background: rgba(187, 134, 252, 0.1);
+    background: transparent;
     border-color: rgba(187, 134, 252, 0.3);
     color: #ccc;
 }
@@ -709,8 +709,8 @@ body {
 }
 
 .apply-button.applied {
-    background: #03DAC6;
-    color: #000000;
+    background: #284B63;
+    color: #FFFFFF;
     animation: pulse 0.5s ease-out;
 }
 
@@ -1025,7 +1025,7 @@ body {
 
 .message-bubble code {
     font-family: 'Courier New', Courier, monospace;
-    background: rgba(187, 134, 252, 0.1);
+    background: transparent;
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.9em;
@@ -1081,7 +1081,7 @@ body {
 }
 
 .message-bubble th {
-    background: rgba(187, 134, 252, 0.1);
+    background: transparent;
     font-weight: 600;
 }
 
@@ -1354,9 +1354,9 @@ body {
 .onboard-start {
     padding: 12px 24px;
     background: #284B63;
-    border: none;
+    border: 1px solid #FFFFFF;
     border-radius: 8px;
-    color: #000000;
+    color: #FFFFFF;
     font-family: 'ClashGrotesk-Semibold';
     font-size: 14px;
     font-weight: 600;
@@ -1369,9 +1369,7 @@ body {
 }
 
 .onboard-start:hover {
-    background: #284B63;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+    background: transparent;
 }
 
 .onboard-start:active {
@@ -1404,7 +1402,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #284B63, #284B63);
+    background: linear-gradient(90deg, #D9D9D9, #284B63);
     border-radius: 4px;
     transition: width 0.4s ease;
     width: 0%;
@@ -1463,7 +1461,7 @@ body {
     align-items: center;
     gap: 6px;
     padding: 4px 8px;
-    background: rgba(187, 134, 252, 0.1);
+    background: transparent;
     border: 1px solid rgba(187, 134, 252, 0.2);
     border-radius: 12px;
     font-family: 'ClashGrotesk-Medium';
@@ -1544,17 +1542,13 @@ body {
 }
 
 .context-card:hover {
-    background: rgba(187, 134, 252, 0.08);
-    border-color: rgba(187, 134, 252, 0.4);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(187, 134, 252, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #555;
 }
 
 .context-card.selected {
-    background: rgba(187, 134, 252, 0.12);
+    background: rgba(255, 255, 255, 0.05);
     border-color: #284B63;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(187, 134, 252, 0.25);
 }
 
 
@@ -1664,19 +1658,19 @@ body {
 .preview-param {
     display: inline-block;
     padding: 3px 8px;
-    background: rgba(187, 134, 252, 0.1);
-    color: #ccc;
+    background: transparent;
+    color: #D9D9D9;
     font-family: 'ClashGrotesk-Medium';
     font-size: 11px;
     font-weight: 500;
     border-radius: 4px;
-    border: 1px solid rgba(187, 134, 252, 0.2);
+    border: 1px solid #555;
 }
 
 .context-card.selected .preview-param {
-    background: rgba(187, 134, 252, 0.2);
-    color: #e6e6e6;
-    border-color: rgba(187, 134, 252, 0.4);
+    background: transparent;
+    color: #FFFFFF;
+    border-color: #284B63;
 }
 
 /* Answer Options (for regular questions) */
@@ -1700,12 +1694,12 @@ body {
 }
 
 .answer-option:hover {
-    background: rgba(187, 134, 252, 0.08);
-    border-color: rgba(187, 134, 252, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #555;
 }
 
 .answer-option.selected {
-    background: rgba(187, 134, 252, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border-color: #284B63;
 }
 
@@ -1806,14 +1800,13 @@ body {
 
 .nav-button.primary {
     background: #284B63;
-    color: #000000;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     margin-left: auto;
 }
 
 .nav-button.primary:not(:disabled):hover {
-    background: #284B63;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+    background: transparent;
 }
 
 .nav-button:active:not(:disabled) {
@@ -1829,13 +1822,13 @@ body {
 .results-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #03DAC6, #00BFA5);
+    background: #284B63;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 24px auto;
-    color: #000;
+    color: #FFFFFF;
     animation: successPulse 2s ease-out;
 }
 
@@ -1880,8 +1873,8 @@ body {
 }
 
 .parameter-result:hover {
-    background: rgba(187, 134, 252, 0.05);
-    border-color: rgba(187, 134, 252, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #555;
 }
 
 .parameter-info {
@@ -1903,7 +1896,7 @@ body {
     font-size: 18px;
     font-weight: 700;
     color: #284B63;
-    background: rgba(187, 134, 252, 0.1);
+    background: transparent;
     padding: 4px 8px;
     border-radius: 6px;
     min-width: 40px;
@@ -1944,7 +1937,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 6px 12px;
-    background: rgba(187, 134, 252, 0.1);
+    background: transparent;
     border: 1px solid rgba(187, 134, 252, 0.2);
     border-radius: 16px;
     font-family: 'ClashGrotesk-Medium';
@@ -2049,8 +2042,8 @@ body {
 
 /* Personality Summary */
 .personality-summary {
-    background: rgba(187, 134, 252, 0.05);
-    border: 1px solid rgba(187, 134, 252, 0.1);
+    background: transparent;
+    border: 1px solid #333;
     border-radius: 12px;
     padding: 24px;
     text-align: center;
@@ -2075,11 +2068,12 @@ body {
 .trait {
     display: inline-block;
     padding: 6px 12px;
-    background: rgba(187, 134, 252, 0.15);
-    border: 1px solid rgba(187, 134, 252, 0.3);
+    background: transparent;
+    border: 1px solid #555;
     border-radius: 20px;
     font-family: 'ClashGrotesk-Medium';
     font-size: 12px;
+    color: #D9D9D9;
     font-weight: 500;
     color: #284B63;
     animation: traitAppear 0.6s ease-out forwards;
@@ -2523,9 +2517,9 @@ body {
 
 /* Progress bar enhancements */
 .progress-fill {
-    background: linear-gradient(90deg, #284B63, #284B63, #03DAC6);
+    background: linear-gradient(90deg, #D9D9D9, #284B63);
     background-size: 200% 100%;
-    animation: progressShine 2s ease-in-out infinite;
+    animation: progressShine 4s ease-in-out infinite;
 }
 
 @keyframes progressShine {
