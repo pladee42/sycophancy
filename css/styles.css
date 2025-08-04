@@ -233,28 +233,227 @@ body {
     background: #121212;
 }
 
-.model-selector {
+/* Modern Custom Dropdown Styles */
+.model-selector-modern {
+    position: relative;
+    min-width: 220px;
+}
+
+.model-selector-trigger {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(40, 75, 99, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(40, 75, 99, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.model-dropdown {
-    padding: 8px 16px;
-    border: 1px solid #555;
+.model-selector-trigger:hover {
+    background: rgba(40, 75, 99, 0.15);
+    border-color: rgba(40, 75, 99, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 75, 99, 0.2);
+}
+
+.model-selector-trigger.active {
+    background: rgba(40, 75, 99, 0.2);
+    border-color: #284B63;
+    box-shadow: 0 4px 20px rgba(40, 75, 99, 0.3);
+}
+
+.model-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.model-provider {
+    font-size: 10px;
+    font-family: 'ClashGrotesk-Medium';
+    color: #284B63;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.model-name {
+    font-size: 14px;
+    font-family: 'ClashGrotesk-Regular';
+    color: #FFFFFF;
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+    color: #999;
+}
+
+.model-selector-trigger.active .dropdown-arrow {
+    transform: rotate(180deg);
+    color: #284B63;
+}
+
+/* Dropdown Panel */
+.model-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(40, 75, 99, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    max-height: 400px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.model-dropdown-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Search Input */
+.model-search {
+    padding: 12px;
+    border-bottom: 1px solid rgba(40, 75, 99, 0.2);
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+}
+
+.model-search-input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    background: rgba(40, 75, 99, 0.05);
+    border: 1px solid rgba(40, 75, 99, 0.2);
     border-radius: 8px;
-    background: #121212;
     color: #FFFFFF;
     font-family: 'ClashGrotesk-Regular';
-    font-size: 14px;
-    cursor: pointer;
-    min-width: 180px;
+    font-size: 13px;
+    transition: all 0.2s ease;
 }
 
-.model-dropdown:focus {
+.model-search-input:focus {
     outline: none;
+    background: rgba(40, 75, 99, 0.1);
     border-color: #284B63;
 }
+
+.model-search-input::placeholder {
+    color: #666;
+}
+
+/* Model List */
+.model-list {
+    overflow-y: auto;
+    max-height: 300px;
+    padding: 8px;
+}
+
+.model-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.model-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.model-list::-webkit-scrollbar-thumb {
+    background: rgba(40, 75, 99, 0.3);
+    border-radius: 3px;
+}
+
+.model-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(40, 75, 99, 0.5);
+}
+
+/* Model Groups */
+.model-group {
+    margin-bottom: 12px;
+}
+
+.model-group:last-child {
+    margin-bottom: 0;
+}
+
+.model-group-header {
+    font-size: 11px;
+    font-family: 'ClashGrotesk-Medium';
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+}
+
+/* Model Options */
+.model-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.model-option:hover {
+    background: rgba(40, 75, 99, 0.1);
+}
+
+.model-option.selected {
+    background: rgba(40, 75, 99, 0.15);
+}
+
+.model-option.selected::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: #284B63;
+    border-radius: 0 2px 2px 0;
+}
+
+.model-option-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.model-option-name {
+    font-size: 13px;
+    font-family: 'ClashGrotesk-Regular';
+    color: #FFFFFF;
+}
+
+.model-option-provider {
+    font-size: 10px;
+    color: #666;
+}
+
+/* Provider Badge Colors - Applied dynamically from config */
 
 /* Header settings button */
 .header-settings-btn {
@@ -810,10 +1009,20 @@ body {
         gap: 12px;
     }
 
-    .model-dropdown {
-        min-width: 140px;
+    .model-selector-modern {
+        min-width: 180px;
+    }
+    
+    .model-selector-trigger {
+        padding: 10px 14px;
+    }
+    
+    .model-name {
         font-size: 13px;
-        padding: 6px 12px;
+    }
+    
+    .model-provider {
+        font-size: 9px;
     }
 
     .header-settings-btn {
@@ -1106,11 +1315,6 @@ body {
     font-family: 'ClashGrotesk-Regular';
 }
 
-.model-dropdown option {
-    background: #121212;
-    color: #FFFFFF;
-    font-family: 'ClashGrotesk-Regular';
-}
 
 /* Onboard Button Styling */
 .onboard-btn {

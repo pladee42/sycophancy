@@ -49,6 +49,13 @@
     "onSurface": "#FFFFFF",
     "onError": "#000000"
   },
+  "providerColors": {
+    "OpenAI": "#10A37F",
+    "Anthropic": "#D4A373",
+    "Google": "#4285F4",
+    "Meta": "#0866FF",
+    "xAI": "#FFFFFF"
+  },
   "antiSycophancyEngine": {
     "baseDisagreementMin": 15,
     "baseDisagreementMax": 30,

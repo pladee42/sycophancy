@@ -600,6 +600,172 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeChatSystem();
 });
 
+// Initialize modern model selector
+function initializeModelSelector() {
+    const trigger = document.getElementById('modelSelectorTrigger');
+    const panel = document.getElementById('modelDropdownPanel');
+    const modelList = document.getElementById('modelList');
+    const searchInput = document.getElementById('modelSearchInput');
+    const currentProvider = document.getElementById('currentModelProvider');
+    const currentName = document.getElementById('currentModelName');
+    
+    // Group models by provider
+    const modelsByProvider = {};
+    config.availableModels.forEach(model => {
+        if (!modelsByProvider[model.provider]) {
+            modelsByProvider[model.provider] = [];
+        }
+        modelsByProvider[model.provider].push(model);
+    });
+    
+    // Render model list
+    function renderModels(searchTerm = '') {
+        modelList.innerHTML = '';
+        
+        Object.entries(modelsByProvider).forEach(([provider, models]) => {
+            // Filter models based on search
+            const filteredModels = models.filter(model => 
+                model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                provider.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (filteredModels.length === 0) return;
+            
+            // Create provider group
+            const group = document.createElement('div');
+            group.className = 'model-group';
+            
+            const header = document.createElement('div');
+            header.className = 'model-group-header';
+            header.textContent = provider;
+            group.appendChild(header);
+            
+            // Add model options
+            filteredModels.forEach(model => {
+                const option = document.createElement('div');
+                option.className = 'model-option';
+                option.dataset.modelId = model.id;
+                option.dataset.provider = provider;
+                
+                if (model.id === selectedModel) {
+                    option.classList.add('selected');
+                }
+                
+                option.innerHTML = `
+                    <div class="model-option-info">
+                        <div class="model-option-name">${model.name}</div>
+                        <div class="model-option-provider">${provider}</div>
+                    </div>
+                `;
+                
+                option.addEventListener('click', () => selectModel(model, provider));
+                group.appendChild(option);
+            });
+            
+            modelList.appendChild(group);
+        });
+    }
+    
+    // Select a model
+    function selectModel(model, provider) {
+        selectedModel = model.id;
+        currentProvider.textContent = provider;
+        currentProvider.dataset.provider = provider;
+        currentName.textContent = model.name;
+        closeDropdown();
+        
+        // Update selected state
+        document.querySelectorAll('.model-option').forEach(opt => {
+            opt.classList.toggle('selected', opt.dataset.modelId === model.id);
+        });
+    }
+    
+    // Toggle dropdown
+    function toggleDropdown() {
+        const isOpen = panel.classList.contains('active');
+        if (isOpen) {
+            closeDropdown();
+        } else {
+            openDropdown();
+        }
+    }
+    
+    // Open dropdown
+    function openDropdown() {
+        trigger.classList.add('active');
+        panel.classList.add('active');
+        searchInput.value = '';
+        renderModels();
+        searchInput.focus();
+    }
+    
+    // Close dropdown
+    function closeDropdown() {
+        trigger.classList.remove('active');
+        panel.classList.remove('active');
+    }
+    
+    // Event listeners
+    trigger.addEventListener('click', toggleDropdown);
+    
+    // Search functionality
+    searchInput.addEventListener('input', (e) => {
+        renderModels(e.target.value);
+    });
+    
+    // Prevent panel clicks from closing dropdown
+    panel.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!trigger.contains(e.target) && !panel.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (panel.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        }
+    });
+    
+    // Apply provider colors from config
+    function applyProviderColors() {
+        if (config.providerColors) {
+            const style = document.createElement('style');
+            let css = '';
+            
+            Object.entries(config.providerColors).forEach(([provider, color]) => {
+                css += `.model-option[data-provider="${provider}"] .model-option-provider { color: ${color}; }\n`;
+                css += `.model-provider[data-provider="${provider}"] { color: ${color}; }\n`;
+            });
+            
+            style.textContent = css;
+            document.head.appendChild(style);
+        }
+    }
+    
+    // Set initial model
+    const defaultModel = config.availableModels.find(m => m.id === config.defaultModel);
+    if (defaultModel) {
+        currentProvider.textContent = defaultModel.provider;
+        currentProvider.dataset.provider = defaultModel.provider;
+        currentName.textContent = defaultModel.name;
+        selectedModel = defaultModel.id;
+    }
+    
+    // Apply provider colors
+    applyProviderColors();
+    
+    // Initial render
+    renderModels();
+}
+
 // Load configuration from config.public.json and config.private.json
 async function loadConfig() {
     try {
@@ -631,25 +797,8 @@ async function loadConfig() {
         
         console.log('✅ OpenRouter API key loaded successfully');
         
-        // Update model selector with available models
-        const modelSelector = document.getElementById('modelSelector');
-        modelSelector.innerHTML = '';
-        
-        config.availableModels.forEach(model => {
-            const option = document.createElement('option');
-            option.value = model.id;
-            option.textContent = model.name;
-            modelSelector.appendChild(option);
-        });
-        
-        // Set default model
-        modelSelector.value = config.defaultModel;
-        selectedModel = config.defaultModel;
-        
-        // Add change listener
-        modelSelector.addEventListener('change', function(e) {
-            selectedModel = e.target.value;
-        });
+        // Initialize modern model selector
+        initializeModelSelector();
         
         // Apply color palette from config if available
         if (config.colorPalette) {
