@@ -76,6 +76,18 @@ class OnboardingManager {
                     ],
                     parameter: 'warmth'
                 },
+                {
+                    id: 5,
+                    title: "Response Detail",
+                    scenario: "A friend asks you for advice on improving their personal finances. They want to know where to start.",
+                    options: [
+                        { value: 'A', text: "Give comprehensive guidance: Explain budgeting fundamentals, emergency funds, debt strategies, investment basics, and specific tools they can use." },
+                        { value: 'B', text: "Provide structured overview: Cover the main areas (budgeting, debt, savings, investing) with key points for each." },
+                        { value: 'C', text: "Offer focused advice: 'Start with tracking your spending for a month, then create a basic budget. That foundation will guide everything else.'" },
+                        { value: 'D', text: "Give simple direction: 'Track your expenses and create a budget. Everything else builds from there.'" }
+                    ],
+                    parameter: 'responseLength'
+                },
             ],
             professional: [
                 {
@@ -125,6 +137,18 @@ class OnboardingManager {
                         { value: 'D', text: "Build understanding: 'I'd like everyone to share their working preferences so we can better support each other.'" }
                     ],
                     parameter: 'efficiency'
+                },
+                {
+                    id: 5,
+                    title: "Communication Detail",
+                    scenario: "Your team needs a briefing on the new company strategy. How do you prefer to present complex information?",
+                    options: [
+                        { value: 'A', text: "Comprehensive briefing: Provide detailed analysis, background context, implementation steps, potential risks, and expected outcomes with supporting data." },
+                        { value: 'B', text: "Structured overview: Cover key strategic pillars, major changes, timeline, and impact areas with clear action items." },
+                        { value: 'C', text: "Focused summary: 'Here are the three main strategic shifts, what they mean for our team, and our next steps.'" },
+                        { value: 'D', text: "Essential points: 'New strategy focuses on digital transformation. We'll be restructuring Q2. Details to follow.'" }
+                    ],
+                    parameter: 'responseLength'
                 },
             ],
             mixed: [
@@ -176,14 +200,26 @@ class OnboardingManager {
                     ],
                     parameter: 'adaptability'
                 },
+                {
+                    id: 5,
+                    title: "Information Depth",
+                    scenario: "Someone asks you to explain a complex topic that affects both their personal and professional life.",
+                    options: [
+                        { value: 'A', text: "Comprehensive explanation: Provide thorough coverage including background, personal implications, professional impacts, examples, and actionable steps." },
+                        { value: 'B', text: "Structured detail: Cover key concepts, practical applications, and connections between personal and professional aspects." },
+                        { value: 'C', text: "Focused explanation: 'Here's what this means for your situation, why it matters, and what you should consider doing.'" },
+                        { value: 'D', text: "Essential summary: 'This impacts both your personal goals and work objectives. Here's the key point and next step.'" }
+                    ],
+                    parameter: 'responseLength'
+                },
             ]
         };
 
         // Parameter Definitions by Context
         this.parameterDefinitions = {
-            personal: ['empathy', 'supportiveness', 'creativity', 'warmth'],
-            professional: ['authority', 'efficiency', 'formality', 'challenge'],
-            mixed: ['adaptability', 'balance', 'directness', 'confidence']
+            personal: ['empathy', 'supportiveness', 'creativity', 'warmth', 'responseLength'],
+            professional: ['authority', 'efficiency', 'formality', 'challenge', 'responseLength'],
+            mixed: ['adaptability', 'balance', 'directness', 'confidence', 'responseLength']
         };
 
         // Onboard State
@@ -807,6 +843,11 @@ class OnboardingManager {
                 medium: "Friendly yet professional interaction",
                 low: "Professional distance with neutral tone"
             },
+            responseLength: {
+                high: "Comprehensive and detailed explanations",
+                medium: "Balanced detail with focused key points",
+                low: "Concise and to-the-point responses"
+            },
             
             // Professional Context Parameters
             authority: {
@@ -829,6 +870,11 @@ class OnboardingManager {
                 medium: "Thoughtful pushback when appropriate",
                 low: "Supportive and agreement-focused"
             },
+            responseLength: {
+                high: "Comprehensive and detailed explanations",
+                medium: "Balanced detail with focused key points",
+                low: "Concise and to-the-point responses"
+            },
             
             // Mixed Context Parameters
             adaptability: {
@@ -850,6 +896,11 @@ class OnboardingManager {
                 high: "Strong conviction with definitive statements",
                 medium: "Appropriate confidence with uncertainty acknowledgment",
                 low: "Cautious with frequent qualifiers and uncertainty"
+            },
+            responseLength: {
+                high: "Comprehensive and detailed explanations",
+                medium: "Balanced detail with focused key points",
+                low: "Concise and to-the-point responses"
             }
         };
         

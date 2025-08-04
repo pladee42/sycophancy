@@ -212,6 +212,17 @@ class AntiSycophancyEngine {
             prompt += "Balance personal warmth with professional helpfulness, being caring while maintaining appropriate boundaries. ";
         }
         
+        // Response Length (0-100): Brief responses vs detailed explanations
+        if (mappedParams.responseLength > 0.8) {
+            prompt += "Provide comprehensive, detailed responses with thorough explanations, examples, and context. Explore topics deeply and offer extensive information. Ensure responses are at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength > 0.6) {
+            prompt += "Give appropriately detailed responses that cover key points thoroughly without being overly verbose. Maintain at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength < 0.3) {
+            prompt += "Keep responses concise and to-the-point. Focus on essential information and avoid lengthy explanations unless specifically requested. However, always provide at least 2 lines of response. ";
+        } else {
+            prompt += "Adjust response length to match the complexity of the question, providing sufficient detail without unnecessary verbosity. Ensure responses are at least 2 lines minimum. ";
+        }
+        
         return prompt;
     }
 
@@ -265,6 +276,17 @@ class AntiSycophancyEngine {
             prompt += "Provide balanced evaluation that both supports good ideas and identifies areas for improvement when necessary. ";
         }
         
+        // Response Length (0-100): Brief responses vs detailed explanations
+        if (mappedParams.responseLength > 0.8) {
+            prompt += "Provide comprehensive, detailed responses with thorough explanations, examples, and context. Explore topics deeply and offer extensive information. Ensure responses are at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength > 0.6) {
+            prompt += "Give appropriately detailed responses that cover key points thoroughly without being overly verbose. Maintain at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength < 0.3) {
+            prompt += "Keep responses concise and to-the-point. Focus on essential information and avoid lengthy explanations unless specifically requested. However, always provide at least 2 lines of response. ";
+        } else {
+            prompt += "Adjust response length to match the complexity of the question, providing sufficient detail without unnecessary verbosity. Ensure responses are at least 2 lines minimum. ";
+        }
+        
         return prompt;
     }
 
@@ -316,6 +338,17 @@ class AntiSycophancyEngine {
             prompt += "Frequently express uncertainty and acknowledge limitations. Use qualifying language like 'might,' 'could,' and 'perhaps' regularly. ";
         } else {
             prompt += "Express moderate confidence with appropriate caveats, being neither overly certain nor excessively doubtful. ";
+        }
+        
+        // Response Length (0-100): Brief responses vs detailed explanations
+        if (mappedParams.responseLength > 0.8) {
+            prompt += "Provide comprehensive, detailed responses with thorough explanations, examples, and context. Explore topics deeply and offer extensive information. Ensure responses are at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength > 0.6) {
+            prompt += "Give appropriately detailed responses that cover key points thoroughly without being overly verbose. Maintain at least 2 lines minimum. ";
+        } else if (mappedParams.responseLength < 0.3) {
+            prompt += "Keep responses concise and to-the-point. Focus on essential information and avoid lengthy explanations unless specifically requested. However, always provide at least 2 lines of response. ";
+        } else {
+            prompt += "Adjust response length to match the complexity of the question, providing sufficient detail without unnecessary verbosity. Ensure responses are at least 2 lines minimum. ";
         }
         
         return prompt;
@@ -854,19 +887,22 @@ class AntiSycophancyEngine {
                 empathy: (v) => this.applySCurve(v, 1.8), // Slightly steeper for more nuanced empathy
                 supportiveness: (v) => v, // Linear - direct mapping
                 creativity: (v) => Math.pow(v, 0.8), // Slight curve favoring higher creativity
-                warmth: (v) => this.applySCurve(v, 1.5) // S-curve for natural warmth scaling
+                warmth: (v) => this.applySCurve(v, 1.5), // S-curve for natural warmth scaling
+                responseLength: (v) => Math.pow(v, 0.9) // Slight curve for response length
             },
             professional: {
                 authority: (v) => Math.pow(v, 1.3), // Exponential for authority confidence
                 efficiency: (v) => this.applySCurve(v, 2.2), // Sharp S-curve for efficiency impact
                 formality: (v) => this.applySCurve(v, 0.7), // Gentle S-curve for formality
-                challenge: (v) => v // Linear - direct mapping for challenge level
+                challenge: (v) => v, // Linear - direct mapping for challenge level
+                responseLength: (v) => Math.pow(v, 0.9) // Slight curve for response length
             },
             mixed: {
                 adaptability: (v) => this.applySCurve(v, 1.6), // S-curve for adaptation capability
                 balance: (v) => this.applySCurve(v, 1.4), // S-curve for balance integration
                 directness: (v) => this.applySCurve(v, 2.0), // Sharp S-curve like original
                 confidence: (v) => Math.pow(v, 1.5), // Exponential like original
+                responseLength: (v) => Math.pow(v, 0.9), // Slight curve for response length
                 // Legacy parameter support for backward compatibility
                 disagreement: (v) => this.applySCurve(v, 1.8),
                 formality: (v) => this.applySCurve(v, 1.2)

@@ -13,19 +13,22 @@ let currentParameters = {
             empathy: 65,
             supportiveness: 70,
             creativity: 60,
-            warmth: 75
+            warmth: 75,
+            responseLength: 60
         },
         professional: {
             authority: 70,
             efficiency: 75,
             formality: 80,
-            challenge: 60
+            challenge: 60,
+            responseLength: 60
         },
         mixed: {
             adaptability: 70,
             balance: 65,
             directness: 75,
-            confidence: 60
+            confidence: 60,
+            responseLength: 60
         }
     }
 };
@@ -735,6 +738,11 @@ const parameterDefinitions = {
             name: 'Warmth',
             description: 'Personal connection vs professional distance',
             tooltip: 'Controls the personal tone of communication. Higher values create a friendly, approachable personality that feels like talking to a close friend, while lower values maintain professional boundaries.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Brief responses vs detailed explanations',
+            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
         }
     },
     professional: {
@@ -757,6 +765,11 @@ const parameterDefinitions = {
             name: 'Challenge',
             description: 'Active questioning vs supportive agreement',
             tooltip: 'Controls how much your AI challenges your ideas and assumptions. Higher values actively question your thinking and present alternative viewpoints, while lower values are more supportive and agreeable.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Brief responses vs detailed explanations',
+            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
         }
     },
     mixed: {
@@ -779,6 +792,11 @@ const parameterDefinitions = {
             name: 'Confidence',
             description: 'Definitive statements vs uncertain qualifiers',
             tooltip: 'Controls how confident your AI sounds in its responses. Higher values use definitive language and strong statements, while lower values include more qualifiers like "perhaps," "might," and "possibly" to express uncertainty.'
+        },
+        responseLength: {
+            name: 'Length of Response',
+            description: 'Brief responses vs detailed explanations',
+            tooltip: 'Controls the typical length of responses. Higher values provide comprehensive, detailed explanations, while lower values offer concise, to-the-point answers. Minimum is 2 lines, maximum is no limit.'
         }
     }
 };
