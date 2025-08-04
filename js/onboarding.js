@@ -502,16 +502,32 @@ class OnboardingManager {
             return;
         }
         
-        if (this.currentQuestionIndex > 0) {
-            this.currentQuestionIndex--;
-            this.showQuestion(this.currentQuestionIndex);
-            this.updateProgress();
-        } else {
-            // Go back to context selection
-            this.contextSelected = false;
-            this.showContextSelection();
-            this.updateProgress();
+        // When in context-specific questions, "Previous" button is now "Skip (use defaults)"
+        this.skipWithDefaults();
+    }
+    
+    skipWithDefaults() {
+        if (!this.selectedContext) {
+            console.error('No context selected for skip with defaults');
+            return;
         }
+        
+        // Generate default parameters (medium values = 50) for the selected context
+        const contextParams = this.parameterDefinitions[this.selectedContext];
+        const defaultParameters = {};
+        
+        contextParams.forEach(param => {
+            defaultParameters[param] = 50; // Medium value
+        });
+        
+        // Add context metadata
+        defaultParameters._context = this.selectedContext;
+        
+        // Store these as the calculated parameters
+        this.lastCalculatedParameters = defaultParameters;
+        
+        // Show results with default parameters
+        this.showResults(defaultParameters);
     }
 
     updateProgress() {
@@ -539,15 +555,26 @@ class OnboardingManager {
         if (!this.contextSelected) {
             // On context selection
             prevButton.disabled = true;
+            prevButton.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
+                </svg>
+                Previous
+            `;
             nextButton.disabled = !this.selectedContext;
             nextButtonText.textContent = 'Next';
         } else {
-            // In context-specific questions
+            // In context-specific questions - change Previous to Skip (use defaults)
+            prevButton.disabled = false;
+            prevButton.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16,18H18V6H16M6,18L14.5,12L6,6V18Z"/>
+                </svg>
+                Skip (use defaults)
+            `;
+            
             const contextQuestions = this.questionSets[this.selectedContext];
             const currentQuestion = contextQuestions[this.currentQuestionIndex];
-            
-            // Previous button - can always go back to previous question or context selection
-            prevButton.disabled = false;
             
             // Next button - need answer for current question
             const hasAnswer = this.questionnaireAnswers[currentQuestion.id];
