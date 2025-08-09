@@ -1,4 +1,4 @@
-# Zero - Zero Clutter
+# Zero - Assistants that align with you.
 
 **Zero** - Because sometimes you need an AI that tells you what you need to hear, not just what you want to hear.
 
