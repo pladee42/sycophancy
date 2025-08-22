@@ -5,6 +5,15 @@
     box-sizing: border-box;
 }
 
+/* CSS Custom Properties for iOS Safari */
+:root {
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-left: env(safe-area-inset-left, 0px);
+    --safe-area-right: env(safe-area-inset-right, 0px);
+    --mobile-header-height: 60px;
+}
+
 /* Unified font family declaration for easier maintenance */
 html, body, input, textarea, select, button {
     font-family: 'ClashGrotesk-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -14,6 +23,7 @@ body {
     font-family: 'ClashGrotesk-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #121212;
     min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
     padding: 0;
     margin: 0;
     color: #FFFFFF;
@@ -23,6 +33,7 @@ body {
 .app-container {
     width: 100vw;
     height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
     display: flex;
     overflow: hidden;
 }
@@ -233,6 +244,18 @@ body {
     background: #121212;
 }
 
+.header-spacer {
+    width: 0; /* No space needed on desktop */
+    height: 44px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .header-spacer {
+        width: 44px; /* Same width as mobile menu button */
+    }
+}
+
 /* Modern Custom Dropdown Styles */
 .model-selector-modern {
     position: relative;
@@ -310,7 +333,7 @@ body {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1000;
+    z-index: 1100;
     max-height: 400px;
     overflow: hidden;
     display: flex;
@@ -563,11 +586,14 @@ body {
 /* Chat input area */
 .chat-input-area {
     padding: 24px;
+    padding-bottom: calc(24px + var(--safe-area-bottom));
     background: #121212;
     border-top: 1px solid #333;
     max-width: 800px;
     margin: 0 auto;
     width: 100%;
+    position: sticky;
+    bottom: 0;
 }
 
 .input-container {
@@ -634,7 +660,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: right 0.3s ease;
-    z-index: 1000;
+    z-index: 1050;
 }
 
 .control-panel.open {
@@ -983,24 +1009,39 @@ body {
         width: 100%;
     }
 
-    .mobile-menu-btn {
-        display: block;
-        position: fixed;
-        top: 16px;
-        left: 16px;
-        width: 44px;
-        height: 44px;
-        background: #121212;
-        border: 1px solid #555;
-        border-radius: 8px;
-        color: #FFFFFF;
-        cursor: pointer;
-        z-index: 1001;
+    
+    .mobile-reconfigure-btn {
+        display: flex;
     }
 
     .control-panel {
         width: 100%;
         right: -100%;
+        height: 100dvh; /* Dynamic viewport height */
+        top: 0;
+        padding-top: var(--safe-area-top);
+        padding-bottom: var(--safe-area-bottom);
+    }
+    
+    .controls-container {
+        padding-bottom: calc(120px + var(--safe-area-bottom)); /* Increased space for Apply button */
+        max-height: calc(100vh - 120px);
+        max-height: calc(100dvh - 120px);
+        overflow-y: auto;
+        position: relative;
+    }
+    
+    /* Add fade gradient above Apply button */
+    .controls-container::after {
+        content: '';
+        position: absolute;
+        bottom: calc(80px + var(--safe-area-bottom));
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(transparent, rgba(18, 18, 18, 0.9));
+        pointer-events: none;
+        z-index: 1;
     }
 
     /* Responsive header adjustments */
@@ -1041,8 +1082,24 @@ body {
         height: 28px;
     }
 
-    .apply-button {
+    .control-panel .apply-button {
         min-height: 52px;
+        position: fixed;
+        bottom: calc(24px + var(--safe-area-bottom));
+        left: 24px;
+        right: 24px;
+        width: calc(100% - 48px);
+        margin: 0;
+        background: #284B63;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 2; /* Above the gradient */
+        display: none; /* Hidden by default */
+    }
+    
+    .control-panel.open .apply-button {
+        display: block; /* Show only when panel is open */
     }
 }
 
@@ -1138,8 +1195,38 @@ body {
     }
 }
 
+/* Mobile menu button - default mobile styling */
 .mobile-menu-btn {
-    display: none;
+    display: none; /* Hidden by default */
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block !important; /* Force show on mobile */
+        position: fixed;
+        top: calc(16px + var(--safe-area-top));
+        left: calc(16px + var(--safe-area-left));
+        width: 44px;
+        height: 44px;
+        background: #121212;
+        border: 1px solid #555;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    
+    /* Hide mobile menu button when control panel is open */
+    body.control-panel-open .mobile-menu-btn {
+        display: none !important;
+    }
+}
+
+/* Mobile menu button - hidden on desktop */
+@media (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none !important;
+    }
 }
 
 .overlay {
@@ -1346,6 +1433,37 @@ body {
 }
 
 .onboard-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobile Reconfigure Button */
+.mobile-reconfigure-btn {
+    width: calc(100% - 32px);
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid #555;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'ClashGrotesk-Medium';
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 8px 16px 16px 16px;
+    transition: all 0.2s;
+    display: none; /* Hidden by default, shown on mobile */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+}
+
+.mobile-reconfigure-btn:hover {
+    background: #284B63;
+    border-color: #555;
+    color: #FFFFFF;
+}
+
+.mobile-reconfigure-btn:active {
     transform: translateY(0);
 }
 

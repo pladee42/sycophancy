@@ -823,10 +823,12 @@ function initializeUI() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     const newChatBtn = document.getElementById('newChatBtn');
+    const mobileReconfigureBtn = document.getElementById('mobileReconfigureBtn');
     
     // Controls panel toggle
     controlsToggle.addEventListener('click', function() {
         controlPanel.classList.toggle('open');
+        document.body.classList.toggle('control-panel-open');
     });
     
     // Mobile menu toggle
@@ -840,11 +842,22 @@ function initializeUI() {
         sidebar.classList.remove('open');
         overlay.classList.remove('show');
         controlPanel.classList.remove('open');
+        document.body.classList.remove('control-panel-open');
     });
     
     // New chat functionality
     newChatBtn.addEventListener('click', function() {
         startNewChat();
+    });
+    
+    // Mobile reconfigure button functionality
+    mobileReconfigureBtn.addEventListener('click', function() {
+        // Close sidebar first
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        // Open control panel
+        controlPanel.classList.add('open');
+        document.body.classList.add('control-panel-open');
     });
 }
 
@@ -1095,6 +1108,8 @@ function initializeApplyButton() {
             
             // Hide the control panel with smooth animation
             controlPanel.classList.remove('open');
+            // Also remove the body class to show hamburger menu
+            document.body.classList.remove('control-panel-open');
         }, 800);
     });
 }
